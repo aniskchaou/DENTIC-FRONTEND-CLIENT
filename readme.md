@@ -1,24 +1,18 @@
+# Dentic
 
+ is a web application for managing a dental care office
 
-## Description
+## Informations
 
-simple employee management system 
-
-## Demo
-https://simple-employee-man.herokuapp.com/list
-
+- Status : under development
+- Lastest version : 1.0 
+- Status : Medical
+- Created: October 2020 
+- Last update: October 2020
   
-## Screenshots
-<p align="center">
-
-![enter image description here](employee-management.JPG)
-
-</p>
-
-## Source code
-https://github.com/aniskchaou/EMPLOYEE-MANAGEMENT-NODEJS 
-  
-
-## Technologies
-
-Node Js, Express, Node-postgres, Express-handlebars
+## Modules
+- Manage appointments
+- Manage patients
+- Manage medications
+- Manage prescriptions
+- Manage users
