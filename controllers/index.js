@@ -5,25 +5,48 @@ var client=require('../db/db.js')
 
 router.get('/',(req,res)=>{
   //res.redirect('/list')
-  res.render("elements/index", {viewTitle:'FastBus' });
+  res.render("elements/index", { viewTitle: 'Dentic' });
 })
 
-router.get('/destination',(req,res)=>{
+router.get('/about', (req, res) => {
   //res.redirect('/list')
-  res.render("elements/destination", {viewTitle:'FastBus' });
+  res.render("elements/about", { viewTitle: 'About' });
 })
 
+router.get('/blog', (req, res) => {
+  //res.redirect('/list')
+  res.render("elements/blog", { viewTitle: 'Blog' });
+})
 
 router.get('/pricing',(req,res)=>{
   //res.redirect('/list')
-  res.render("elements/pricing", {viewTitle:'FastBus' });
+  res.render("elements/pricing", { viewTitle: 'Pricing' });
 })
 
 router.get('/contact',(req,res)=>{
   //res.redirect('/list')
-  res.render("elements/contact", {viewTitle:'FastBus' });
+  res.render("elements/contact", { viewTitle: 'Contact' });
 })
 
+router.get('/elements', (req, res) => {
+  //res.redirect('/list')
+  res.render("elements/elements", { viewTitle: 'Elements' });
+})
+
+router.get('/opening', (req, res) => {
+  //res.redirect('/list')
+  res.render("elements/openinghours", { viewTitle: 'Opening hours' });
+})
+
+router.get('/pricing', (req, res) => {
+  //res.redirect('/list')
+  res.render("elements/pricing", { viewTitle: 'Pricing' });
+})
+
+router.get('/services', (req, res) => {
+  //res.redirect('/list')
+  res.render("elements/services", { viewTitle: 'Services' });
+})
 
 /*
 // /add
