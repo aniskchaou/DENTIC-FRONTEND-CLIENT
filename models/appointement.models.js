@@ -3,15 +3,12 @@ var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require('sequelize');
 
 var Appointement = sequelize.define('appointement', {
+    birthdate: Sequelize.STRING,
+    message: Sequelize.STRING,
+    patient: Sequelize.STRING,
+    telephone: Sequelize.STRING,
     datee: Sequelize.STRING,
-    problem: Sequelize.STRING,
-   patient: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: 'patients',
-            key: 'id'
-        }
-    }
+    email: Sequelize.STRING
 });
 
 

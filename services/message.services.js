@@ -15,10 +15,11 @@ exports.findAllMessages = (res) => {
         });
 }
 
-exports.createMessage = (income) => {
+exports.createMessage = (income, res) => {
     Message.create(income)
         .then(data => {
-            res.send(data);
+            // res.send(data);
+            res.redirect('/')
         })
         .catch(err => {
             res.status(500).send({

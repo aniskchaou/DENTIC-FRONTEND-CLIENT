@@ -96,7 +96,7 @@
                             </div>
 						</div>
                         <div class="col-lg-8">
-                            <form class="form-area " id="myForm" action="mail.php" method="post">
+                            <form class="form-area " id="myForm" action="/api/frontend/sendmessage" method="POST">
                                 <div class="row">
                                     <div class="col-lg-6 form-group">
                                         <input name="name" placeholder="Enter your name" onfocus="this.placeholder = ''"
@@ -116,10 +116,19 @@
 									</div>
                                     <div class="col-lg-12">
                                         <div class="alert-msg" style="text-align: left;"></div>
-                                        <button class="genric-btn primary circle" style="float: right;">Send Message</button>
+                                        <button id="send-btn" class="genric-btn primary circle" style="float: right;">Send Message</button>
 									</div>
-								</div>
+                                    
+								</div> 
+                               
                             </form>
+                            <script>
+                                var form = document.getElementById("myForm");
+
+                                document.getElementById("send-btn").addEventListener("click", function () {
+                                    form.submit();
+                                })
+                            </script>
                         </div>
 					</div>
 				</div>	
@@ -157,12 +166,12 @@
                                 <p>You can trust us. we only send promo offers, not a single spam.</p>
                                 <div id="mc_embed_signup">
                                     <form target="_blank" novalidate="true"
-                                        action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-                                        method="get" class="form-inline">
+                                        
+                                        method="post" class="form-inline">
 
                                         <div class="form-group row" style="width: 100%">
                                             <div class="col-lg-8 col-md-12">
-                                                <input name="EMAIL" placeholder="Your Email Address" onfocus="this.placeholder = ''"
+                                                <input name="email" placeholder="Your Email Address" onfocus="this.placeholder = ''"
                                                     onblur="this.placeholder = 'Your Email Address '" required="" type="email">
                                                 <div style="position: absolute; left: -5000px;">
                                                     <input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">

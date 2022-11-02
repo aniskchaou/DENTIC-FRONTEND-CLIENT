@@ -1,4 +1,8 @@
-const { filterCertificate, deleteCertificateById, createCertificate, findAllCertificates, findCertificateById, updateCertificate, deleteAllCertificates } = require("../../services/certificate.services");
+const { getCount, filterCertificate, deleteCertificateById, createCertificate, findAllCertificates, findCertificateById, updateCertificate, deleteAllCertificates } = require("../../services/certificate.services");
+
+exports.getCount = (req, res) => {
+    getCount(req, res)
+}
 
 exports.filterCertificate = (req, res) => {
     const patient = req.params.patient;

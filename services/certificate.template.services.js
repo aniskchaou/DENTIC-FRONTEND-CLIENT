@@ -14,7 +14,7 @@ exports.findAllCertificateTemplates = (res) => {
         });
 }
 
-exports.createCertificateTemplate = (user,res) => {
+exports.createCertificateTemplate = (user, res) => {
     CertificateTemplate.create(user)
         .then(data => {
             res.send(data);
@@ -62,7 +62,7 @@ exports.deleteCertificateTemplateById = (id, res) => {
         });
 }
 
-exports.updateCertificateTemplate = (id, req) => {
+exports.updateCertificateTemplate = (id, req, res) => {
     CertificateTemplate.update(req.body, {
         where: { id: id }
     })

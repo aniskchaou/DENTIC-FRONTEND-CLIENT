@@ -19,26 +19,52 @@ const MedicamentManufacture = require("../models/medicament.manufactue.models.js
 const Note = require("../models/note.models.js");
 const Certificate = require("../models/certificate.models.js");
 const CertificateTemplate = require("../models/certificate.template.models.js");
-
+const HomePage = require("../models/home.page.models.js");
+const ServicePage = require("../models/service.page.models");
+const BlogPage = require("../models/blog.page.models");
+const OpeningHoursPage = require("../models/openinghours.page.models");
+const ContactPage = require("../models/contact.page.models");
+const TestimonialsPage = require("../models/testimonials.page.models");
+var SystemSettings = require("../models/settings/system.settings.models.js")
+var DashboardSettings = require("../models/settings/dashboard.settings.models.js")
+var EmailSettings = require("../models/settings/email.settings.models.js")
+var EmailTemplateSettings = require("../models/settings/email.template.settings.models.js")
+var FooterSettings = require("../models/settings/footer.settings.models.js")
+var HeaderSettings = require("../models/settings/header.settings.models.js")
+var LocalisationSettings = require("../models/settings/localisation.settings.models.js")
+var NotificationSettings = require("../models/settings/notification.settings.models.js")
 sequelize.sync().then(function () {
     User.create(seeds.userSeed);
-    Patient.create(seeds.patientSeed)
-    Expense.create(seeds.expenseSeed)
-    ToDo.create()
-    Income.create()
-    Medicament.create()
-    Payment.create()
-    Preferences.create()
-    Prescription.create()
-    Appointement.create()
-    Message.create()
-    LabTest.create()
-    Invoice.create()
-    MedicamentCategory.create()
-    MedicamentManufacture.create()
-    Note.create()
-    Certificate.create()
-    CertificateTemplate.create()
+    DashboardSettings.create(seeds.getDashboardSettings())
+    EmailSettings.create(seeds.getEmailSettings())
+    FooterSettings.create(seeds.getFooterSettings())
+    HeaderSettings.create(seeds.getHeaderSettings())
+    LocalisationSettings.create(seeds.getLocalisationSettings())
+    NotificationSettings.create(seeds.getNotificationSettings())
+    SystemSettings.create(seeds.getSytemSettings())
+    /* Patient.create(seeds.patientSeed)
+     Expense.create(seeds.expenseSeed)
+     ToDo.create()
+     Income.create()
+     Medicament.create()
+     Payment.create()
+     Preferences.create()
+     Prescription.create()
+     Appointement.create()
+     Message.create()
+     LabTest.create()
+     Invoice.create()
+     MedicamentCategory.create()
+     MedicamentManufacture.create()
+     Note.create()
+     Certificate.create()
+     CertificateTemplate.create()*/
+    HomePage.create(seeds.homePageSeed)
+    ServicePage.create(seeds.servicePageSeed)
+    BlogPage.create(seeds.blogPageSeed)
+    OpeningHoursPage.create(seeds.schedulePageSeed)
+    ContactPage.create(seeds.contactPageSeed)
+    TestimonialsPage.create(seeds.testimonialsSeed)
 
 }).then(function (res) {
     console.log(res);
