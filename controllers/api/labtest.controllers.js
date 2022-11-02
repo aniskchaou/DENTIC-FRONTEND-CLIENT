@@ -13,9 +13,9 @@ exports.create = (req, res) => {
 
     // Create a user
     const patient = {
-        datee: req.body.date,
+        datee: req.body.datee,
         patient: req.body.patient,
-        result: req.body.result,
+        content: req.body.content,
         name: req.body.name
     }
 

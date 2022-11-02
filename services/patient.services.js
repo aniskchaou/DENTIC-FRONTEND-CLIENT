@@ -1,5 +1,16 @@
 const Patient = require("../models/patient.models");
 
+exports.getCount = (req, res) => {
+    Patient.count()
+        .then(data => {
+            res.send({ 'patient': data })
+        }).catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
 
 exports.findAllPatients = (res) => {
 

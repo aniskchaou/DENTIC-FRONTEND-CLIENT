@@ -15,7 +15,7 @@ exports.findAllMedicamentCategorys = (res) => {
         });
 }
 
-exports.createMedicamentCategory = (income,res) => {
+exports.createMedicamentCategory = (income, res) => {
     MedicamentCategory.create(income)
         .then(data => {
             res.send(data);
@@ -28,7 +28,7 @@ exports.createMedicamentCategory = (income,res) => {
         });
 }
 
-exports.findMedicamentCategoryById = (id) => {
+exports.findMedicamentCategoryById = (id, res) => {
     MedicamentCategory.findByPk(id)
         .then(data => {
             res.send(data);
@@ -62,7 +62,7 @@ exports.deleteMedicamentCategoryById = (id, res) => {
         });
 }
 
-exports.updateMedicamentCategory = (id, req,res) => {
+exports.updateMedicamentCategory = (id, req, res) => {
     MedicamentCategory.update(req.body, {
         where: { id: id }
     })

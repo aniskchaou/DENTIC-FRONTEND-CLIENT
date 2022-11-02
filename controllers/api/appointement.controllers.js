@@ -1,6 +1,30 @@
-const { createEvent, findAllEvent, findEventById, updateEvent, deleteEventById, deleteAllEvents } = require("../../services/appointement.services");
+const { getCount, createAppointement, createEvent, findAllEvent, findEventById, updateEvent, deleteEventById, deleteAllEvents } = require("../../services/appointement.services");
 
+exports.getCount = (req, res) => {
+    getCount(req, res)
+}
 
+exports.createAppointement = (req, res) => {
+    // Validate request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+        return;
+    }
+    // Create a user
+
+    const patient = {
+        datee: req.body.datee,
+        patient: req.body.patient,
+        message: req.body.message,
+        birthdate: req.body.birthdate,
+        email: req.body.email,
+        telephone: req.body.telephone
+    }
+
+    createAppointement(patient, res)
+};
 exports.create = (req, res) => {
     // Validate request
     if (!req.body) {
@@ -12,9 +36,12 @@ exports.create = (req, res) => {
     // Create a user
 
     const patient = {
-        datee: req.body.date,
+        datee: req.body.datee,
         patient: req.body.patient,
-        problem: req.body.problem
+        message: req.body.message,
+        birthdate: req.body.birthdate,
+        email: req.body.email,
+        telephone: req.body.telephone
     }
 
     createEvent(patient, res)

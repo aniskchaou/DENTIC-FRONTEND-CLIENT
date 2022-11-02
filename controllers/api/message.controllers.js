@@ -3,8 +3,9 @@ const { findMessageById, updateMessage, deleteMessageById, deleteAllMessages, fi
 
 
 exports.create = (req, res) => {
+    console.log("send")
     // Validate request
-    if (!req.body.username) {
+    if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
@@ -12,12 +13,9 @@ exports.create = (req, res) => {
     }
     // Create a user
     const patient = {
-        namepatient: req.body.namepatient,
-        emailpatient: req.body.emailpatient,
-        birth: req.body.birth,
-        telephone: req.body.telephone,
-        gender: req.body.gender,
-        address: req.body.address
+        name: req.body.name,
+        subject: req.body.subject,
+        message: req.body.message
     }
 
     createMessage(patient, res)

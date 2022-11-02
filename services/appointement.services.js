@@ -1,5 +1,17 @@
 
 const Appointement = require("../models/appointement.models");
+exports.getCount = (req, res) => {
+    Appointement.count()
+        .then(data => {
+            res.send({ 'appointement': data })
+        }).catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
+
 
 exports.findAllEvent = (res) => {
     Appointement.findAll({})
@@ -14,7 +26,20 @@ exports.findAllEvent = (res) => {
         });
 }
 
-exports.createEvent = (user,res) => {
+exports.createAppointement = (user, res) => {
+    Appointement.create(user)
+        .then(data => {
+            res.redirect('/');
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the Appointement."
+            });
+        });
+}
+
+exports.createEvent = (user, res) => {
     Appointement.create(user)
         .then(data => {
             res.send(data);
@@ -61,7 +86,7 @@ exports.deleteEventById = (id, res) => {
         });
 }
 
-exports.updateEvent = (id, req,res) => {
+exports.updateEvent = (id, req, res) => {
     Appointement.update(req.body, {
         where: { id: id }
     })

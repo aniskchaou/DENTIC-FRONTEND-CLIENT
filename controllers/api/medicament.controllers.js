@@ -1,7 +1,9 @@
-const { findMedicamentById, updateMedicament, deleteMedicamentById, deleteAllMedicaments, findAllMedicaments, createMedicament } = require("../../services/medicamnt.services");
+const { getCount, findMedicamentById, updateMedicament, deleteMedicamentById, deleteAllMedicaments, findAllMedicaments, createMedicament } = require("../../services/medicamnt.services");
 
 
-
+exports.getCount = (req, res) => {
+    getCount(req, res)
+}
 
 exports.create = (req, res) => {
     // Validate request

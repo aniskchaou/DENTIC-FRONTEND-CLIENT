@@ -15,7 +15,7 @@ exports.findAllLabTests = (res) => {
         });
 }
 
-exports.createLabTest = (income,res) => {
+exports.createLabTest = (income, res) => {
     LabTest.create(income)
         .then(data => {
             res.send(data);
@@ -62,7 +62,7 @@ exports.deleteLabTestById = (id, res) => {
         });
 }
 
-exports.updateLabTest = (id, req) => {
+exports.updateLabTest = (id, req, res) => {
     LabTest.update(req.body, {
         where: { id: id }
     })

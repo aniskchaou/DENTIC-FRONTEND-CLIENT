@@ -1,6 +1,18 @@
 
 const Certificate = require("../models/certificate.models");
 
+exports.getCount = (req, res) => {
+    Certificate.count()
+        .then(data => {
+            res.send({ 'certificate': data })
+        }).catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
+
 
 exports.filterCertificate = (patient, template, req, res) => {
     Certificate.findAll({
@@ -83,7 +95,7 @@ exports.deleteCertificateById = (id, res) => {
         });
 }
 
-exports.updateCertificate = (id, req) => {
+exports.updateCertificate = (id, req, res) => {
     Certificate.update(req.body, {
         where: { id: id }
     })

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     "use strict";
 
     var window_width = $(window).width(),
@@ -38,10 +38,10 @@ $(document).ready(function() {
 
     //------- Datepicker  js --------//  
 
-      $( function() {
-        $( "#datepicker" ).datepicker();
-        $( "#datepicker2" ).datepicker();
-      } );
+    $(function () {
+        $("#datepicker").datepicker({ dateFormat: "yyyy-mm-dd" });
+        $("#datepicker2").datepicker({ dateFormat: "yyyy-mm-dd" });
+    });
 
 
     //------- Superfist nav menu  js --------//  
@@ -68,19 +68,19 @@ $(document).ready(function() {
         $('body').append('<div id="mobile-body-overly"></div>');
         $('#mobile-nav').find('.menu-has-children').prepend('<i class="lnr lnr-chevron-down"></i>');
 
-        $(document).on('click', '.menu-has-children i', function(e) {
+        $(document).on('click', '.menu-has-children i', function (e) {
             $(this).next().toggleClass('menu-item-active');
             $(this).nextAll('ul').eq(0).slideToggle();
             $(this).toggleClass("lnr-chevron-up lnr-chevron-down");
         });
 
-        $(document).on('click', '#mobile-nav-toggle', function(e) {
+        $(document).on('click', '#mobile-nav-toggle', function (e) {
             $('body').toggleClass('mobile-nav-active');
             $('#mobile-nav-toggle i').toggleClass('lnr-cross lnr-menu');
             $('#mobile-body-overly').toggle();
         });
 
-        $(document).click(function(e) {
+        $(document).click(function (e) {
             var container = $("#mobile-nav, #mobile-nav-toggle");
             if (!container.is(e.target) && container.has(e.target).length === 0) {
                 if ($('body').hasClass('mobile-nav-active')) {
@@ -96,7 +96,7 @@ $(document).ready(function() {
 
     //------- Smooth Scroll  js --------//  
 
-    $('.nav-menu a, #mobile-nav a, .scrollto').on('click', function() {
+    $('.nav-menu a, #mobile-nav a, .scrollto').on('click', function () {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
             var target = $(this.hash);
             if (target.length) {
@@ -129,13 +129,13 @@ $(document).ready(function() {
         }
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $('html, body').hide();
 
         if (window.location.hash) {
 
-            setTimeout(function() {
+            setTimeout(function () {
 
                 $('html, body').scrollTop(0).show();
 
@@ -157,7 +157,7 @@ $(document).ready(function() {
 
     //------- Header Scroll Class  js --------//  
 
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
             $('#header').addClass('header-scrolled');
         } else {
@@ -168,13 +168,13 @@ $(document).ready(function() {
     //------- Owl Carusel  js --------//  
 
     $('.active-testimonial-carusel').owlCarousel({
-        items:3,
-        loop:true,
+        items: 3,
+        loop: true,
         margin: 30,
         dots: true,
         autoplayHoverPause: true,
-        smartSpeed:150,         
-        autoplay:true,    
+        smartSpeed: 150,
+        autoplay: true,
         responsive: {
             0: {
                 items: 1
@@ -187,7 +187,7 @@ $(document).ready(function() {
             },
             961: {
                 items: 3,
-            }            
+            }
         }
     });
 
@@ -199,7 +199,7 @@ $(document).ready(function() {
         var countDownDate = new Date("Sep 5, 2018 15:37:25").getTime();
 
         // Update the count down every 1 second
-        var x = setInterval(function() {
+        var x = setInterval(function () {
 
             // Get todays date and time
             var now = new Date().getTime();
@@ -365,7 +365,7 @@ $(document).ready(function() {
 
     //------- Mailchimp js --------//  
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#mc_embed_signup').find('form').ajaxChimp();
     });
 

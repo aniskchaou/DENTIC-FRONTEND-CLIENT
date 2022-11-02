@@ -1,11 +1,28 @@
 
 const Medicament = require("../models/medicament.models");
+const findMedicamentCategoryById = require("../services/medicament.category.services");
+const findMedicamentManufactureById = require("../services/medicament.manufacture.services");
+exports.getCount = (req, res) => {
+    Medicament.count()
+        .then(data => {
+            res.send({ 'medicament': data })
+        }).catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
+
+
 
 exports.findAllMedicaments = (res) => {
 
     Medicament.findAll()
         .then(data => {
+            console.log(data)
             res.send(data);
+
         })
         .catch(err => {
             res.status(500).send({
