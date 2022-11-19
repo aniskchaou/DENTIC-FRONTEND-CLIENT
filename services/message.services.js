@@ -1,5 +1,16 @@
 
 const Message = require("../models/message.models");
+exports.getCount = (req, res) => {
+    Message.count()
+        .then(data => {
+            res.send({ 'message': data })
+        }).catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
 
 exports.findAllMessages = (res) => {
 

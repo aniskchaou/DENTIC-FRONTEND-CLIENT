@@ -48,7 +48,7 @@ exports.createService = (user, res) => {
         });
 }
 
-exports.findServiceById = (id) => {
+exports.findServiceById = (id, res) => {
     Service.findByPk(id)
         .then(data => {
             res.send(data);

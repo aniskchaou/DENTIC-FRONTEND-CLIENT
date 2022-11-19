@@ -1,5 +1,6 @@
 
 //homepage
+const config = require("../config/connection.server");
 const { updateHomePage, getHomePage, getServices, getBlogs, getOpeningHours, updateOpeningHours, updateBlogs, updateServices } = require("../services/front.office.services");
 
 exports.getHomePage = (req, res) => {
@@ -45,7 +46,12 @@ exports.updateOpeningHours = (req, res) => {
     updateOpeningHours(id, req, res)
 };
 
-
+exports.adminPanel = (req, res) => {
+    res.writeHead(302, {
+        'Location': config.url
+    });
+    res.end();
+};
 
 
 

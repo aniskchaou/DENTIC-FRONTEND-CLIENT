@@ -33,6 +33,7 @@ var FooterSettings = require("../models/settings/footer.settings.models.js")
 var HeaderSettings = require("../models/settings/header.settings.models.js")
 var LocalisationSettings = require("../models/settings/localisation.settings.models.js")
 var NotificationSettings = require("../models/settings/notification.settings.models.js")
+var ServiceItem = require('../models/service.models')
 sequelize.sync().then(function () {
     User.create(seeds.userSeed);
     DashboardSettings.create(seeds.getDashboardSettings())
@@ -42,6 +43,7 @@ sequelize.sync().then(function () {
     LocalisationSettings.create(seeds.getLocalisationSettings())
     NotificationSettings.create(seeds.getNotificationSettings())
     SystemSettings.create(seeds.getSytemSettings())
+
     /* Patient.create(seeds.patientSeed)
      Expense.create(seeds.expenseSeed)
      ToDo.create()
@@ -59,6 +61,7 @@ sequelize.sync().then(function () {
      Note.create()
      Certificate.create()
      CertificateTemplate.create()*/
+    //  ServiceItem.bulkCreate(seeds.serviceSeed)
     HomePage.create(seeds.homePageSeed)
     ServicePage.create(seeds.servicePageSeed)
     BlogPage.create(seeds.blogPageSeed)

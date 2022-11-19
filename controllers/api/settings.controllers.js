@@ -1,4 +1,4 @@
-const { restoreDashboardSettings, restoreHeaderSettings, restoreFooterSettings, restoreSystemSettings, updateSystemSettings, updateNotificationsSettings, updateLocalisationSettings, updateHeaderSettings, updateFooterSettings, updateEmailSettings, updateDashboardSettings, findNotificationSettingsById, findLocalisationSettingsById, findHeaderSettingsById, findFooterSettingsById, findEmailSettingsById, findEmailTemplateSettingsById, findDashboardSettingsById, findSystemSettingsById } = require("../../services/settings.services");
+const { restoreLocalisationSettings, restoreDashboardSettings, restoreHeaderSettings, restoreFooterSettings, restoreSystemSettings, updateSystemSettings, updateNotificationsSettings, updateLocalisationSettings, updateHeaderSettings, updateFooterSettings, updateEmailSettings, updateDashboardSettings, findNotificationSettingsById, findLocalisationSettingsById, findHeaderSettingsById, findFooterSettingsById, findEmailSettingsById, findEmailTemplateSettingsById, findDashboardSettingsById, findSystemSettingsById } = require("../../services/settings.services");
 const fs = require('fs');
 
 
@@ -32,6 +32,14 @@ exports.restoreDashboardSettings = (req, res) => {
     const id = req.params.id;
     console.log(student)
     restoreDashboardSettings(id, student, res)
+};
+
+exports.restoreLocalisationSettings = (req, res) => {
+    var rawdata = fs.readFileSync('db/settings/localisation.json');
+    var student = JSON.parse(rawdata);
+    const id = req.params.id;
+    console.log(student)
+    restoreLocalisationSettings(id, student, res)
 };
 
 exports.findSystemSettings = (req, res) => {

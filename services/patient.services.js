@@ -12,6 +12,19 @@ exports.getCount = (req, res) => {
         });
 }
 
+exports.searchPatient = (patient, req, res) => {
+    Patient.findAll({ where: { namepatient: patient } })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+}
+
 exports.findAllPatients = (res) => {
 
     Patient.findAll()
@@ -108,6 +121,53 @@ exports.deleteAllPatients = (req, res) => {
             res.status(500).send({
                 message:
                     err.message || "Some error occurred while removing all tutorials."
+            });
+        });
+}
+
+
+exports.getPatientByDate = (res) => {
+
+    Patient.findAll()
+        .then(data => {
+
+
+            var dates = []
+            var amounts = []
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            data.forEach(function (element) {
+                //const d = new Date(element.birth)
+
+                //  var dateBirth = new Date(element.birth)
+                var age = 2022 - element.birth.getFullYear()
+                console.log(element.birth.getMonth())
+                //  dates.push(monthNames[element.birth.getMonth()])
+                amounts.push(age)
+
+
+            });
+
+
+
+            const response = {
+                labels: monthNames,
+                datasets: [
+                    {
+                        label: 'Patients',
+                        data: amounts,
+                        borderColor: 'rgba(255, 99, 132, 0.5)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    }
+                ],
+            };
+            res.send(response);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
             });
         });
 }

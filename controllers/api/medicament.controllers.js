@@ -1,4 +1,10 @@
-const { getCount, findMedicamentById, updateMedicament, deleteMedicamentById, deleteAllMedicaments, findAllMedicaments, createMedicament } = require("../../services/medicamnt.services");
+const { getMedicamentByDate, getCount, findMedicamentById, updateMedicament, deleteMedicamentById, deleteAllMedicaments, findAllMedicaments, createMedicament } = require("../../services/medicamnt.services");
+
+
+
+exports.getMedicamentByDate = (req, res) => {
+    getMedicamentByDate(res)
+}
 
 
 exports.getCount = (req, res) => {

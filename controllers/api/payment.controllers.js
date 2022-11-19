@@ -17,7 +17,8 @@ exports.create = (req, res) => {
         paymentDate: req.body.paymentDate,
         paymenMode: req.body.paymenMode,
         amountReceived: req.body.amountReceived,
-        invoiceBlanceDue: req.body.invoiceBlanceDue
+        invoiceBlanceDue: req.body.invoiceBlanceDue,
+        patient: req.body.patient
     }
 
     createPayment(patient, res)

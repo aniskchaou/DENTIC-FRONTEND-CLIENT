@@ -101,54 +101,21 @@
 			</div>
             </div>
 			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="single-service">
-						<img class="img-fluid" src="img/s1.jpg" alt="">
-						<a href="#">
-							<h4>Popular Use Of The Internet</h4>
-						</a>
-						<p>
-							inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face
-							higher conduct.
-						</p>
-                </div>
-			</div>
+			
+			{{#each services}}
 			<div class="col-lg-3 col-md-6">
 				<div class="single-service">
-					<img class="img-fluid" src="img/s2.jpg" alt="">
+					<img class="img-fluid" src="http://localhost:5000/uploads/service/{{dataValues.fileName}}" alt="">
 					<a href="#">
-						<h4>Protective Preventative</h4>
+						<h4>{{dataValues.name}}</h4>
 					</a>
 					<p>
-						inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face
-						higher conduct.
+						{{dataValues.description}}
 					</p>
 				</div>
 			</div>
-			<div class="col-lg-3 col-md-6">
-				<div class="single-service">
-					<img class="img-fluid" src="img/s3.jpg" alt="">
-					<a href="#">
-						<h4>Download Free Songs</h4>
-					</a>
-					<p>
-						inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face
-						higher conduct.
-					</p>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6">
-				<div class="single-service">
-					<img class="img-fluid" src="img/s4.jpg" alt="">
-					<a href="#">
-						<h4>A Discount Toner Cartridge</h4>
-					</a>
-					<p>
-						inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face
-						higher conduct.
-					</p>
-				</div>
-			</div>
+			{{/each}}
+		
 			</div>
 			</div>
 			</section>
