@@ -1,5 +1,5 @@
 
-const { findAll: findAllUsers, createUser, findUserById, deleteUserById, updateUser, deleteAllUsers } = require("../../services/user.services");
+const { loginUser, findAll, findAllUsers, createUser, findUserById, deleteUserById, updateUser, deleteAllUsers } = require("../../services/user.services");
 
 exports.create = (req, res) => {
     // Validate request
@@ -40,4 +40,21 @@ exports.delete = (req, res) => {
 
 exports.deleteAll = (req, res) => {
     deleteAllUsers(res)
+};
+
+exports.login = (req, res) => {
+
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+        return;
+    }
+    const user = {
+        username: req.body.username,
+        password: req.body.password,
+
+    }
+
+    loginUser(user.username, user.password, res)
 };

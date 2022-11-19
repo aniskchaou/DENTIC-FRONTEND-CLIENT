@@ -1,4 +1,16 @@
-const { getCount, findPatientById, updatePatient, deletePatientById, deleteAllPatients, findAllPatients, createPatient } = require("../../services/patient.services");
+const { getPatientByDate, searchPatient, getCount, findPatientById, updatePatient, deletePatientById, deleteAllPatients, findAllPatients, createPatient } = require("../../services/patient.services");
+
+
+exports.getPatientByDate = (req, res) => {
+
+    getPatientByDate(res)
+};
+
+
+exports.searchPatient = (req, res) => {
+
+    searchPatient(req.params.patient, req, res)
+};
 
 exports.getCount = (req, res) => {
     getCount(req, res)

@@ -1,6 +1,7 @@
 
 const Invoice = require("../models/invoice.models");
 
+
 exports.findAllInvoices = (res) => {
 
     Invoice.findAll({})
@@ -99,3 +100,4 @@ exports.deleteAllInvoices = () => {
             });
         });
 }
+

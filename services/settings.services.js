@@ -213,6 +213,30 @@ exports.restoreHeaderSettings = (id, req, res) => {
         });
 }
 
+
+exports.restoreLocalisationSettings = (id, req, res) => {
+    LocalisationSettings.update(req, {
+        where: { id: id }
+    })
+        .then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Revenue was updated successfully."
+                });
+            } else {
+                res.send({
+                    message: 'Cannot update Revenue with id=${id}. Maybe Revenue was not found or req.body is empty!'
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error updating Revenue with id=" + id
+            });
+        });
+}
+
+
 exports.updateSystemSettings = (id, req, res) => {
     SystemSettings.update(req.body, {
         where: { id: id }

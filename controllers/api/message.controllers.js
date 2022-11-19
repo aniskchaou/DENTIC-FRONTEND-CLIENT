@@ -1,5 +1,8 @@
-const { findMessageById, updateMessage, deleteMessageById, deleteAllMessages, findAllMessages, createMessage } = require("../../services/message.services");
+const { getCount, findMessageById, updateMessage, deleteMessageById, deleteAllMessages, findAllMessages, createMessage } = require("../../services/message.services");
 
+exports.getCount = (req, res) => {
+    getCount(req, res)
+}
 
 
 exports.create = (req, res) => {

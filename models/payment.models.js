@@ -6,7 +6,8 @@ var Payment = sequelize.define('payment', {
     paymentDate: Sequelize.STRING,
     paymenMode: Sequelize.STRING,
     amountReceived: Sequelize.STRING,
-    invoiceBlanceDue: Sequelize.STRING
+    invoiceBlanceDue: Sequelize.STRING,
+    patient: Sequelize.STRING
 });
 
 

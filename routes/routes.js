@@ -47,7 +47,7 @@ routerr.get("/api/localisationsettings", settingsController.findLocalisationSett
 routerr.put("/api/edit/localisationsettings/:id", settingsController.updateLocalisationSettings);
 routerr.get("/api/notificationsettings", settingsController.findNotificationSettings);
 routerr.put("/api/edit/notificationsettings/:id", settingsController.updateNotificationsSettings);
-
+routerr.get("/api/restore/localisationsettings/:id", settingsController.restoreLocalisationSettings);
 
 
 routerr.get('/api/frontoffice/services', frontOfficeController.getServices)
@@ -67,7 +67,7 @@ routerr.get("/api/user/:id", userController.findOne);
 routerr.put("/api/user/:id", userController.update);
 routerr.delete("/api/user/:id", userController.delete);
 routerr.delete("/api/user", userController.deleteAll);
-
+routerr.post("/api/user/login", userController.login);
 //patient
 routerr.post('/api/patient', patientController.create)
 routerr.get('/api/patient', patientController.findAll)
@@ -76,6 +76,8 @@ routerr.get("/api/patient/:id", patientController.findOne);
 routerr.put("/api/patient/:id", patientController.update);
 routerr.delete("/api/patient/:id", patientController.delete);
 routerr.delete("/api/patient", patientController.deleteAll);
+routerr.get('/api/search/patient/:patient', patientController.searchPatient)
+routerr.get('/api/analytics/patient', patientController.getPatientByDate)
 
 //appointement
 routerr.post('/api/appointement/create', appointementController.createAppointement)
@@ -114,7 +116,7 @@ routerr.get("/api/medicament/:id", medicamentController.findOne);
 routerr.put("/api/medicament/:id", medicamentController.update);
 routerr.delete("/api/medicament/:id", medicamentController.delete);
 routerr.delete("/api/medicament", medicamentController.deleteAll);
-
+routerr.get('/api/analytics/medicament', medicamentController.getMedicamentByDate)
 
 //payment
 routerr.post('/api/payment', paymentController.create)
@@ -133,13 +135,15 @@ routerr.delete("/api/preference/:id", preferenceController.delete);
 routerr.delete("/api/preference", preferenceController.deleteAll);
 
 //prescription
+routerr.post('/api/prescription/medicament', prescriptionController.createMedicamentItem)
 routerr.post('/api/prescription', prescriptionController.create)
 routerr.get('/api/prescription', prescriptionController.findAll)
 routerr.get("/api/prescription/:id", prescriptionController.findOne);
 routerr.put("/api/prescription/:id", prescriptionController.update);
 routerr.delete("/api/prescription/:id", prescriptionController.delete);
 routerr.delete("/api/prescription", prescriptionController.deleteAll);
-
+routerr.get('/api/prescription/medicament/:id', prescriptionController.findAllMedicamentPrescriptions)
+routerr.delete("/api/prescription/medicament/:id", prescriptionController.deleteMedicament);
 //Home
 routerr.get('/about', indexController.getAbout)
 routerr.get('/blog', indexController.getBlog)
@@ -149,7 +153,7 @@ routerr.get('/', indexController.getHome)
 routerr.get('/opening', indexController.getOpeningHours)
 routerr.get('/pricing', indexController.getPricing)
 routerr.get('/services', indexController.getServices)
-
+routerr.get('/admin', frontOfficeController.adminPanel)
 //LabTest
 routerr.post('/api/labtest', labTestController.create)
 routerr.get('/api/labtest', labTestController.findAll)
@@ -201,6 +205,7 @@ routerr.get("/api/message/:id", messageController.findOne);
 routerr.put("/api/message/:id", messageController.update);
 routerr.delete("/api/message/:id", messageController.delete);
 routerr.delete("/api/message", messageController.deleteAll);
+routerr.get('/api/count/message', messageController.getCount)
 
 //Note
 routerr.post('/api/note', noteController.create)
@@ -228,7 +233,8 @@ routerr.delete("/api/certificatetemplate/:id", certificateTemplateController.del
 routerr.delete("/api/certificatetemplate", certificateTemplateController.deleteAll);
 
 
-routerr.post('/api/service', serviceontroller.create)
+routerr.post('/api/service/:filename', serviceontroller.create)
+routerr.post('/api/service/image/uploadfile', serviceontroller.addImage)
 routerr.get('/api/service', serviceontroller.findAll)
 routerr.get("/api/service/:id", serviceontroller.findOne);
 routerr.put("/api/service/:id", serviceontroller.update);

@@ -1,6 +1,6 @@
 
 const Certificate = require("../models/certificate.models");
-
+const Patient = require("../models/patient.models");
 exports.getCount = (req, res) => {
     Certificate.count()
         .then(data => {
@@ -11,6 +11,14 @@ exports.getCount = (req, res) => {
                     err.message || "Some error occurred while retrieving users."
             });
         });
+
+
+
+
+
+
+
+
 }
 
 
@@ -35,16 +43,39 @@ exports.filterCertificate = (patient, template, req, res) => {
 
 
 exports.findAllCertificates = (res) => {
-    Certificate.findAll()
-        .then(data => {
-            res.send(data);
+    /*   Certificate.findAll()
+          .then(data => {
+              res.send(data);
+          })
+          .catch(err => {
+              res.status(500).send({
+                  message:
+                      err.message || "Some error occurred while retrieving users."
+              });
+          }); */
+
+    const certificates = []
+    const p = Patient.findAll()
+    const t = Certificate.findAll()
+
+    Promise
+        .all([t, p])
+        .then(responses => {
+            console.log(responses[1])
+            for (const d of responses[0]) {
+                certificates.push({
+                    id: d.id,
+                    date: d.date,
+                    template: d.template,
+                    content: d.content,
+                    patient: responses[1].find(i => i.id == d.patient)?.dataValues?.namepatient,
+                    createdAt: d.createdAt,
+                    updatedAt: d.updatedAt
+                })
+
+            }
+            res.send(certificates);
         })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving users."
-            });
-        });
 }
 
 exports.createCertificate = (user, res) => {

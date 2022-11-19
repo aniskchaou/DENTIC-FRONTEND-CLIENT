@@ -2,9 +2,49 @@
 const fs = require('fs');
 
 exports.userSeed = {
-    username: 'janedoe',
-    pass: 'a'
+    name: "admin",
+    birthday: "1/1/1999",
+    password: "admin",
+    email: "admin@gmail.com",
+    telephone: "765876",
+    address: "N/A",
+    role: "Admnistrator",
+    username: "admin"
 }
+
+
+exports.serviceSeed = [{
+    name: 'Popular Use Of The Internet',
+    description: 'inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face higher conduct.',
+    status: 'active',
+    fileName: 's1.jpg'
+
+},
+{
+    name: 'Protective Preventative',
+    description: 'inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face higher conduct.',
+    status: 'active',
+    fileName: 's2.jpg'
+
+},
+{
+    name: 'Download Free Songs',
+    description: 'inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face higher conduct.',
+    status: 'active',
+    fileName: 's3.jpg'
+
+},
+{
+    name: 'A Discount Toner Cartridge',
+    description: 'inappropriate behavior is oftenlaug hed off as “boys will be boys,” women face higher conduct women face higher conduct.',
+    status: 'active',
+    fileName: 's4.jpg'
+
+}]
+
+
+
+
 
 exports.expenseSeed = {
     nameexpense: '',
