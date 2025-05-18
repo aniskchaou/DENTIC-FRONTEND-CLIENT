@@ -35,7 +35,7 @@ var LocalisationSettings = require("../models/settings/localisation.settings.mod
 var NotificationSettings = require("../models/settings/notification.settings.models.js")
 var ServiceItem = require('../models/service.models')
 sequelize.sync().then(function () {
-    User.create(seeds.userSeed);
+    //User.create(seeds.userSeed);
     DashboardSettings.create(seeds.getDashboardSettings())
     EmailSettings.create(seeds.getEmailSettings())
     FooterSettings.create(seeds.getFooterSettings())

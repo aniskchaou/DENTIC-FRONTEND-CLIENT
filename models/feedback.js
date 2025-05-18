@@ -1,0 +1,94 @@
+/* {
+    "PatientFeedback": {
+      "id": "UUID",
+      "patientId": "UUID (Ref to Patient)",
+      "clinicId": "UUID (Ref to Clinic)",
+      "doctorId": "UUID (Ref to Doctor, if applicable)",
+      "appointmentId": "UUID (Ref to Appointment, if applicable)",
+      "rating": "integer (1-5)",
+      "reviewText": "string",
+      "feedbackCategory": "General | Treatment | Facilities | Staff Behavior | Pricing",
+      "responseFromClinic": "string (Optional)",
+      "createdAt": "timestamp",
+      "updatedAt": "timestamp",
+      "status": "Pending | Addressed | Archived"
+    }
+  } */
+
+    var sequelize = require("../db/init.sequelize.js");
+    var { Sequelize, DataTypes } = require('sequelize');
+  const PatientFeedback = sequelize.define("patientFeedback", {
+    id: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true,
+    },
+    patientId: {
+      type: Sequelize.UUID,
+      allowNull: false,
+      references: {
+        model: "patients",
+        key: "id",
+      },
+    },
+    clinicId: {
+      type: Sequelize.UUID,
+      allowNull: false,
+      references: {
+        model: "clinics",
+        key: "id",
+      },
+    },
+    doctorId: {
+      type: Sequelize.UUID,
+      allowNull: true,
+      references: {
+        model: "doctors",
+        key: "id",
+      },
+    },
+    appointmentId: {
+      type: Sequelize.UUID,
+      allowNull: true,
+      references: {
+        model: "appointments",
+        key: "id",
+      },
+    },
+    rating: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 1,
+        max: 5,
+      },
+    },
+    reviewText: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    feedbackCategory: {
+      type: Sequelize.ENUM("General", "Treatment", "Facilities", "Staff Behavior", "Pricing"),
+      allowNull: false,
+    },
+    responseFromClinic: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    status: {
+      type: Sequelize.ENUM("Pending", "Addressed", "Archived"),
+      defaultValue: "Pending",
+    },
+    createdAt: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
+    },
+    updatedAt: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
+    },
+  });
+  
+  module.exports = PatientFeedback;
+  
+  
