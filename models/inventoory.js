@@ -37,11 +37,7 @@
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
   const Inventory = sequelize.define("inventory", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+
     itemName: {
       type: Sequelize.STRING,
       allowNull: false,

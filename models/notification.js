@@ -18,11 +18,7 @@
   var { Sequelize, DataTypes } = require('sequelize');
 
 const Notification = sequelize.define("notification", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   recipientId: {
     type: DataTypes.UUID,
     allowNull: false,

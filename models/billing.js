@@ -20,11 +20,7 @@
   var Sequelize = require("sequelize");
   
   var Billing = sequelize.define("billing", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+
     patientId: {
       type: Sequelize.UUID,
       allowNull: false,

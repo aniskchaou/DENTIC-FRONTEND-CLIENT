@@ -51,18 +51,14 @@
   var { Sequelize, DataTypes } = require('sequelize');
 
 var EmergencyHandling = sequelize.define("emergency_handling", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "patients", // Assuming patients are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "patients", // Assuming patients are stored in a table
+    //   key: "id",
+    // },
   },
   emergencyType: {
     type: Sequelize.ENUM("Severe Pain", "Trauma", "Infection", "Other"),
@@ -71,10 +67,10 @@ var EmergencyHandling = sequelize.define("emergency_handling", {
   reportedBy: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "users", // Assuming the report is made by a staff member or patient
-      key: "id",
-    },
+    // references: {
+    //   model: "users", // Assuming the report is made by a staff member or patient
+    //   key: "id",
+    // },
   },
   priorityLevel: {
     type: Sequelize.ENUM("High", "Medium", "Low"),
@@ -87,10 +83,10 @@ var EmergencyHandling = sequelize.define("emergency_handling", {
   assignedDoctorId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "doctors", // Assuming doctors are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "doctors", // Assuming doctors are stored in a table
+    //   key: "id",
+    // },
   },
   treatmentStatus: {
     type: Sequelize.ENUM("Pending", "In Progress", "Completed"),
@@ -120,18 +116,18 @@ var EmergencyCase = sequelize.define("emergency_case", {
   patientId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "patients", // Assuming patients are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "patients", // Assuming patients are stored in a table
+    //   key: "id",
+    // },
   },
   reportedBy: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "users", // Assuming report is made by staff or patient
-      key: "id",
-    },
+    // references: {
+    //   model: "users", // Assuming report is made by staff or patient
+    //   key: "id",
+    // },
   },
   severityLevel: {
     type: Sequelize.ENUM("Mild", "Moderate", "Severe", "Critical"),
@@ -149,10 +145,10 @@ var EmergencyCase = sequelize.define("emergency_case", {
   assignedDoctorId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "doctors", // Assuming doctors are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "doctors", // Assuming doctors are stored in a table
+    //   key: "id",
+    // },
   },
   arrivalTime: {
     type: Sequelize.DATE,
@@ -193,26 +189,26 @@ var Referral = sequelize.define("referral", {
   patientId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "patients", // Assuming patients are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "patients", // Assuming patients are stored in a table
+    //   key: "id",
+    // },
   },
   referredByDoctorId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "doctors", // Referring doctor
-      key: "id",
-    },
+    // references: {
+    //   model: "doctors", // Referring doctor
+    //   key: "id",
+    // },
   },
   referredToSpecialistId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "doctors", // Specialist doctor
-      key: "id",
-    },
+    // references: {
+    //   model: "doctors", // Specialist doctor
+    //   key: "id",
+    // },
   },
   reasonForReferral: {
     type: Sequelize.STRING,
@@ -221,10 +217,10 @@ var Referral = sequelize.define("referral", {
   specialistClinicId: {
     type: Sequelize.UUID,
     allowNull: true,
-    references: {
-      model: "clinics", // Assuming clinics are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "clinics", // Assuming clinics are stored in a table
+    //   key: "id",
+    // },
   },
   status: {
     type: Sequelize.ENUM("Pending", "Accepted", "Rejected", "Completed"),

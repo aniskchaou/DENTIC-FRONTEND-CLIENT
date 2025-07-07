@@ -18,26 +18,22 @@
 var Sequelize = require("sequelize");
 
 var DentalImaging = sequelize.define("dental_imaging", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "patients", // Assuming patients are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "patients", // Assuming patients are stored in a table
+    //   key: "id",
+    // },
   },
   doctorId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "users", // Assuming doctors are in the User table
-      key: "id",
-    },
+    // references: {
+    //   model: "users", // Assuming doctors are in the User table
+    //   key: "id",
+    // },
   },
   imageType: {
     type: Sequelize.ENUM("X-ray", "CT Scan", "Intraoral Photo"),

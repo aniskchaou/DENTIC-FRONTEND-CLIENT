@@ -156,11 +156,7 @@ module.exports = Diagnostic; */
 
 
 const Diagnosis = sequelize.define("diagnosis", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: DataTypes.UUID,
     allowNull: false,

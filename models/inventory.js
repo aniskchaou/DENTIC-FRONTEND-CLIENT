@@ -20,11 +20,7 @@
   var { Sequelize, DataTypes } = require('sequelize');
 
 const InventoryItem = sequelize.define("inventoryItem", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   name: {
     type: DataTypes.STRING,
     allowNull: false,

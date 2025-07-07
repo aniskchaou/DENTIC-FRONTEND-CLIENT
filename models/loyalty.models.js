@@ -28,48 +28,43 @@
   var { Sequelize, DataTypes } = require('sequelize');
 
 const LoyaltyProgram = sequelize.define("loyaltyProgram", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
   patientId: {
-    type: DataTypes.UUID,
+    type: DataTypes.STRING,
     allowNull: false,
     comment: "Reference to the patient in the loyalty program",
   },
   points: {
-    type: DataTypes.INTEGER,
-    defaultValue: 0,
+    type: DataTypes.STRING,
+    defaultValue: "0",
     allowNull: false,
     comment: "Total points earned by the patient in the loyalty program",
   },
   earnedFrom: {
-    type: DataTypes.JSONB,
+    type: DataTypes.TEXT, // Store JSON as string
     allowNull: false,
-    comment: "List of activities that earned the patient points (e.g., appointment, referral, review)",
+    comment: "List of activities that earned the patient points (JSON string)",
   },
   redeemedRewards: {
-    type: DataTypes.JSONB,
+    type: DataTypes.TEXT, // Store JSON as string
     allowNull: true,
-    comment: "List of rewards redeemed by the patient using loyalty points",
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-    comment: "Timestamp when the loyalty program entry was created",
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-    comment: "Timestamp when the loyalty program entry was last updated",
-  },
+    comment: "List of rewards redeemed by the patient using loyalty points (JSON string)",
+  }
 });
 
-/* // Define relationships with other models
-LoyaltyProgram.associate = models => {
-  // A loyalty program is associated with a patient
-  LoyaltyProgram.belongsTo(models.Patient, { foreignKey: "patientId" });
-}; */
 
-module.exports = LoyaltyProgram;
+/**
+ * Insert a real LoyaltyProgram record.
+ */
+async function insertRealLoyaltyProgram() {
+  const realData = {
+    patientId: "987e6543-e21b-12d3-a456-426614174999",
+    points: "150",
+    earnedFrom: '[{"activity":"Appointment","pointsEarned":"50","date":"2025-05-01T10:00:00.000Z"},{"activity":"Referral","pointsEarned":"100","date":"2025-05-10T15:30:00.000Z"}]',
+    redeemedRewards: '[{"rewardName":"Free Checkup","pointsUsed":"100","redeemedDate":"2025-05-15T09:00:00.000Z"}]'
+    // createdAt and updatedAt will be handled by Sequelize if timestamps are enabled
+  };
+
+  return await LoyaltyProgram.create(realData);
+}
+
+module.exports = { LoyaltyProgram };

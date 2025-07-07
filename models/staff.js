@@ -32,11 +32,7 @@
     var { Sequelize, DataTypes } = require('sequelize');
 
 const Staff = sequelize.define("staff", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   fullName: {
     type: DataTypes.STRING,
     allowNull: false,

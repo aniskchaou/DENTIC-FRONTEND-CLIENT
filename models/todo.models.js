@@ -7,10 +7,10 @@ var ToDo = sequelize.define('todo', {
     status: Sequelize.STRING,
       patient: {
             type: Sequelize.INTEGER,
-            references: {
-                model: 'patients',
-                key: 'id'
-            }
+            // references: {
+            //     model: 'patients',
+            //     key: 'id'
+            // }
         }
     // patientId: {  type: Sequelize.INTEGER,references: 'patients',  referencesKey: 'id' }
 });

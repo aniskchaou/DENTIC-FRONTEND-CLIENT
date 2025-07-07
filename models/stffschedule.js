@@ -18,11 +18,7 @@
 const sequelize = require("../config/database");
 
 const StaffSchedule = sequelize.define("staff_schedule", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   staffId: {
     type: DataTypes.UUID,
     allowNull: false,

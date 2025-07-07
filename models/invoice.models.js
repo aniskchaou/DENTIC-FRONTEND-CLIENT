@@ -55,11 +55,7 @@ var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
 const Invoice = sequelize.define("invoice", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   invoiceNumber: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -67,35 +63,35 @@ const Invoice = sequelize.define("invoice", {
   },
   patientId: {
     type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: "patients",
-      key: "id",
-    },
+    allowNull: false
+    // references: {
+    //   model: "patients",
+    //   key: "id",
+    // },
   },
   appointmentId: {
     type: DataTypes.UUID,
-    allowNull: true,
-    references: {
-      model: "appointments",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "appointments",
+    //   key: "id",
+    // },
   },
   doctorId: {
     type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: "doctors",
-      key: "id",
-    },
+    allowNull: false
+    // references: {
+    //   model: "doctors",
+    //   key: "id",
+    // },
   },
   clinicId: {
     type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: "clinics",
-      key: "id",
-    },
+    allowNull: false
+    // references: {
+    //   model: "clinics",
+    //   key: "id",
+    // },
   },
   items: {
     type: DataTypes.JSONB, // Store an array of objects for invoice items
@@ -133,11 +129,11 @@ const Invoice = sequelize.define("invoice", {
   },
   insuranceClaimId: {
     type: DataTypes.UUID,
-    allowNull: true,
-    references: {
-      model: "insurance_claims",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "insurance_claims",
+    //   key: "id",
+    // },
   },
   invoiceDate: {
     type: DataTypes.DATE,

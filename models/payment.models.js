@@ -36,11 +36,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 //const sequelize = require("../config/database");
 
 const Payment = sequelize.define("payment", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: DataTypes.UUID,
     allowNull: false,

@@ -69,42 +69,38 @@ module.exports = Consultation; */
 // var Sequelize = require("sequelize");
 
 var Consultation = sequelize.define("consultation", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   appointmentId: {
     type: Sequelize.UUID,
     allowNull: true,
-    references: {
-      model: "appointments", // Assuming appointments are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "appointments", // Assuming appointments are stored in a table
+    //   key: "id",
+    // },
   },
   patientId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "patients", // Assuming patients are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "patients", // Assuming patients are stored in a table
+    //   key: "id",
+    // },
   },
   doctorId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "users", // Assuming doctors are in the User table
-      key: "id",
-    },
+    // references: {
+    //   model: "users", // Assuming doctors are in the User table
+    //   key: "id",
+    // },
   },
   clinicId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "clinics", // Assuming clinics are in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "clinics", // Assuming clinics are in a table
+    //   key: "id",
+    // },
   },
   consultationDate: {
     type: Sequelize.DATE,

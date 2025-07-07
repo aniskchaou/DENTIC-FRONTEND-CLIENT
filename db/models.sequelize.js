@@ -33,9 +33,12 @@ var FooterSettings = require("../models/settings/footer.settings.models.js")
 var HeaderSettings = require("../models/settings/header.settings.models.js")
 var LocalisationSettings = require("../models/settings/localisation.settings.models.js")
 var NotificationSettings = require("../models/settings/notification.settings.models.js")
-var ServiceItem = require('../models/service.models')
-sequelize.sync().then(function () {
-    //User.create(seeds.userSeed);
+// var HomePage = require("../models/home.page.models.js")
+//var ServicePage = require("../models/service.page.models.js")       
+//var ServiceItem = require('../models/service.models') 
+
+sequelize.sync().then(async function () {
+
     DashboardSettings.create(seeds.getDashboardSettings())
     EmailSettings.create(seeds.getEmailSettings())
     FooterSettings.create(seeds.getFooterSettings())
@@ -43,6 +46,7 @@ sequelize.sync().then(function () {
     LocalisationSettings.create(seeds.getLocalisationSettings())
     NotificationSettings.create(seeds.getNotificationSettings())
     SystemSettings.create(seeds.getSytemSettings())
+    //Patient.insertPatients()
 
     /* Patient.create(seeds.patientSeed)
      Expense.create(seeds.expenseSeed)
@@ -62,12 +66,12 @@ sequelize.sync().then(function () {
      Certificate.create()
      CertificateTemplate.create()*/
     //  ServiceItem.bulkCreate(seeds.serviceSeed)
-    HomePage.create(seeds.homePageSeed)
-    ServicePage.create(seeds.servicePageSeed)
-    BlogPage.create(seeds.blogPageSeed)
-    OpeningHoursPage.create(seeds.schedulePageSeed)
-    ContactPage.create(seeds.contactPageSeed)
-    TestimonialsPage.create(seeds.testimonialsSeed)
+    // HomePage.create(seeds.homePageSeed)
+    // ServicePage.create(seeds.servicePageSeed)
+    // BlogPage.create(seeds.blogPageSeed)
+    // OpeningHoursPage.create(seeds.schedulePageSeed)
+    // ContactPage.create(seeds.contactPageSeed)
+    // TestimonialsPage.create(seeds.testimonialsSeed)
 
 }).then(function (res) {
     console.log(res);

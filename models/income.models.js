@@ -37,11 +37,7 @@ var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
 const Income = sequelize.define("income", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   incomeCategory: {
     type: Sequelize.ENUM(
       "Consultation Fees",
@@ -78,43 +74,43 @@ const Income = sequelize.define("income", {
   },
   patientId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "patients",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "patients",
+    //   key: "id",
+    // },
   },
   doctorId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "doctors",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "doctors",
+    //   key: "id",
+    // },
   },
   invoiceId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "invoices",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "invoices",
+    //   key: "id",
+    // },
   },
   insuranceClaimId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "insurance_claims",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "insurance_claims",
+    //   key: "id",
+    // },
   },
   clinicId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "clinics",
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "clinics",
+    //   key: "id",
+    // },
   },
   transactionDate: {
     type: Sequelize.DATE,

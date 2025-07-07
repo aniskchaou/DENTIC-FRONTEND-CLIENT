@@ -20,7 +20,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const username = req.query.username;
     var condition = username ? { username: { [Op.like]: `%${username}%` } } : null;
-    findAllUsers(condition)
+    findAllUsers(condition,res)
 };
 
 exports.findOne = (req, res) => {
@@ -44,12 +44,12 @@ exports.deleteAll = (req, res) => {
 
 exports.login = (req, res) => {
 
-    if (!req.body) {
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-        return;
-    }
+    // if (!req.body) {
+    //     res.status(400).send({
+    //         message: "Content can not be empty!"
+    //     });
+    //     return;
+    // }
     const user = {
         username: req.body.username,
         password: req.body.password,

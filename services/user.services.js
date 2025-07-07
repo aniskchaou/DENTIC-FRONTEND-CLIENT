@@ -1,15 +1,15 @@
-const config = require("../config/connection.server");
+const sequelize = require("../db/init.sequelize");
 const User = require("../models/user.models");
 
 
-exports.findAllUsers = (condition) => {
+exports.findAllUsers = (condition,res) => {
 
     User.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
-            res.status(500).send({
+            res.send({
                 message:
                     err.message || "Some error occurred while retrieving users."
             });
@@ -19,8 +19,6 @@ exports.loginUser = (username, password, res) => {
     User.findOne({ where: { username: username, password: password } })
         .then(data => {
 
-            config.user = data
-            console.log(config.user)
             if (data === null) {
                 res.send({});
             } else {
@@ -29,7 +27,7 @@ exports.loginUser = (username, password, res) => {
 
         })
         .catch(err => {
-            res.status(500).send({
+            res.send({
                 message:
                     err.message || "Some error occurred while creating the User."
             });

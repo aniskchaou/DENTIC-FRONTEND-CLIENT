@@ -1,258 +1,280 @@
-var express = require('express');
-var routerr = express.Router();
+const express = require("express");
+const router = express.Router();
 
-var userController = require('../controllers/api/user.controllers')
-var indexController = require('../controllers/home.controllers')
-var patientController = require('../controllers/api/patient.controllers')
-var appointementController = require('../controllers/api/appointement.controllers')
-var expenseController = require('../controllers/api/expense.controllers')
-var incomeController = require('../controllers/api/income.controllers')
-var paymentController = require('../controllers/api/payment.controllers')
-var medicamentController = require('../controllers/api/medicament.controllers')
-var preferenceController = require('../controllers/api/preference.controllers')
-var prescriptionController = require('../controllers/api/prescription.controllers')
-var labTestController = require('../controllers/api/labtest.controllers')
-var medicamentCategoryController = require('../controllers/api/medicament.category.controllers')
-var medicamentManufactureController = require('../controllers/api/medicament.manufacture.controllers')
-var messageController = require('../controllers/api/message.controllers')
-var invoiceController = require('../controllers/api/invoice.controllers')
-var noteController = require('../controllers/api/note.controllers')
-var toDoController = require('../controllers/api/todo.controllers')
-var certificateController = require('../controllers/api/certificate.controllers')
-var certificateTemplateController = require('../controllers/api/certificate.template.controllers')
-var settingsController = require('../controllers/api/settings.controllers')
-var serviceontroller = require('../controllers/api/service.controllers')
-var testimonialsController = require('../controllers/api/testimonials.controllers')
-var scheduleController = require('../controllers/api/schedule.controllers')
-var frontOfficeController = require('../controllers/front.office.controllers')
+// Controllers
+// User & Patient
+const userController = require("../controllers/api/user.controllers");
+const patientController = require("../controllers/api/patient.controllers");
 
+// Clinic & Staff
+const clinicController = require("../controllers/api/clinic.controllers");
+const staffController = require("../controllers/api/staff.controller");
+const staffScheduleController = require("../controllers/api/staff.controller");
 
-//settings
-routerr.get("/api/syssettings", settingsController.findSystemSettings);
-routerr.put("/api/edit/systemsettings/:id", settingsController.updateSystemSettings);
-routerr.get("/api/restore/syssettings/:id", settingsController.restoreSystemSettings);
-routerr.get("/api/dashboardsettings", settingsController.findDashboardSettings);
-routerr.put("/api/edit/dashboardsettings/:id", settingsController.updateDashboardSettings);
-routerr.get("/api/restore/dashboard/:id", settingsController.restoreDashboardSettings);
-routerr.get("/api/emailtemplatesettings", settingsController.findEmailTemplateSettings);
-routerr.get("/api/emailsettings", settingsController.findEmailSettings);
-routerr.put("/api/edit/emailsettings/:id", settingsController.updateEmailSettings);
-routerr.get("/api/footersettings", settingsController.findFooterSettings);
-routerr.put("/api/edit/footersettings/:id", settingsController.updateFooterSettings);
-routerr.get("/api/restore/footer/:id", settingsController.restoreFooterSettings);
-routerr.get("/api/headersettings", settingsController.findHeaderSettings);
-routerr.put("/api/edit/headersettings/:id", settingsController.updateHeaderSettings);
-routerr.get("/api/restore/header/:id", settingsController.restoreHeaderSettings);
-routerr.get("/api/localisationsettings", settingsController.findLocalisationSettings);
-routerr.put("/api/edit/localisationsettings/:id", settingsController.updateLocalisationSettings);
-routerr.get("/api/notificationsettings", settingsController.findNotificationSettings);
-routerr.put("/api/edit/notificationsettings/:id", settingsController.updateNotificationsSettings);
-routerr.get("/api/restore/localisationsettings/:id", settingsController.restoreLocalisationSettings);
+// Doctors
+const doctorController = require("../controllers/api/doctor.controller");
+//const doctorScheduleController = require("../controllers/api/doctorschedule.controller");
+//const doctorAvailabilityController = require("../controllers/api/doctoravailability.controller");
 
+// Appointments & Consultations
+const appointementController = require("../controllers/api/appointement.controllers");
+const consultationController = require("../controllers/api/consultation.controllers");
+//const consultationScheduleController = require("../controllers/api/consultationschedule.controller");
+//const consultationHistoryController = require("../controllers/api/consultationhistory.controller");
 
-routerr.get('/api/frontoffice/services', frontOfficeController.getServices)
-routerr.get('/api/frontoffice/openinghours', frontOfficeController.getOpeningHours)
-routerr.get('/api/frontoffice/homepage', frontOfficeController.getHomePage)
-routerr.get('/api/frontoffice/blogs', frontOfficeController.getBlogs)
-routerr.put("/api/frontoffice/services/:id", frontOfficeController.updateServices);
-routerr.put("/api/frontoffice/openinghours/:id", frontOfficeController.updateOpeningHours);
-routerr.put("/api/frontoffice/homepage/:id", frontOfficeController.updateHomePage);
-routerr.put("/api/frontoffice/blogs/:id", frontOfficeController.updateBlogs);
+// Diagnostics & Imaging
+const diagnosticController = require("../controllers/api/diagnosis.controller");
+const dentalimagingController = require("../controllers/api/dentalimaging.controller");
 
+// Treatment & Procedures
+const treatmentPlanController = require("../controllers/api/treatementplan.controller");
+const vrTreatmentController = require("../controllers/api/vrtreatement.controller");
+const procedureController = require("../controllers/api/procedure.controller");
+const operationController = require("../controllers/api/operation.controller");
+const medicationController = require("../controllers/api/medication.controller");
 
-//users
-routerr.post('/api/user', userController.create)
-routerr.get('/api/user', userController.findAll)
-routerr.get("/api/user/:id", userController.findOne);
-routerr.put("/api/user/:id", userController.update);
-routerr.delete("/api/user/:id", userController.delete);
-routerr.delete("/api/user", userController.deleteAll);
-routerr.post("/api/user/login", userController.login);
-//patient
-routerr.post('/api/patient', patientController.create)
-routerr.get('/api/patient', patientController.findAll)
-routerr.get('/api/patient/count', patientController.getCount)
-routerr.get("/api/patient/:id", patientController.findOne);
-routerr.put("/api/patient/:id", patientController.update);
-routerr.delete("/api/patient/:id", patientController.delete);
-routerr.delete("/api/patient", patientController.deleteAll);
-routerr.get('/api/search/patient/:patient', patientController.searchPatient)
-routerr.get('/api/analytics/patient', patientController.getPatientByDate)
+// Emergency
+/*
+const emergencyHandlingController = require("../controllers/api/emergencyhandling.controller");
+const emergencyCaseController = require("../controllers/api/emergencycase.controller");
+const emergencyReferralController = require("../controllers/api/emergencyreferral.controller");
 
-//appointement
-routerr.post('/api/appointement/create', appointementController.createAppointement)
-routerr.post('/api/appointement', appointementController.create)
-routerr.get('/api/appointement', appointementController.findAll)
-routerr.get('/api/appointement/count', appointementController.getCount)
-routerr.get("/api/appointement/:id", appointementController.findOne);
-routerr.put("/api/appointement/:id", appointementController.update);
-routerr.delete("/api/appointement/:id", appointementController.delete);
-routerr.delete("/api/appointement", appointementController.deleteAll);
+const emergencyCaseHistoryController = require("../controllers/api/emergencycasehistory.controller");
+const emergencyReferralHistoryController = require("../controllers/api/emergencyreferralhistory.controller");
+const emergencyHandlingHistoryController = require("../controllers/api/emergencyhandlinghistory.controller");
+
+const emergencyCaseReferralController = require("../controllers/api/emergencycasereferral.controller");
+const emergencyCaseHandlingController = require("../controllers/api/emergencycasehandling.controller");
+const emergencyReferralHandlingController = require("../controllers/api/emergencyreferralhandling.controller");
+
+const emergencyCaseReferralHistoryController = require("../controllers/api/emergencycasereferralhistory.controller");
+const emergencyCaseHandlingHistoryController = require("../controllers/api/emergencycasehandlinghistory.controller");
+*/
+
+// Insurance & Membership
+const insuranceController = require("../controllers/api/insurance.controller");
+const membershipController = require("../controllers/api/membership.controller");
+
+// Records & History
+const historyController = require("../controllers/api/history.controller");
+//const medicalRecordController = require("../controllers/api/medicalrecord.controller");
+
+// Miscellaneous
+const equipementController = require("../controllers/api/equipement.controller");
+const casestudyController = require("../controllers/api/casestudy.controller");
+const legalController = require("../controllers/api/legal.controller");
+const loyaltyController = require("../controllers/api/loyalty.controller");
+const marketingController = require("../controllers/api/marketing.controller");
+const treatementplanController = require("../controllers/api/treatementplan.controller");
+const vrtreatementController = require("../controllers/api/vrtreatement.controller");
 
 
-//expense
-routerr.post('/api/expense', expenseController.create)
-routerr.get('/api/expense', expenseController.findAll)
-routerr.get("/api/expense/:id", expenseController.findOne);
-routerr.put("/api/expense/:id", expenseController.update);
-routerr.delete("/api/expense/:id", expenseController.delete);
-routerr.delete("/api/expense", expenseController.deleteAll);
+// Staff Schedule routes
+router.post("/staffschedule", staffScheduleController.create);   
+router.get("/staffschedule", staffScheduleController.findAll);
+router.get("/staffschedule/:id", staffScheduleController.findOne);
+router.put("/staffschedule/:id", staffScheduleController.update);   
+router.delete("/staffschedule/:id", staffScheduleController.delete);
+router.delete("/staffschedule", staffScheduleController.deleteAll);
 
+// patient routes
+router.post("/patients", patientController.create);
+router.get("/patients", patientController.findAll);
+router.get("/patients/:id", patientController.findOne);
+router.put("/patients/:id", patientController.update);
+router.delete("/patients/:id", patientController.delete);
+router.delete("/patients", patientController.deleteAll);
 
-//income
-routerr.post('/api/income', incomeController.create)
-routerr.get('/api/income', incomeController.findAll)
-routerr.get("/api/income/:id", incomeController.findOne);
-routerr.put("/api/income/:id", incomeController.update);
-routerr.delete("/api/income/:id", incomeController.delete);
-routerr.delete("/api/income", incomeController.deleteAll);
+// Emergency routes
+const emergencyController = require("../controllers/api/emergency.controller");
 
+// User routes
+router.post("/users", userController.create);
+router.get("/users", userController.findAll);
+router.get("/users/:id", userController.findOne);
+router.put("/users/:id", userController.update);
+router.delete("/users/:id", userController.delete);
+router.delete("/users", userController.deleteAll);
+router.post("/api/user/login", userController.login);
 
-//medicament
-routerr.post('/api/medicament', medicamentController.create)
-routerr.get('/api/medicament', medicamentController.findAll)
-routerr.get('/api/medicament/count', medicamentController.getCount)
-routerr.get("/api/medicament/:id", medicamentController.findOne);
-routerr.put("/api/medicament/:id", medicamentController.update);
-routerr.delete("/api/medicament/:id", medicamentController.delete);
-routerr.delete("/api/medicament", medicamentController.deleteAll);
-routerr.get('/api/analytics/medicament', medicamentController.getMedicamentByDate)
+// Appointment/Event routes
+router.get("/appointments/count", appointementController.getCount);
+router.post("/appointments", appointementController.createAppointement);
+router.post("/events", appointementController.create);
+router.get("/events", appointementController.findAll);
+router.get("/events/:id", appointementController.findOne);
+router.put("/events/:id", appointementController.update);
+router.delete("/events/:id", appointementController.delete);
+router.delete("/events", appointementController.deleteAll);
 
-//payment
-routerr.post('/api/payment', paymentController.create)
-routerr.get('/api/payment', paymentController.findAll)
-routerr.get("/api/payment/:id", paymentController.findOne);
-routerr.put("/api/payment/:id", paymentController.update);
-routerr.delete("/api/payment/:id", paymentController.delete);
-routerr.delete("/api/payment", paymentController.deleteAll);
+// Clinic routes
+router.post("/clinics", clinicController.create);
+router.get("/clinics", clinicController.findAll);
+router.get("/clinics/:id", clinicController.findOne);
+router.put("/clinics/:id", clinicController.update);
+router.delete("/clinics/:id", clinicController.delete);
+router.delete("/clinics", clinicController.deleteAll);
 
-//preference
-routerr.post('/api/preference', preferenceController.create)
-routerr.get('/api/preference', preferenceController.findAll)
-routerr.get("/api/preference/:id", preferenceController.findOne);
-routerr.put("/api/preference/:id", preferenceController.update);
-routerr.delete("/api/preference/:id", preferenceController.delete);
-routerr.delete("/api/preference", preferenceController.deleteAll);
+// Doctor routes
+router.post("/doctors", doctorController.create);
+router.get("/doctors", doctorController.findAll);
+router.get("/doctors/:id", doctorController.findOne);
+router.put("/doctors/:id", doctorController.update);
+router.delete("/doctors/:id", doctorController.delete);
+router.delete("/doctors", doctorController.deleteAll);
 
-//prescription
-routerr.post('/api/prescription/medicament', prescriptionController.createMedicamentItem)
-routerr.post('/api/prescription', prescriptionController.create)
-routerr.get('/api/prescription', prescriptionController.findAll)
-routerr.get("/api/prescription/:id", prescriptionController.findOne);
-routerr.put("/api/prescription/:id", prescriptionController.update);
-routerr.delete("/api/prescription/:id", prescriptionController.delete);
-routerr.delete("/api/prescription", prescriptionController.deleteAll);
-routerr.get('/api/prescription/medicament/:id', prescriptionController.findAllMedicamentPrescriptions)
-routerr.delete("/api/prescription/medicament/:id", prescriptionController.deleteMedicament);
-//Home
-routerr.get('/about', indexController.getAbout)
-routerr.get('/blog', indexController.getBlog)
-routerr.get('/contact', indexController.getContact)
-routerr.get('/elements', indexController.getElements)
-routerr.get('/', indexController.getHome)
-routerr.get('/opening', indexController.getOpeningHours)
-routerr.get('/pricing', indexController.getPricing)
-routerr.get('/services', indexController.getServices)
-routerr.get('/admin', frontOfficeController.adminPanel)
-//LabTest
-routerr.post('/api/labtest', labTestController.create)
-routerr.get('/api/labtest', labTestController.findAll)
-routerr.get("/api/labtest/:id", labTestController.findOne);
-routerr.put("/api/labtest/:id", labTestController.update);
-routerr.delete("/api/labtest/:id", labTestController.delete);
-routerr.delete("/api/labtest", labTestController.deleteAll);
+// Staff routes
+router.post("/staff", staffController.create);
+router.get("/staff", staffController.findAll);
+router.get("/staff/:id", staffController.findOne);
+router.put("/staff/:id", staffController.update);
+router.delete("/staff/:id", staffController.delete);
+router.delete("/staff", staffController.deleteAll);
 
+// Equipment routes
+router.post("/equipments", equipementController.create);
+router.get("/equipments", equipementController.findAll);
+router.get("/equipments/:id", equipementController.findOne);
+router.put("/equipments/:id", equipementController.update);
+router.delete("/equipments/:id", equipementController.delete);
+router.delete("/equipments", equipementController.deleteAll);
 
-//Medicament manufacture
-routerr.post('/api/medicamentmanufacture', medicamentManufactureController.create)
-routerr.get('/api/medicamentmanufacture', medicamentManufactureController.findAll)
-routerr.get("/api/medicamentmanufacture/:id", medicamentManufactureController.findOne);
-routerr.put("/api/medicamentmanufacture/:id", medicamentManufactureController.update);
-routerr.delete("/api/medicamentmanufacture/:id", medicamentManufactureController.delete);
-routerr.delete("/api/medicamentmanufacture", medicamentManufactureController.deleteAll);
+// Consultation routes
+router.post("/consultations", consultationController.create);
+router.get("/consultations", consultationController.findAll);
+router.get("/consultations/:id", consultationController.findOne);
+router.put("/consultations/:id", consultationController.update);
+router.delete("/consultations/:id", consultationController.delete);
+router.delete("/consultations", consultationController.deleteAll);
 
+// Diagnostic routes
+router.post("/diagnostics", diagnosticController.create);
+router.get("/diagnostics", diagnosticController.findAll);
+router.get("/diagnostics/:id", diagnosticController.findOne);
+router.put("/diagnostics/:id", diagnosticController.update);
+router.delete("/diagnostics/:id", diagnosticController.delete);
+router.delete("/diagnostics", diagnosticController.deleteAll);
 
-//Medicament Category
-routerr.post('/api/medicamentcategory', medicamentCategoryController.create)
-routerr.get('/api/medicamentcategory', medicamentCategoryController.findAll)
-routerr.get("/api/medicamentcategory/:id", medicamentCategoryController.findOne);
-routerr.put("/api/medicamentcategory/:id", medicamentCategoryController.update);
-routerr.delete("/api/medicamentcategory/:id", medicamentCategoryController.delete);
-routerr.delete("/api/medicamentcategory", medicamentCategoryController.deleteAll);
+// Medication routes
+router.post("/medications", medicationController.create);
+router.get("/medications", medicationController.findAll);
+router.get("/medications/:id", medicationController.findOne);
+router.put("/medications/:id", medicationController.update);
+router.delete("/medications/:id", medicationController.delete);
+router.delete("/medications", medicationController.deleteAll);
 
-//Invoice
-routerr.post('/api/invoice', invoiceController.create)
-routerr.get('/api/invoice', invoiceController.findAll)
-routerr.get("/api/invoice/:id", invoiceController.findOne);
-routerr.put("/api/invoice/:id", invoiceController.update);
-routerr.delete("/api/invoice/:id", invoiceController.delete);
-routerr.delete("/api/invoice", invoiceController.deleteAll);
+// Procedure routes
+router.post("/procedures", procedureController.create);
+router.get("/procedures", procedureController.findAll);
+router.get("/procedures/:id", procedureController.findOne);
+router.put("/procedures/:id", procedureController.update);
+router.delete("/procedures/:id", procedureController.delete);
+router.delete("/procedures", procedureController.deleteAll);
 
+// Operation routes
+router.post("/operations", operationController.create);
+router.get("/operations", operationController.findAll);
+router.get("/operations/:id", operationController.findOne);
+router.put("/operations/:id", operationController.update);
+router.delete("/operations/:id", operationController.delete);
+router.delete("/operations", operationController.deleteAll);
 
-//ToDo
-routerr.post('/api/todo', toDoController.create)
-routerr.get('/api/todo', toDoController.findAll)
-routerr.get("/api/todo/:id", toDoController.findOne);
-routerr.put("/api/todo/:id", toDoController.update);
-routerr.delete("/api/todo/:id", toDoController.delete);
-routerr.delete("/api/todo", toDoController.deleteAll);
+// Treatment Plan routes
+router.post("/treatmentplans", treatementplanController.create);
+router.get("/treatmentplans", treatementplanController.findAll);
+router.get("/treatmentplans/:id", treatementplanController.findOne);
+router.put("/treatmentplans/:id", treatementplanController.update);
+router.delete("/treatmentplans/:id", treatementplanController.delete);
+router.delete("/treatmentplans", treatementplanController.deleteAll);
 
+// VR Treatment routes
+router.post("/vrtreatments", vrtreatementController.create);
+router.get("/vrtreatments", vrtreatementController.findAll);
+router.get("/vrtreatments/:id", vrtreatementController.findOne);
+router.put("/vrtreatments/:id", vrtreatementController.update);
+router.delete("/vrtreatments/:id", vrtreatementController.delete);
+router.delete("/vrtreatments", vrtreatementController.deleteAll);
 
-//Message
-routerr.post('/api/frontend/sendmessage', messageController.create)
-routerr.get('/api/message', messageController.findAll)
-routerr.get("/api/message/:id", messageController.findOne);
-routerr.put("/api/message/:id", messageController.update);
-routerr.delete("/api/message/:id", messageController.delete);
-routerr.delete("/api/message", messageController.deleteAll);
-routerr.get('/api/count/message', messageController.getCount)
+// Dental Imaging routes
+router.post("/dentalimaging", dentalimagingController.create);
+router.get("/dentalimaging", dentalimagingController.findAll);
+router.get("/dentalimaging/:id", dentalimagingController.findOne);
+router.put("/dentalimaging/:id", dentalimagingController.update);
+router.delete("/dentalimaging/:id", dentalimagingController.delete);
+router.delete("/dentalimaging", dentalimagingController.deleteAll);
 
-//Note
-routerr.post('/api/note', noteController.create)
-routerr.get('/api/note', noteController.findAll)
-routerr.get("/api/note/:id", noteController.findOne);
-routerr.put("/api/note/:id", noteController.update);
-routerr.delete("/api/note/:id", noteController.delete);
-routerr.delete("/api/note", noteController.deleteAll);
+// Insurance routes
+router.post("/insurances", insuranceController.create);
+router.get("/insurances", insuranceController.findAll);
+router.get("/insurances/:id", insuranceController.findOne);
+router.put("/insurances/:id", insuranceController.update);
+router.delete("/insurances/:id", insuranceController.delete);
+router.delete("/insurances", insuranceController.deleteAll);
 
-//certificate
-routerr.post('/api/certificate', certificateController.create)
-routerr.get('/api/certificate', certificateController.findAll)
-routerr.get('/api/certificate/count', certificateController.getCount)
-routerr.get("/api/certificate/:id", certificateController.findOne);
-routerr.put("/api/certificate/:id", certificateController.update);
-routerr.delete("/api/certificate/:id", certificateController.delete);
-routerr.delete("/api/certificate", certificateController.deleteAll);
-routerr.get("/api/certificate/:patient/:template", certificateController.filterCertificate);
+// Membership routes
+router.post("/memberships", membershipController.create);
+router.get("/memberships", membershipController.findAll);
+router.get("/memberships/:id", membershipController.findOne);
+router.put("/memberships/:id", membershipController.update);
+router.delete("/memberships/:id", membershipController.delete);
+router.delete("/memberships", membershipController.deleteAll);
 
-routerr.post('/api/certificatetemplate', certificateTemplateController.create)
-routerr.get('/api/certificatetemplate', certificateTemplateController.findAll)
-routerr.get("/api/certificatetemplate/:id", certificateTemplateController.findOne);
-routerr.put("/api/certificatetemplate/:id", certificateTemplateController.update);
-routerr.delete("/api/certificatetemplate/:id", certificateTemplateController.delete);
-routerr.delete("/api/certificatetemplate", certificateTemplateController.deleteAll);
+// Case Study routes
+router.post("/casestudies", casestudyController.create);
+router.get("/casestudies", casestudyController.findAll);
+router.get("/casestudies/:id", casestudyController.findOne);
+router.put("/casestudies/:id", casestudyController.update);
+router.delete("/casestudies/:id", casestudyController.delete);
+router.delete("/casestudies", casestudyController.deleteAll);
 
+// Legal Compliance routes
+router.post("/legal", legalController.create);
+router.get("/legal", legalController.findAll);
+router.get("/legal/:id", legalController.findOne);
+router.put("/legal/:id", legalController.update);
+router.delete("/legal/:id", legalController.delete);
+router.delete("/legal", legalController.deleteAll);
 
-routerr.post('/api/service/:filename', serviceontroller.create)
-routerr.post('/api/service/image/uploadfile', serviceontroller.addImage)
-routerr.get('/api/service', serviceontroller.findAll)
-routerr.get("/api/service/:id", serviceontroller.findOne);
-routerr.put("/api/service/:id", serviceontroller.update);
-routerr.delete("/api/service/:id", serviceontroller.delete);
-routerr.delete("/api/service", serviceontroller.deleteAll);
+// Loyalty Program routes
+router.post("/loyalty", loyaltyController.create);
+router.get("/loyalty", loyaltyController.findAll);
+router.get("/loyalty/:id", loyaltyController.findOne);
+router.put("/loyalty/:id", loyaltyController.update);
+router.delete("/loyalty/:id", loyaltyController.delete);
+router.delete("/loyalty", loyaltyController.deleteAll);
 
+// Marketing Campaign routes
+router.post("/marketing", marketingController.create);
+router.get("/marketing", marketingController.findAll);
+router.get("/marketing/:id", marketingController.findOne);
+router.put("/marketing/:id", marketingController.update);
+router.delete("/marketing/:id", marketingController.delete);
+router.delete("/marketing", marketingController.deleteAll);
 
-routerr.post('/api/testimonials', testimonialsController.create)
-routerr.get('/api/testimonials', testimonialsController.findAll)
-routerr.get("/api/testimonials/:id", testimonialsController.findOne);
-routerr.put("/api/testimonials/:id", testimonialsController.update);
-routerr.delete("/api/testimonials/:id", testimonialsController.delete);
-routerr.delete("/api/testimonials", testimonialsController.deleteAll);
+// History routes
+router.delete("/history/:id", historyController.delete);
+router.delete("/history", historyController.deleteAll);
 
-routerr.post('/api/schedule', scheduleController.create)
-routerr.get('/api/schedule', scheduleController.findAll)
-routerr.get("/api/schedule/:id", scheduleController.findOne);
-routerr.put("/api/schedule/:id", scheduleController.update);
-routerr.delete("/api/schedule/:id", scheduleController.delete);
-routerr.delete("/api/schedule", scheduleController.deleteAll);
-module.exports = routerr;
+// Emergency routes
+router.post("/emergency/handling", emergencyController.createHandling);
+router.get("/emergency/handling", emergencyController.findAllHandlings);
+router.get("/emergency/handling/:id", emergencyController.findHandling);
+router.put("/emergency/handling/:id", emergencyController.updateHandling);
+router.delete("/emergency/handling/:id", emergencyController.deleteHandling);
+router.delete("/emergency/handling", emergencyController.deleteAllHandlings);
+
+router.post("/emergency/case", emergencyController.createCase);
+router.get("/emergency/case", emergencyController.findAllCases);
+router.get("/emergency/case/:id", emergencyController.findCase);
+router.put("/emergency/case/:id", emergencyController.updateCase);
+router.delete("/emergency/case/:id", emergencyController.deleteCase);
+router.delete("/emergency/case", emergencyController.deleteAllCases);
+
+router.post("/emergency/referral", emergencyController.createReferral);
+router.get("/emergency/referral", emergencyController.findAllReferrals);
+router.get("/emergency/referral/:id", emergencyController.findReferral);
+router.put("/emergency/referral/:id", emergencyController.updateReferral);
+router.delete("/emergency/referral/:id", emergencyController.deleteReferral);
+router.delete("/emergency/referral", emergencyController.deleteAllReferrals);
+
+module.exports = router;

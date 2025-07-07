@@ -3,11 +3,7 @@ var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
 const TreatmentPlan = sequelize.define("treatment_plan", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -46,7 +42,7 @@ const TreatmentPlan = sequelize.define("treatment_plan", {
 module.exports = TreatmentPlan;
 
 const { v4: uuidv4 } = require("uuid");
-const VRTreatmentSimulation = require("./models/VRTreatmentSimulation");
+//const VRTreatmentSimulation = require("./models/VRTreatmentSimulation");
 
 async function insertManualData() {
   try {
@@ -154,7 +150,7 @@ async function insertManualData() {
       // Add 10 more records here
     ];
 
-    await VRTreatmentSimulation.bulkCreate(data);
+   // await VRTreatmentSimulation.bulkCreate(data);
     console.log("✅ 20 manual records inserted successfully.");
   } catch (error) {
     console.error("❌ Error inserting manual data:", error);

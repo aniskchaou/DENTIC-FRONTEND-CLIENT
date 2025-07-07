@@ -3,11 +3,7 @@ var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
 const Procedure = sequelize.define("procedure", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   treatmentPlanId: {
     type: DataTypes.UUID,
     allowNull: true,

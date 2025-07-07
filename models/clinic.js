@@ -30,11 +30,7 @@
   var Sequelize = require("sequelize");
   
   var Clinic = sequelize.define("clinic", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+ 
     name: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -67,9 +63,9 @@
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
-      validate: {
-        isEmail: true,
-      },
+      // validate: {
+      //   isEmail: true,
+      // },
     },
     workingHours: {
       type: Sequelize.JSONB, // Storing working hours as a JSON object
@@ -78,10 +74,10 @@
     doctorsAvailable: {
       type: Sequelize.ARRAY(Sequelize.UUID), // Storing an array of doctor IDs
       allowNull: true,
-      references: {
-        model: "users", // Assuming doctors are in the User table
-        key: "id",
-      },
+      // references: {
+      //   model: "users", // Assuming doctors are in the User table
+      //   key: "id",
+      // },
     },
     createdAt: {
       type: Sequelize.DATE,

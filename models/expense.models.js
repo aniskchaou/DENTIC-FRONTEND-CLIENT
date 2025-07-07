@@ -34,11 +34,7 @@ module.exports = Expense; */
 // var Sequelize = require("sequelize");
 
 var Expense = sequelize.define("expense", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+ 
   expenseCategory: {
     type: Sequelize.ENUM(
       "Rent",
@@ -72,11 +68,11 @@ var Expense = sequelize.define("expense", {
   },
   vendorId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "vendors", // Assuming you have a vendors table
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "vendors", // Assuming you have a vendors table
+    //   key: "id",
+    // },
   },
   vendorName: {
     type: Sequelize.STRING,
@@ -85,19 +81,19 @@ var Expense = sequelize.define("expense", {
   },
   invoiceId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "invoices", // Assuming you have an invoices table
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "invoices", // Assuming you have an invoices table
+    //   key: "id",
+    // },
   },
   clinicId: {
     type: Sequelize.UUID,
-    allowNull: true,
-    references: {
-      model: "clinics", // Assuming you have a clinics table
-      key: "id",
-    },
+    allowNull: true
+    // references: {
+    //   model: "clinics", // Assuming you have a clinics table
+    //   key: "id",
+    // },
   },
   transactionDate: {
     type: Sequelize.DATE,

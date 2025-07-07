@@ -25,11 +25,7 @@
     var Sequelize = require("sequelize");
     
     var Analytics = sequelize.define("analytics", {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        primaryKey: true,
-      },
+
       reportType: {
         type: Sequelize.ENUM(
           "Patient Trends",

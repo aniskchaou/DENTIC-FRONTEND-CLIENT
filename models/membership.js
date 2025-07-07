@@ -28,11 +28,7 @@
   var { Sequelize, DataTypes } = require('sequelize');
 
 const DentalMembership = sequelize.define("dentalMembership", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: DataTypes.UUID,
     allowNull: false,

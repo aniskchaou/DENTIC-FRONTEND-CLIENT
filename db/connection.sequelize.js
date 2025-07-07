@@ -16,7 +16,7 @@ module.exports = {
 };
 */
 module.exports = {
-    HOST: "127.0.0.1",
+    HOST: "localhost",
     USER: "postgres",
     PASSWORD: "admin",
     DB: "dentic",

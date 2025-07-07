@@ -42,11 +42,7 @@ var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require("sequelize");
 
 var Certificate = sequelize.define("certificate", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   certificateNumber: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -54,27 +50,15 @@ var Certificate = sequelize.define("certificate", {
   },
   patientId: {
     type: Sequelize.UUID,
-    allowNull: false,
-    references: {
-      model: "patients", // Assuming patients are stored in the "patients" table
-      key: "id",
-    },
+    allowNull: false
   },
   doctorId: {
     type: Sequelize.UUID,
-    allowNull: false,
-    references: {
-      model: "users", // Assuming doctors are stored in the "users" table
-      key: "id",
-    },
+    allowNull: false
   },
   clinicId: {
     type: Sequelize.UUID,
-    allowNull: false,
-    references: {
-      model: "clinics", // Assuming clinics are stored in a "clinics" table
-      key: "id",
-    },
+    allowNull: false
   },
   certificateType: {
     type: Sequelize.ENUM(

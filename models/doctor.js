@@ -31,18 +31,14 @@ var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
     
     var Doctor = sequelize.define("doctor", {
-      id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        primaryKey: true,
-      },
+
       userId: {
         type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "users", // Assuming the doctor is linked to a user account
-          key: "id",
-        },
+        // references: {
+        //   model: "users", // Assuming the doctor is linked to a user account
+        //   key: "id",
+        // },
       },
       licenseNumber: {
         type: Sequelize.STRING,

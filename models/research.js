@@ -19,11 +19,7 @@
     var { Sequelize, DataTypes } = require('sequelize');
 
 const CaseStudy = sequelize.define("caseStudy", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: DataTypes.UUID,
     allowNull: false,

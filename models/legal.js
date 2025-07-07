@@ -17,18 +17,14 @@
   var { Sequelize, DataTypes } = require('sequelize');
 
 const LegalCompliance = sequelize.define("legalCompliance", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   patientId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: "patients",
-      key: "id",
-    },
+    // references: {
+    //   model: "patients",
+    //   key: "id",
+    // },
   },
   documentType: {
     type: DataTypes.ENUM("Consent Form", "GDPR Agreement", "HIPAA Agreement"),

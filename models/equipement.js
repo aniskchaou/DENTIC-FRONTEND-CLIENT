@@ -21,18 +21,14 @@
 var Sequelize = require("sequelize");
 
 var EquipmentMaintenance = sequelize.define("equipment_maintenance", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
+
   clinicId: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "clinics", // Assuming clinics are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "clinics", // Assuming clinics are stored in a table
+    //   key: "id",
+    // },
   },
   equipmentName: {
     type: Sequelize.STRING,
@@ -66,10 +62,10 @@ var EquipmentMaintenance = sequelize.define("equipment_maintenance", {
   assignedTechnician: {
     type: Sequelize.UUID,
     allowNull: false,
-    references: {
-      model: "technicians", // Assuming technicians are stored in a table
-      key: "id",
-    },
+    // references: {
+    //   model: "technicians", // Assuming technicians are stored in a table
+    //   key: "id",
+    // },
   },
   maintenanceNotes: {
     type: Sequelize.TEXT,

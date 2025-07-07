@@ -74,11 +74,7 @@
   var sequelize = require("../db/init.sequelize.js");
   var { Sequelize, DataTypes } = require('sequelize');
   var AIFeatures = sequelize.define("ai_features", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+
     featureType: {
       type: Sequelize.ENUM("AI Chatbot", "Treatment Recommendation", "Predictive Analytics", "Voice-to-Text Notes"),
       allowNull: false,
@@ -109,26 +105,14 @@
   module.exports = AIFeatures;
 
   var AITreatmentRecommendation = sequelize.define("ai_treatment_recommendation", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+
     patientId: {
       type: Sequelize.UUID,
-      allowNull: false,
-      references: {
-        model: "patients",
-        key: "id",
-      },
+      allowNull: false
     },
     doctorId: {
       type: Sequelize.UUID,
-      allowNull: false,
-      references: {
-        model: "doctors",
-        key: "id",
-      },
+      allowNull: false
     },
     symptoms: {
       type: Sequelize.ARRAY(Sequelize.STRING),
@@ -163,34 +147,18 @@
   module.exports = AITreatmentRecommendation;
 
   var Referral = sequelize.define("referral", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+ 
     patientId: {
       type: Sequelize.UUID,
-      allowNull: false,
-      references: {
-        model: "patients",
-        key: "id",
-      },
+      allowNull: false
     },
     referredByDoctorId: {
       type: Sequelize.UUID,
-      allowNull: false,
-      references: {
-        model: "doctors",
-        key: "id",
-      },
+      allowNull: false
     },
     referredToSpecialistId: {
       type: Sequelize.UUID,
-      allowNull: false,
-      references: {
-        model: "doctors",
-        key: "id",
-      },
+      allowNull: false
     },
     reasonForReferral: {
       type: Sequelize.STRING,
@@ -198,11 +166,7 @@
     },
     specialistClinicId: {
       type: Sequelize.UUID,
-      allowNull: true,
-      references: {
-        model: "clinics",
-        key: "id",
-      },
+      allowNull: true
     },
     status: {
       type: Sequelize.ENUM("Pending", "Accepted", "Rejected", "Completed"),
@@ -229,18 +193,10 @@
   module.exports = Referral;
 
   var AIPredictiveAnalytics = sequelize.define("ai_predictive_analytics", {
-    id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      primaryKey: true,
-    },
+ 
     clinicId: {
       type: Sequelize.UUID,
-      allowNull: false,
-      references: {
-        model: "clinics",
-        key: "id",
-      },
+      allowNull: false
     },
     predictionType: {
       type: Sequelize.ENUM("Appointment Demand", "Common Procedures", "Revenue Forecast", "Patient Retention"),
@@ -272,11 +228,11 @@
     },
     reviewedBy: {
       type: Sequelize.UUID,
-      allowNull: true,
-      references: {
-        model: "users",
-        key: "id",
-      },
+      allowNull: true
+      // references: {
+      //   model: "users",
+      //   key: "id",
+      // },
     },
     updatedAt: {
       type: Sequelize.DATE,

@@ -1,4 +1,4 @@
-const Patient = require("../models/patient.models");
+const {Patient} = require("../models/patient.models");
 
 exports.getCount = (req, res) => {
     Patient.count()

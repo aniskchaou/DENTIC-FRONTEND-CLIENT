@@ -26,11 +26,6 @@
     var { Sequelize, DataTypes } = require('sequelize');
 
 const MarketingCRM = sequelize.define("marketingCRM", {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
   campaignName: {
     type: DataTypes.STRING,
     allowNull: false,

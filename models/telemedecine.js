@@ -57,11 +57,7 @@
     var { Sequelize, DataTypes } = require('sequelize');
     
     const Telemedicine = sequelize.define("telemedicine", {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        primaryKey: true,
-      },
+
       patientId: {
         type: DataTypes.UUID,
         allowNull: false,

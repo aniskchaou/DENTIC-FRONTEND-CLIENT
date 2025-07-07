@@ -1,107 +1,80 @@
-
-
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
-/* var Appointement = sequelize.define('appointement', {
-    birthdate: Sequelize.STRING,
-    message: Sequelize.STRING,
-    patient: Sequelize.STRING,
-    telephone: Sequelize.STRING,
-    datee: Sequelize.STRING,
-    email: Sequelize.STRING
-});
-
-{
-    "Appointment": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Doctor)",
-      "clinicLocationId": "UUID (Ref to Clinic)",
-      "appointmentDate": "date",
-      "startTime": "HH:mm",
-      "endTime": "HH:mm",
-      "status": "Scheduled | Completed | Canceled | Rescheduled | No-Show",
-      "appointmentType": "In-Person | Virtual",
-      "reasonForVisit": "string",
-      "notes": "string",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Appointement; */
-
-// var sequelize = require("../db/init.sequelize.js");
-// var Sequelize = require("sequelize");
-
 var Appointment = sequelize.define("appointment", {
-  id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
-    primaryKey: true,
-  },
   patientId: {
-    type: Sequelize.UUID,
+    type: DataTypes.STRING,
     allowNull: false,
-    /* references: {
-      model: "patients", // Assuming patients are stored in a table
-      key: "id",
-    }, */
   },
   doctorId: {
-    type: Sequelize.UUID,
+    type: DataTypes.STRING,
     allowNull: false,
-   /*  references: {
-      model: "users", // Assuming doctors are in the User table
-      key: "id",
-    }, */
   },
   clinicLocationId: {
-    type: Sequelize.UUID,
+    type: DataTypes.STRING,
     allowNull: false,
-    /* references: {
-      model: "clinics", // Assuming clinics are in a table
-      key: "id",
-    }, */
   },
   appointmentDate: {
-    type: Sequelize.DATEONLY, // Only stores date (YYYY-MM-DD)
+    type: DataTypes.STRING, // Store as string (YYYY-MM-DD)
     allowNull: false,
   },
   startTime: {
-    type: Sequelize.TIME, // Stores time in HH:mm format
+    type: DataTypes.STRING, // Store as string (HH:mm)
     allowNull: false,
   },
   endTime: {
-    type: Sequelize.TIME,
+    type: DataTypes.STRING, // Store as string (HH:mm)
     allowNull: false,
   },
   status: {
-    type: Sequelize.ENUM("Scheduled", "Completed", "Canceled", "Rescheduled", "No-Show"),
+    type: DataTypes.STRING, // Store as string
     allowNull: false,
     defaultValue: "Scheduled",
   },
   appointmentType: {
-    type: Sequelize.ENUM("In-Person", "Virtual"),
+    type: DataTypes.STRING, // Store as string
     allowNull: false,
   },
   reasonForVisit: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   notes: {
-    type: Sequelize.TEXT, // Additional details or patient history
+    type: DataTypes.STRING, // Store as string
     allowNull: true,
   },
   createdAt: {
-    type: Sequelize.DATE,
-    defaultValue: Sequelize.NOW,
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: () => new Date().toISOString(),
   },
   updatedAt: {
-    type: Sequelize.DATE,
-    defaultValue: Sequelize.NOW,
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: () => new Date().toISOString(),
   },
 });
 
-module.exports = Appointment;
+/**
+ * Insert a real Appointment record with all fields as strings.
+ */
+async function insertRealAppointment() {
+  const realData = {
+    patientId: "p1234567-89ab-cdef-0123-456789abcdef",
+    doctorId: "d1234567-89ab-cdef-0123-456789abcdef",
+    clinicLocationId: "c1234567-89ab-cdef-0123-456789abcdef",
+    appointmentDate: "2025-06-01",
+    startTime: "09:00",
+    endTime: "09:30",
+    status: "Scheduled",
+    appointmentType: "In-Person",
+    reasonForVisit: "Routine dental checkup",
+    notes: "Patient prefers morning appointments.",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  return await Appointment.create(realData);
+}
+
+module.exports = { Appointment, insertRealAppointment };
