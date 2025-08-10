@@ -1,4 +1,3 @@
-
 var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require('sequelize');
 /* 
@@ -177,4 +176,73 @@ var Consultation = sequelize.define("consultation", {
   },
 });
 
+/**
+ * Insert dummy consultations for testing/demo purposes.
+ */
+Consultation.insertDummyConsultations = async function() {
+  const dummyConsultations = [
+    {
+      appointmentId: "11111111-aaaa-bbbb-cccc-111111111111",
+      patientId: "22222222-bbbb-cccc-dddd-222222222222",
+      doctorId: "33333333-cccc-dddd-eeee-333333333333",
+      clinicId: "44444444-dddd-eeee-ffff-444444444444",
+      consultationDate: new Date("2025-07-01T10:00:00Z"),
+      consultationType: "In-Person",
+      reasonForVisit: "Toothache and swelling",
+      symptoms: ["Toothache", "Swelling", "Fever"],
+      diagnosis: { diagnosisId: "55555555-eeee-ffff-aaaa-555555555555", diagnosisName: "Dental Abscess" },
+      prescribedMedications: [
+        {
+          medicamentId: "66666666-ffff-aaaa-bbbb-666666666666",
+          medicamentName: "Amoxicillin",
+          dosage: "500mg",
+          duration: "7 days"
+        }
+      ],
+      recommendedTreatments: [
+        {
+          treatmentId: "77777777-aaaa-bbbb-cccc-777777777777",
+          treatmentName: "Root Canal"
+        }
+      ],
+      labTestsOrdered: [
+        {
+          labTestId: "88888888-bbbb-cccc-dddd-888888888888",
+          testName: "X-Ray"
+        }
+      ],
+      consultationNotes: "Patient advised to start antibiotics and return for root canal.",
+      followUpRequired: "Yes",
+      followUpDate: new Date("2025-07-08T10:00:00Z"),
+      consultationFee: 100.0,
+      paymentStatus: "Pending",
+      attachments: ["https://example.com/xray1.jpg"],
+      status: "In Progress"
+    },
+    {
+      appointmentId: "99999999-cccc-dddd-eeee-999999999999",
+      patientId: "aaaaaaaa-dddd-eeee-ffff-aaaaaaaaaaaa",
+      doctorId: "bbbbbbbb-eeee-ffff-aaaa-bbbbbbbbbbbb",
+      clinicId: "cccccccc-ffff-aaaa-bbbb-cccccccccccc",
+      consultationDate: new Date("2025-07-02T14:30:00Z"),
+      consultationType: "Virtual",
+      reasonForVisit: "Routine check-up",
+      symptoms: [],
+      diagnosis: { diagnosisId: "dddddddd-aaaa-bbbb-cccc-dddddddddddd", diagnosisName: "Healthy" },
+      prescribedMedications: [],
+      recommendedTreatments: [],
+      labTestsOrdered: [],
+      consultationNotes: "No issues found. Patient advised to maintain oral hygiene.",
+      followUpRequired: "No",
+      followUpDate: null,
+      consultationFee: 50.0,
+      paymentStatus: "Paid",
+      attachments: [],
+      status: "Completed"
+    }
+  ];
+  return await Consultation.bulkCreate(dummyConsultations);
+};
+
 module.exports = Consultation;
+module.exports.insertDummyConsultations = Consultation.insertDummyConsultations;

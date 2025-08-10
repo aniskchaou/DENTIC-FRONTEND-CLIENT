@@ -16,7 +16,7 @@ exports.findAllInvoices = (res) => {
         });
 }
 
-exports.createInvoice = (income) => {
+exports.createInvoice = (income,res) => {
     Invoice.create(income)
         .then(data => {
             res.send(data);

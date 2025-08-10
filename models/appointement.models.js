@@ -1,17 +1,17 @@
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
-var Appointment = sequelize.define("appointment", {
+var Appointement = sequelize.define("appointment", {
   patientId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   doctorId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   clinicLocationId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   appointmentDate: {
@@ -60,9 +60,9 @@ var Appointment = sequelize.define("appointment", {
  */
 async function insertRealAppointment() {
   const realData = {
-    patientId: "p1234567-89ab-cdef-0123-456789abcdef",
-    doctorId: "d1234567-89ab-cdef-0123-456789abcdef",
-    clinicLocationId: "c1234567-89ab-cdef-0123-456789abcdef",
+    patientId: 1,
+    doctorId: 1,
+    clinicLocationId: 1,
     appointmentDate: "2025-06-01",
     startTime: "09:00",
     endTime: "09:30",
@@ -74,7 +74,9 @@ async function insertRealAppointment() {
     updatedAt: new Date().toISOString(),
   };
 
-  return await Appointment.create(realData);
+  return await Appointement.create(realData);
 }
 
-module.exports = { Appointment, insertRealAppointment };
+// Export the Sequelize model directly for compatibility with .findAll, .create, etc.
+module.exports = Appointement;
+module.exports.insertRealAppointment = insertRealAppointment;

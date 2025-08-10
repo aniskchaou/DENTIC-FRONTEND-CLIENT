@@ -1,4 +1,3 @@
-
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 /* 
@@ -53,20 +52,19 @@ module.exports = Patient; */
 // const sequelize = require("../config/database");
 
 const Patient = sequelize.define("patient", {
-
-  userId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to the user account of the patient",
+  fullName: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: "Full name of the patient",
   },
   medicalRecordNumber: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
+    unique: false,
     comment: "Unique medical record number for the patient",
   },
   insuranceId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: true,
     comment: "Reference to the patient's insurance provider",
   },
@@ -126,9 +124,9 @@ Patient.associate = models => {
 async function insertPatients() {
   const patients = [
     {
-      userId: "b1fdf1ec-a111-46d1-91a3-bbfef1230001",
-      medicalRecordNumber: "MRN10001",
-      insuranceId: "2cfb11d3-0101-41d4-801b-f0afc1230001",
+      fullName: "John Doe",
+      medicalRecordNumber: "MRN100015",
+      insuranceId: 1,
       bloodType: "A+",
       allergies: ["Penicillin"],
       medicalHistory: [
@@ -149,8 +147,8 @@ async function insertPatients() {
       },
     },
     {
-      userId: "b1fdf1ec-a111-46d1-91a3-bbfef1230002",
-      medicalRecordNumber: "MRN10002",
+      fullName: "Jane Smith",
+      medicalRecordNumber: "MRN100025",
       insuranceId: null,
       bloodType: "B-",
       allergies: [],
@@ -163,9 +161,9 @@ async function insertPatients() {
       },
     },
     {
-      userId: "b1fdf1ec-a111-46d1-91a3-bbfef1230003",
-      medicalRecordNumber: "MRN10003",
-      insuranceId: "2cfb11d3-0101-41d4-801b-f0afc1230003",
+      fullName: "Michael Brown",
+      medicalRecordNumber: "MRN100035",
+      insuranceId: 3,
       bloodType: "O+",
       allergies: ["Shellfish", "Dust"],
       medicalHistory: [
@@ -179,8 +177,8 @@ async function insertPatients() {
       },
     },
     {
-      userId: "b1fdf1ec-a111-46d1-91a3-bbfef1230004",
-      medicalRecordNumber: "MRN10004",
+      fullName: "Emily Clark",
+      medicalRecordNumber: "MRN100045",
       insuranceId: null,
       bloodType: "AB+",
       allergies: ["Pollen"],
@@ -200,9 +198,9 @@ async function insertPatients() {
       },
     },
     {
-      userId: "b1fdf1ec-a111-46d1-91a3-bbfef1230005",
-      medicalRecordNumber: "MRN10005",
-      insuranceId: "2cfb11d3-0101-41d4-801b-f0afc1230005",
+      fullName: "Olivia White",
+      medicalRecordNumber: "MRN100055",
+      insuranceId: 5,
       bloodType: "O-",
       allergies: ["Latex"],
       medicalHistory: [
@@ -218,15 +216,10 @@ async function insertPatients() {
   ];
 
   try {
-    await sequelize.authenticate();
-    console.log("DB connection successful");
-
     await Patient.bulkCreate(patients, { validate: true });
     console.log("5 patients inserted successfully");
   } catch (err) {
     console.error("Error inserting patients:", err);
-  } finally {
-    await sequelize.close();
   }
 }
 

@@ -7,40 +7,166 @@ const {
     deleteAllClinics
 } = require("../../services/clinic.srrvices");
 
-// Create a new clinic
+
+/**
+ * @swagger
+ * tags:
+ *   name: Clinic
+ *   description: API for managing clinics
+ */
+
+
+
+
+
+
+/**
+ * @swagger
+ * /clinics:
+ *   post:
+ *     summary: Create a new clinic
+ *     tags: [Clinic]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               website:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               openingHours:
+ *                 type: string
+ *                 description: Opening hours for the clinic
+ *               location:
+ *                 type: object
+ *                 properties:
+ *                   latitude:
+ *                     type: number
+ *                   longitude:
+ *                     type: number
+ *     responses:
+ *       201:
+ *         description: Clinic created
+ *       400:
+ *         description: Content can not be empty!
+ */
 exports.create = (req, res) => {
-    if (!req.body.name) {
-        res.status(400).send({ message: "Content can not be empty!" });
-        return;
-    }
+
     createClinic(req.body, res);
 };
 
-// Retrieve all clinics (with optional filtering)
+/**
+ * @swagger
+ * /clinics:
+ *   get:
+ *     summary: Get all clinics
+ *     tags: [Clinic]
+ *     responses:
+ *       200:
+ *         description: List of all clinics
+ */
 exports.findAll = (req, res) => {
     // You can add query-based filtering here if needed
     findAllClinics(null, res);
 };
 
-// Find a single clinic by ID
+/**
+ * @swagger
+ * /clinics/{id}:
+ *   get:
+ *     summary: Get a clinic by ID
+ *     tags: [Clinic]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Clinic data
+ *       404:
+ *         description: Clinic not found
+ */
 exports.findOne = (req, res) => {
     const id = req.params.id;
     findClinicById(id, res);
 };
 
-// Update a clinic by ID
+/**
+ * @swagger
+ * /clinics/{id}:
+ *   put:
+ *     summary: Update a clinic by ID
+ *     tags: [Clinic]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Clinic updated
+ *       404:
+ *         description: Clinic not found
+ */
 exports.update = (req, res) => {
     const id = req.params.id;
     updateClinic(id, req, res);
 };
 
-// Delete a clinic by ID
+/**
+ * @swagger
+ * /clinics/{id}:
+ *   delete:
+ *     summary: Delete a clinic by ID
+ *     tags: [Clinic]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Clinic deleted
+ *       404:
+ *         description: Clinic not found
+ */
 exports.delete = (req, res) => {
     const id = req.params.id;
     deleteClinicById(id, res);
 };
 
-// Delete all clinics
+/**
+ * @swagger
+ * /clinics:
+ *   delete:
+ *     summary: Delete all clinics
+ *     tags: [Clinic]
+ *     responses:
+ *       200:
+ *         description: All clinics deleted
+ */
 exports.deleteAll = (req, res) => {
     deleteAllClinics(res);
 };

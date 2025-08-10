@@ -1,114 +1,131 @@
-const { restoreLocalisationSettings, restoreDashboardSettings, restoreHeaderSettings, restoreFooterSettings, restoreSystemSettings, updateSystemSettings, updateNotificationsSettings, updateLocalisationSettings, updateHeaderSettings, updateFooterSettings, updateEmailSettings, updateDashboardSettings, findNotificationSettingsById, findLocalisationSettingsById, findHeaderSettingsById, findFooterSettingsById, findEmailSettingsById, findEmailTemplateSettingsById, findDashboardSettingsById, findSystemSettingsById } = require("../../services/settings.services");
+const Settings = require("../../models/service.models");
+
+/**
+ * @swagger
+ * /settings:
+ *   get:
+ *     summary: Load settings from the database
+ *     tags: [Settings]
+ *     responses:
+ *       200:
+ *         description: Settings loaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: Settings not found
+ *       500:
+ *         description: Error loading settings
+ */
+
+exports.loadSettings = async (req, res) => {
+  try {
+    const settings = await addSettingsData.findOne();
+    if (!settings) {
+      return res.status(404).send({ message: "Settings not found" });
+    }
+    res.send(settings);
+  } catch (err) {
+    res.status(500).send({ message: "Error loading settings" });
+  }
+};
+
+/**
+ * @swagger
+ * /settings:
+ *   put:
+ *     summary: Save or update settings in the database
+ *     tags: [Settings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Settings saved successfully
+ *       500:
+ *         description: Error saving settings
+ */
+exports.saveSettings = async (req, res) => {
+  try {
+    let settings = await Settings.findOne();
+    if (settings) {
+      await settings.update(req.body);
+    } else {
+      settings = await Settings.create(req.body);
+    }
+    res.send(settings);
+  } catch (err) {
+    res.status(500).send({ message: "Error saving settings" });
+  }
+};
+
+
+
 const fs = require('fs');
+const path = require('path');
+const { addSettingsData } = require("../../models/settings.mdels");
 
-
-exports.restoreSystemSettings = (req, res) => {
-    var rawdata = fs.readFileSync('db/settings/system.json');
-    var student = JSON.parse(rawdata);
-    const id = req.params.id;
-    console.log(student)
-    restoreSystemSettings(id, student, res)
+/**
+ * @swagger
+ * /clinicsettings:
+ *   put:
+ *     summary: Save or update clinic settings in the database
+ *     tags: [Settings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Settings saved successfully
+ *       500:
+ *         description: Error saving settings
+ */
+exports.saveClinicSettings = (req, res) => {
+    const filePath = path.join(__dirname, "../../clinic.json");
+    fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
+        if (err) {
+            return res.status(500).send({ message: "Failed to write file", error: err });
+        }
+        res.send({ message: "Clinic settings saved to file", file: filePath });
+    });
 };
 
-exports.restoreFooterSettings = (req, res) => {
-    var rawdata = fs.readFileSync('db/settings/footer.json');
-    var student = JSON.parse(rawdata);
-    const id = req.params.id;
-    console.log(student)
-    restoreFooterSettings(id, student, res)
-};
-
-exports.restoreHeaderSettings = (req, res) => {
-    var rawdata = fs.readFileSync('db/settings/header.json');
-    var student = JSON.parse(rawdata);
-    const id = req.params.id;
-    console.log(student)
-    restoreHeaderSettings(id, student, res)
-};
-
-exports.restoreDashboardSettings = (req, res) => {
-    var rawdata = fs.readFileSync('db/settings/dashboard.json');
-    var student = JSON.parse(rawdata);
-    const id = req.params.id;
-    console.log(student)
-    restoreDashboardSettings(id, student, res)
-};
-
-exports.restoreLocalisationSettings = (req, res) => {
-    var rawdata = fs.readFileSync('db/settings/localisation.json');
-    var student = JSON.parse(rawdata);
-    const id = req.params.id;
-    console.log(student)
-    restoreLocalisationSettings(id, student, res)
-};
-
-exports.findSystemSettings = (req, res) => {
-    findSystemSettingsById(res)
-};
-
-exports.findDashboardSettings = (req, res) => {
-    findDashboardSettingsById(res)
-};
-
-exports.findEmailTemplateSettings = (req, res) => {
-    findEmailTemplateSettingsById(res)
-};
-
-exports.findEmailSettings = (req, res) => {
-    findEmailSettingsById(res)
-};
-
-exports.findFooterSettings = (req, res) => {
-    findFooterSettingsById(res)
-};
-
-exports.findHeaderSettings = (req, res) => {
-    findHeaderSettingsById(res)
-};
-
-exports.findLocalisationSettings = (req, res) => {
-    findLocalisationSettingsById(res)
-};
-
-exports.findNotificationSettings = (req, res) => {
-    findNotificationSettingsById(res)
-};
-
-
-exports.updateFooterSettings = (req, res) => {
-    const id = req.params.id;
-    updateFooterSettings(id, req, res)
-};
-
-exports.updateNotificationsSettings = (req, res) => {
-    const id = req.params.id;
-    updateNotificationsSettings(id, req, res)
-};
-
-exports.updateHeaderSettings = (req, res) => {
-    const id = req.params.id;
-    updateHeaderSettings(id, req, res)
-};
-
-exports.updateDashboardSettings = (req, res) => {
-    const id = req.params.id;
-    updateDashboardSettings(id, req, res)
-};
-
-
-exports.updateLocalisationSettings = (req, res) => {
-    console.log(req.body)
-    const id = req.params.id;
-    updateLocalisationSettings(id, req, res)
-};
-
-exports.updateSystemSettings = (req, res) => {
-    console.log(req.body)
-    const id = req.params.id;
-    updateSystemSettings(id, req, res)
-};
-
-exports.updateEmailSettings = (req, res) => {
-    const id = req.params.id;
-    updateEmailSettings(id, req, res)
+/**
+ * @swagger
+ * /clinicsettings:
+ *   get:
+ *     summary: Load settings from the database
+ *     tags: [Settings]
+ *     responses:
+ *       200:
+ *         description: Settings loaded successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: Settings not found
+ *       500:
+ *         description: Error loading settings
+ */
+exports.readClinicSettings = (req, res) => {
+    const filePath = path.join(__dirname, "../../clinic.json");
+    fs.readFile(filePath, "utf8", (err, data) => {
+        if (err) {
+            return res.status(500).send({ message: "Failed to read file", error: err });
+        }
+        try {
+            const json = JSON.parse(data);
+            res.send(json);
+        } catch (parseErr) {
+            res.status(500).send({ message: "File content is not valid JSON", error: parseErr });
+        }
+    });
 };

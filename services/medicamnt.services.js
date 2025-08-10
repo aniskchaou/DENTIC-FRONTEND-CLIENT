@@ -1,4 +1,3 @@
-
 const Medicament = require("../models/medicament.models");
 const MedicamentCategory = require("../models/medicament.category.models");
 const MedicamentManufacture = require("../models/medicament.manufactue.models");
@@ -19,30 +18,40 @@ exports.getCount = (req, res) => {
 
 
 exports.findAllMedicaments = (res) => {
-    const medicaments = []
-    const m = Medicament.findAll()
-    const c = MedicamentCategory.findAll()
-    const mm = MedicamentManufacture.findAll()
-    Promise
-        .all([m, c, mm])
-        .then(responses => {
-            console.log(responses[1])
-            for (const d of responses[0]) {
-                medicaments.push({
-                    id: d.id,
-                    name: d.name,
-                    producer: responses[2].find(i => i.id == d.producer)?.dataValues?.name,
-                    description: d.description,
-                    group: responses[1].find(i => i.id == d.group)?.dataValues?.name,
-                    createdAt: d.createdAt,
-                    updatedAt: d.updatedAt
-                })
-
-            }
-            res.send(medicaments);
+    Medicament.findAll()
+        .then(medicaments => {
+            // Map each medicament to show all requested fields
+            const result = medicaments.map(d => ({
+                name: d.name,
+                genericName: d.genericName,
+                category: d.category,
+                description: d.description,
+                activeIngredients: d.activeIngredients,
+                dosageForm: d.dosageForm,
+                strength: d.strength,
+                manufacturerId: d.manufacturerId,
+                requiresPrescription: d.requiresPrescription,
+                sideEffects: d.sideEffects,
+                contraindications: d.contraindications,
+                usageInstructions: d.usageInstructions,
+                stockQuantity: d.stockQuantity,
+                pricePerUnit: d.pricePerUnit,
+                expirationDate: d.expirationDate,
+                storageConditions: d.storageConditions,
+                barcode: d.barcode,
+                batchNumber: d.batchNumber,
+                status: d.status,
+                createdAt: d.createdAt,
+                updatedAt: d.updatedAt
+            }));
+            res.send(result);
         })
-
-}
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving medicaments."
+            });
+        });
+};
 
 exports.createMedicament = (medicament, res) => {
     console.log(medicament)
@@ -58,7 +67,7 @@ exports.createMedicament = (medicament, res) => {
         });
 }
 
-exports.findMedicamentById = (id) => {
+exports.findMedicamentById = (id,res) => {
     Medicament.findByPk(id)
         .then(data => {
             res.send(data);

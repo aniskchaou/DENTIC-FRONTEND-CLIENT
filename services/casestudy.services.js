@@ -1,4 +1,4 @@
-const CaseStudy = require("../models/research.js");
+const CaseStudy = require("../models/case.js");
 
 // Find all case studies (optionally with condition)
 exports.findAllCaseStudies = (condition, res) => {

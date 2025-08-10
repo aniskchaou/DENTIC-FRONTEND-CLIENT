@@ -1,4 +1,4 @@
-const TreatmentPlan = require("../models/treatementplan.js");
+const TreatmentPlan = require("../models/treatementplan.models.js");
 
 // Find all treatment plans (optionally with condition)
 exports.findAllTreatmentPlans = (condition, res) => {

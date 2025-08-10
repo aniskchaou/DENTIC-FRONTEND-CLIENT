@@ -34,7 +34,7 @@ exports.loginUser = (username, password, res) => {
         });
 }
 
-exports.createUser = (user) => {
+exports.createUser = (user,res) => {
     // Save user in the database
     User.create(user)
         .then(data => {

@@ -175,8 +175,8 @@
 const Prescription = require("../models/prescription.models.js");
 
 // Find all prescriptions (optionally with condition)
-exports.findAllPrescriptions = (condition, res) => {
-    Prescription.findAll({ where: condition })
+exports.findAllPrescriptions = (res) => {
+    Prescription.findAll()
         .then(data => res.send(data))
         .catch(err => {
             res.status(500).send({

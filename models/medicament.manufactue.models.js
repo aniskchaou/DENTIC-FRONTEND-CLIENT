@@ -2,47 +2,6 @@
 
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
-/* 
-var MedicamentManufacture = sequelize.define('medicament_manufacture', {
-    name: Sequelize.STRING
-});
-
-{
-    "MedicamentManufacture": {
-      "id": "UUID",
-      "name": "string (e.g., Pfizer, Johnson & Johnson, GlaxoSmithKline)",
-      "contactPerson": {
-        "fullName": "string",
-        "phone": "string",
-        "email": "string"
-      },
-      "address": {
-        "street": "string",
-        "city": "string",
-        "state": "string",
-        "postalCode": "string",
-        "country": "string"
-      },
-      "phone": "string",
-      "email": "string",
-      "website": "string (URL)",
-      "licenseNumber": "string (Regulatory approval/license ID)",
-      "certifications": ["string (e.g., FDA Approved, GMP Certified)"],
-      "medicamentsSupplied": [
-        {
-          "medicamentId": "UUID (Ref to Medicament)",
-          "medicamentName": "string"
-        }
-      ],
-      "contractStartDate": "timestamp",
-      "contractEndDate": "timestamp",
-      "status": "Active | Inactive | Suspended",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = MedicamentManufacture;  */
 
 
 const MedicamentManufacture = sequelize.define("medicamentManufacture", {
@@ -137,3 +96,43 @@ const MedicamentManufacture = sequelize.define("medicamentManufacture", {
 });
 
 module.exports = MedicamentManufacture;
+
+const createDummyMedicamentManufacture = async () => {
+  try {
+    const dummyData = {
+      name: "Pfizer",
+      contactPerson: {
+        fullName: "John Doe",
+        phone: "+1-202-555-0147",
+        email: "john.doe@pfizer.com"
+      },
+      address: {
+        street: "123 Pharma St",
+        city: "New York",
+        state: "NY",
+        postalCode: "10001",
+        country: "USA"
+      },
+      phone: "+1-202-555-0123",
+      email: "contact@pfizer.com",
+      website: "https://www.pfizer.com",
+      licenseNumber: "FDA123456",
+      certifications: ["FDA Approved", "GMP Certified"],
+      medicamentsSupplied: [
+        { name: "Vaccine A", batchNumber: "VA2025" },
+        { name: "Painkiller B", batchNumber: "PB2025" }
+      ],
+      contractStartDate: new Date("2023-01-01"),
+      contractEndDate: new Date("2026-12-31"),
+      status: "Active"
+    };
+
+    const newManufacture = await MedicamentManufacture.create(dummyData);
+    console.log("Dummy MedicamentManufacture created:", newManufacture.toJSON());
+    return newManufacture;
+  } catch (error) {
+    console.error("Error creating dummy MedicamentManufacture:", error);
+  }
+};
+
+module.exports.createDummyMedicamentManufacture = createDummyMedicamentManufacture;

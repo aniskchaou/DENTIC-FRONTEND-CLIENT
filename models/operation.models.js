@@ -1,76 +1,10 @@
 
-/* 
-var Operation = sequelize.define('operation', {
-//    patient: {  type: Sequelize.INTEGER,references: 'patients',  referencesKey: 'id' },
-  patient: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: 'patients',
-            key: 'id'
-        }
-    },
-    name:Squelize.STRING,
-    description: Sequelize.STRING,
-    status: Sequelize.STRING
-});
-
-{
-    "Operation": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Doctor)",
-      "clinicId": "UUID (Ref to Clinic)",
-      "operationType": "Surgical | Non-Surgical",
-      "procedureName": "Root Canal | Tooth Extraction | Dental Implant | Gum Surgery",
-      "operationDate": "timestamp",
-      "duration": "integer (Estimated duration in minutes)",
-      "anesthesiaType": "Local | General | None",
-      "equipmentUsed": [
-        {
-          "equipmentId": "UUID (Ref to Equipment)",
-          "equipmentName": "string"
-        }
-      ],
-      "medicationsAdministered": [
-        {
-          "medicationId": "UUID (Ref to Medicament)",
-          "medicationName": "string",
-          "dosage": "string"
-        }
-      ],
-      "complications": "string (If any)",
-      "postOperationInstructions": "string",
-      "followUpRequired": "Yes | No",
-      "followUpDate": "timestamp (If applicable)",
-      "status": "Scheduled | Completed | Canceled",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Operation; */
-
 
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
 
 const Operation = sequelize.define("operation", {
 
-  patientId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to the patient undergoing the operation"
-  },
-  doctorId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to the doctor performing the operation"
-  },
-  clinicId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to the clinic where the operation is performed"
-  },
   operationType: {
     type: DataTypes.ENUM("Surgical", "Non-Surgical"),
     allowNull: false,
@@ -120,39 +54,37 @@ const Operation = sequelize.define("operation", {
     type: DataTypes.ENUM("Scheduled", "Completed", "Canceled"),
     allowNull: false,
     comment: "Current status of the operation"
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-    comment: "Timestamp when the operation record was created"
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-    comment: "Timestamp when the operation record was last updated"
   }
 });
 
-/* // Define the relationships with other models (Patient, Doctor, Clinic, Equipment, Medicament)
-Operation.associate = models => {
-  // An operation is associated with one patient, one doctor, and one clinic
-  Operation.belongsTo(models.Patient, { foreignKey: "patientId" });
-  Operation.belongsTo(models.Doctor, { foreignKey: "doctorId" });
-  Operation.belongsTo(models.Clinic, { foreignKey: "clinicId" });
 
-  // Define many-to-many relationship with equipment used in the operation
-  Operation.belongsToMany(models.Equipment, {
-    through: "OperationEquipment",
-    foreignKey: "operationId",
-    otherKey: "equipmentId",
-  });
-
-  // Define many-to-many relationship with medications administered during the operation
-  Operation.belongsToMany(models.Medicament, {
-    through: "OperationMedications",
-    foreignKey: "operationId",
-    otherKey: "medicationId",
-  });
-}; */
 
 module.exports = Operation;
+
+
+const { v4: uuidv4 } = require('uuid'); // For generating UUIDs
+
+const createDummyOperation = async () => {
+  try {
+    const dummyData = {
+      operationType: "Surgical",
+      procedureName: "Tooth Extraction",
+      operationDate: new Date("2025-07-10T09:30:00Z"),
+      duration: 45,
+      anesthesiaType: "Local",
+      complications: "None reported",
+      postOperationInstructions: "Avoid solid foods for 24 hours. Take antibiotics as prescribed.",
+      followUpRequired: "Yes",
+      followUpDate: new Date("2025-07-17T09:30:00Z"),
+      status: "Completed"
+    };
+
+    const newOperation = await Operation.create(dummyData);
+    console.log("Dummy Operation created:", newOperation.toJSON());
+    return newOperation;
+  } catch (error) {
+    console.error("Error creating dummy Operation:", error);
+  }
+};
+
+module.exports.createDummyOperation = createDummyOperation;

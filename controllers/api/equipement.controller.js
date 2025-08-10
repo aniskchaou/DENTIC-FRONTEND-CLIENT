@@ -7,7 +7,77 @@ const {
     deleteAllEquipment
 } = require("../../services/equipement.services");
 
-// Create a new equipment maintenance record
+
+/**
+ * @swagger
+ * tags:
+ *   name: Equipment
+ *   description: API for managing equipment records
+ */
+
+
+
+
+
+
+/**
+ * @swagger
+ * /equipment:
+ *   post:
+ *     summary: Create a new equipment maintenance record
+ *     tags: [Equipment]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Equipment'
+ *     responses:
+ *       201:
+ *         description: Equipment maintenance record created
+ *       400:
+ *         description: Content can not be empty!
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Equipment:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         clinicId:
+ *           type: string
+ *         equipmentName:
+ *           type: string
+ *         modelNumber:
+ *           type: string
+ *         manufacturer:
+ *           type: string
+ *         purchaseDate:
+ *           type: string
+ *           format: date
+ *         lastServiceDate:
+ *           type: string
+ *           format: date
+ *         nextServiceDue:
+ *           type: string
+ *           format: date
+ *         status:
+ *           type: string
+ *         assignedTechnician:
+ *           type: string
+ *         maintenanceNotes:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
 exports.create = (req, res) => {
     if (!req.body.clinicId || !req.body.equipmentName) {
         res.status(400).send({ message: "Content can not be empty!" });
@@ -16,30 +86,104 @@ exports.create = (req, res) => {
     createEquipment(req.body, res);
 };
 
-// Retrieve all equipment maintenance records
+/**
+ * @swagger
+ * /equipment:
+ *   get:
+ *     summary: Get all equipment maintenance records
+ *     tags: [Equipment]
+ *     responses:
+ *       200:
+ *         description: List of all equipment maintenance records
+ */
 exports.findAll = (req, res) => {
     findAllEquipment(null, res);
 };
 
-// Find a single equipment maintenance record by ID
+/**
+ * @swagger
+ * /equipment/{id}:
+ *   get:
+ *     summary: Get an equipment maintenance record by ID
+ *     tags: [Equipment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Equipment maintenance record data
+ *       404:
+ *         description: Equipment maintenance record not found
+ */
 exports.findOne = (req, res) => {
     const id = req.params.id;
     findEquipmentById(id, res);
 };
 
-// Update an equipment maintenance record by ID
+/**
+ * @swagger
+ * /equipment/{id}:
+ *   put:
+ *     summary: Update an equipment maintenance record by ID
+ *     tags: [Equipment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Equipment maintenance record updated
+ *       404:
+ *         description: Equipment maintenance record not found
+ */
 exports.update = (req, res) => {
     const id = req.params.id;
     updateEquipment(id, req, res);
 };
 
-// Delete an equipment maintenance record by ID
+/**
+ * @swagger
+ * /equipment/{id}:
+ *   delete:
+ *     summary: Delete an equipment maintenance record by ID
+ *     tags: [Equipment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Equipment maintenance record deleted
+ *       404:
+ *         description: Equipment maintenance record not found
+ */
 exports.delete = (req, res) => {
     const id = req.params.id;
     deleteEquipmentById(id, res);
 };
 
-// Delete all equipment maintenance records
+/**
+ * @swagger
+ * /equipment:
+ *   delete:
+ *     summary: Delete all equipment maintenance records
+ *     responses:
+ *       200:
+ *         description: All equipment maintenance records deleted
+ */
 exports.deleteAll = (req, res) => {
     deleteAllEquipment(res);
 };

@@ -4,7 +4,7 @@ const Patient = require("../models/patient.models");
 
 exports.findAllLabTests = (res) => {
 
-    /* LabTest.findAll()
+     LabTest.findAll()
         .then(data => {
             res.send(data);
         })
@@ -14,31 +14,8 @@ exports.findAllLabTests = (res) => {
                     err.message || "Some error occurred while retrieving users."
             });
         });
- */
+ 
 
-
-    const testLabs = []
-    const p = Patient.findAll()
-    const t = LabTest.findAll()
-
-    Promise
-        .all([t, p])
-        .then(responses => {
-            console.log(responses[1])
-            for (const d of responses[0]) {
-                testLabs.push({
-                    id: d.id,
-                    datee: d.datee,
-                    content: d.content,
-                    status: d.status,
-                    patient: responses[1].find(i => i.id == d.patient)?.dataValues?.namepatient,
-                    createdAt: d.createdAt,
-                    updatedAt: d.updatedAt
-                })
-
-            }
-            res.send(testLabs);
-        })
 }
 
 exports.createLabTest = (income, res) => {

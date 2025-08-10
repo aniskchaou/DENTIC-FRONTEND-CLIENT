@@ -3,6 +3,8 @@ const { filterService, deleteServiceById, createService, findAllServices, findSe
 
 
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 
 exports.filterService = (req, res) => {
@@ -12,34 +14,89 @@ exports.filterService = (req, res) => {
 }
 
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body) {
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-        return;
-    }
-    // Create a user
-    const patient = {
-        name: req.body.name,
-        description: req.body.description,
-        status: req.body.status,
-        fileName: req.params.filename
-    }
-    console.log(patient)
 
-
-
-
-    //  this.addFile(req, res)
-
-
-
-
-
-
-    createService(patient, res)
+    createService(req.body, res)
 };
+/**
+ * @swagger
+ * /services:
+ *   post:
+ *     summary: Save request body to a JSON file
+ *     tags: [Service]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Body saved to file
+ *       500:
+ *         description: Failed to write file
+ */
+
+exports.saveBodyToFile = (req, res) => {
+    const filePath = path.join(__dirname, "../../service-body.json");
+    fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
+        if (err) {
+            return res.status(500).send({ message: "Failed to write file", error: err });
+        }
+        res.send({ message: "Body saved to file", file: filePath });
+    });
+};
+/**
+ * @swagger
+ * /services:
+ *   get:
+ *     summary: Read and return the content of the saved JSON file
+ *     tags: [Service]
+ *     responses:
+ *       200:
+ *         description: File content returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Failed to read file or invalid JSON
+ */
+exports.readBodyFromFile = (req, res) => {
+    const filePath = path.join(__dirname, "../../service-body.json");
+    fs.readFile(filePath, "utf8", (err, data) => {
+        if (err) {
+            return res.status(500).send({ message: "Failed to read file", error: err });
+        }
+        try {
+            const json = JSON.parse(data);
+            res.send(json);
+        } catch (parseErr) {
+            res.status(500).send({ message: "File content is not valid JSON", error: parseErr });
+        }
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 exports.addImage = (req, res) => {
@@ -98,4 +155,63 @@ exports.delete = (req, res) => {
 
 exports.deleteAll = (req, res) => {
     deleteAllServices(res)
+};
+
+/**
+ * @swagger
+ * /aboutus:
+ *   post:
+ *     summary: Save about us body to a JSON file
+ *     tags: [AboutUs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: About us body saved to file
+ *       500:
+ *         description: Failed to write file
+ */
+exports.saveAboutUsToFile = (req, res) => {
+    const filePath = path.join(__dirname, "../../aboutus-body.json");
+    fs.writeFile(filePath, JSON.stringify(req.body, null, 2), (err) => {
+        if (err) {
+            return res.status(500).send({ message: "Failed to write file", error: err });
+        }
+        res.send({ message: "About us body saved to file", file: filePath });
+    });
+};
+
+/**
+ * @swagger
+ * /aboutus:
+ *   get:
+ *     summary: Read and return the content of the about us JSON file
+ *     tags: [AboutUs]
+ *     responses:
+ *       200:
+ *         description: About us file content returned successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       500:
+ *         description: Failed to read file or invalid JSON
+ */
+exports.readAboutUsFromFile = (req, res) => {
+    const filePath = path.join(__dirname, "../../aboutus-body.json");
+    fs.readFile(filePath, "utf8", (err, data) => {
+        if (err) {
+            return res.status(500).send({ message: "Failed to read file", error: err });
+        }
+        try {
+            const json = JSON.parse(data);
+            res.send(json);
+        } catch (parseErr) {
+            res.status(500).send({ message: "File content is not valid JSON", error: parseErr });
+        }
+    });
 };

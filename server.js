@@ -8,8 +8,14 @@ const routes = require('./routes/routes');
 const bodyParser = require('body-parser');
 var cors = require('cors')
 
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./routes/swagger.js'); // 
 var app = express()
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+
 app.set('views', path.join(__dirname, '/views/'));
 app.engine('hbs', exphbs({ extname: 'hbs', defaultLayout: 'mainLayout', layoutsDir: __dirname + '/views/layout/' }))
 app.set('view engine', 'hbs')

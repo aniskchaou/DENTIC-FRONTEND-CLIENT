@@ -1,67 +1,9 @@
 
 var sequelize = require("../db/init.sequelize.js");
-//var Sequelize = require('sequelize');
-/* 
-var Medicament = sequelize.define('medicament', {
-    name: Sequelize.STRING,
-    producer: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: 'medicament_manufactures',
-            key: 'id'
-        }
-    },
 
-    description: Sequelize.STRING,
-
-    group: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: 'medicament_categories',
-            key: 'id'
-        }
-
-
-    }
-});
-{
-    "Medicament": {
-      "id": "UUID",
-      "name": "string (e.g., Amoxicillin, Ibuprofen, Lidocaine)",
-      "genericName": "string (Optional, generic alternative)",
-      "category": "Antibiotic | Painkiller | Anesthetic | Anti-inflammatory | Mouthwash",
-      "description": "string (Usage, precautions, side effects)",
-      "activeIngredients": [
-        {
-          "ingredientName": "string",
-          "concentration": "string (e.g., 500mg, 2%)"
-        }
-      ],
-      "dosageForm": "Tablet | Capsule | Syrup | Injection | Gel | Spray",
-      "strength": "string (e.g., 500mg, 2%)",
-      "manufacturerId": "UUID (Ref to Manufacturer)",
-      "requiresPrescription": "Yes | No",
-      "sideEffects": ["Nausea", "Dizziness", "Allergy"],
-      "contraindications": ["Pregnancy", "Kidney Disease", "Allergy to Penicillin"],
-      "usageInstructions": "string (How to take/administer the medication)",
-      "stockQuantity": "integer (Available stock in clinic/pharmacy)",
-      "pricePerUnit": "float (Cost per unit)",
-      "expirationDate": "timestamp",
-      "storageConditions": "string (e.g., Store below 25°C, Keep away from sunlight)",
-      "barcode": "string (Unique barcode for tracking)",
-      "batchNumber": "string (Tracking batch for recalls)",
-      "supplierId": "UUID (Ref to Supplier)",
-      "status": "Available | Out of Stock | Expired | Discontinued",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Medicament;
- */
 
 const { Sequelize, DataTypes } = require("sequelize");
-//const sequelize = require("../config/database");
+
 
 const Medicament = sequelize.define("medicament", {
 
@@ -76,7 +18,7 @@ const Medicament = sequelize.define("medicament", {
     comment: "Optional, generic alternative"
   },
   category: {
-    type: DataTypes.ENUM("Antibiotic", "Painkiller", "Anesthetic", "Anti-inflammatory", "Mouthwash"),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   description: {
@@ -106,7 +48,7 @@ const Medicament = sequelize.define("medicament", {
     comment: "e.g., 500mg, 2%"
   },
   manufacturerId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     comment: "Reference to Manufacturer",
   },
@@ -174,11 +116,6 @@ const Medicament = sequelize.define("medicament", {
     allowNull: true,
     comment: "Tracking batch for recalls"
   },
-  supplierId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to Supplier"
-  },
   status: {
     type: DataTypes.ENUM("Available", "Out of Stock", "Expired", "Discontinued"),
     allowNull: false,
@@ -194,3 +131,42 @@ const Medicament = sequelize.define("medicament", {
 });
 
 module.exports = Medicament;
+
+
+const { v4: uuidv4 } = require('uuid'); // For generating UUIDs if needed
+
+const createDummyMedicament = async () => {
+  try {
+    const dummyData = {
+      name: "Amoxicillin",
+      genericName: "Amoxil",
+      category: "Antibiotic",
+      description: "Used to treat bacterial infections. Avoid if allergic to penicillin.",
+      activeIngredients: [
+        { ingredient: "Amoxicillin trihydrate", concentration: "500mg" }
+      ],
+      dosageForm: "Capsule",
+      strength: "500mg",
+      manufacturerId: 1,  // You can replace with actual UUID from your manufacturers table
+      requiresPrescription: "Yes",
+      sideEffects: ["Nausea", "Rash", "Diarrhea"],
+      contraindications: ["Allergy to Penicillin", "Pregnancy"],
+      usageInstructions: "Take orally every 8 hours with food.",
+      stockQuantity: 150,
+      pricePerUnit: 0.75,
+      expirationDate: new Date("2026-05-01"),
+      storageConditions: "Store below 25°C, keep away from sunlight",
+      barcode: "1234567890123",
+      batchNumber: "AMX202507",
+      status: "Available"
+    };
+
+    const newMedicament = await Medicament.create(dummyData);
+    console.log("Dummy Medicament created:", newMedicament.toJSON());
+    return newMedicament;
+  } catch (error) {
+    console.error("Error creating dummy Medicament:", error);
+  }
+};
+
+module.exports.createDummyMedicament = createDummyMedicament;

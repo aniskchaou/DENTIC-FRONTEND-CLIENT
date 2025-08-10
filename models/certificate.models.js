@@ -1,43 +1,3 @@
-// var sequelize = require("../db/init.sequelize.js");
-// var Sequelize = require('sequelize');
-
-/* var Certificate = sequelize.define('certificate', {
-//    patient: {  type: Sequelize.INTEGER,references: 'patients',  referencesKey: 'id' },
-    date: Sequelize.STRING,
-    template: Sequelize.STRING,
-    content: Sequelize.STRING,
-      patient: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'patients',
-                key: 'id'
-            }
-        }
-});
-{
-    "Certificate": {
-      "id": "UUID",
-      "certificateNumber": "string (Unique ID, e.g., CERT-2025001)",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Issuing Doctor)",
-      "clinicId": "UUID (Ref to Clinic)",
-      "certificateType": "Medical Fitness | Treatment Confirmation | Sick Leave | Surgery Clearance",
-      "issueDate": "timestamp",
-      "validUntil": "timestamp (Optional, if the certificate has an expiry date)",
-      "diagnosis": "string (Condition requiring the certificate)",
-      "treatmentDetails": "string (Details of the treatment or procedure)",
-      "recommendations": "string (Rest period, activity restrictions, or other instructions)",
-      "attachments": ["string (URLs to signed PDF, scanned copy, etc.)"],
-      "signature": "string (Digital signature of the doctor)",
-      "status": "Draft | Issued | Revoked",
-      "notes": "string (Additional details)",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Certificate; */
-
 var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require("sequelize");
 
@@ -45,28 +5,23 @@ var Certificate = sequelize.define("certificate", {
 
   certificateNumber: {
     type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
+    unique: false,
   },
   patientId: {
-    type: Sequelize.UUID,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   doctorId: {
-    type: Sequelize.UUID,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   clinicId: {
-    type: Sequelize.UUID,
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   certificateType: {
-    type: Sequelize.ENUM(
-      "Medical Fitness",
-      "Treatment Confirmation",
-      "Sick Leave",
-      "Surgery Clearance"
-    ),
+    type: Sequelize.STRING,
     allowNull: false,
   },
   issueDate: {
@@ -116,4 +71,46 @@ var Certificate = sequelize.define("certificate", {
   },
 });
 
+/**
+ * Insert dummy certificates for testing/demo purposes.
+ */
+Certificate.insertDummyCertificates = async function() {
+  const dummyCertificates = [
+    {
+      certificateNumber: "CERT-2025001",
+      patientId: 1,
+      doctorId: 1,
+      clinicId: 1,
+      certificateType: "Medical Fitness",
+      issueDate: new Date("2025-07-01"),
+      validUntil: new Date("2025-12-31"),
+      diagnosis: "Fit for work",
+      treatmentDetails: "Routine checkup, no issues found.",
+      recommendations: "Maintain healthy lifestyle.",
+      attachments: ["https://example.com/fitness-report.pdf"],
+      signature: "Dr. John Doe",
+      status: "Issued",
+      notes: "Issued for employment purposes."
+    },
+    {
+      certificateNumber: "CERT-2025002",
+      patientId: 1,
+      doctorId: 1,
+      clinicId: 1,
+      certificateType: "Sick Leave",
+      issueDate: new Date("2025-07-10"),
+      validUntil: new Date("2025-07-15"),
+      diagnosis: "Acute dental infection",
+      treatmentDetails: "Antibiotics prescribed, rest recommended.",
+      recommendations: "Return for follow-up in 1 week.",
+      attachments: [],
+      signature: "Dr. Jane Smith",
+      status: "Issued",
+      notes: "Patient advised to avoid strenuous activity."
+    }
+  ];
+  return await Certificate.bulkCreate(dummyCertificates);
+};
+
 module.exports = Certificate;
+module.exports.insertDummyCertificates = Certificate.insertDummyCertificates;

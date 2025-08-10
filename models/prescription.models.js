@@ -1,4 +1,3 @@
-
 /* 
 var Prescription = sequelize.define('prescription', {
     patient: Sequelize.STRING,
@@ -47,17 +46,17 @@ var { Sequelize, DataTypes } = require('sequelize');
 const Prescription = sequelize.define("prescription", {
 
   patientId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     comment: "Reference to the patient for whom the prescription is issued",
   },
   doctorId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     comment: "Reference to the doctor who issued the prescription",
   },
   clinicId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     comment: "Reference to the clinic where the prescription was issued",
   },
@@ -85,11 +84,6 @@ const Prescription = sequelize.define("prescription", {
     type: DataTypes.INTEGER,
     allowNull: true,
     comment: "Number of refills allowed (if applicable)",
-  },
-  pharmacyId: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    comment: "Reference to the preferred pharmacy (if any)",
   },
   digitalSignature: {
     type: DataTypes.STRING,
@@ -122,4 +116,58 @@ Prescription.associate = models => {
   Prescription.belongsTo(models.Pharmacy, { foreignKey: "pharmacyId", allowNull: true });
 }; */
 
+/**
+ * Insert dummy prescription records for testing/demo purposes.
+ */
+ insertDummyPrescriptions = async function() {
+  const dummyPrescriptions = [
+    {
+      patientId: 1,
+      doctorId: 1,
+      clinicId: 1,
+      medications: [
+        {
+          medicationId: 1,
+          medicationName: "Amoxicillin",
+          dosage: "500mg",
+          frequency: "Twice a day",
+          duration: 7,
+          instructions: "Take after meals"
+        }
+      ],
+      prescriptionDate: new Date("2025-07-01T09:00:00Z"),
+      validUntil: new Date("2025-07-14T09:00:00Z"),
+      refillAllowed: "Yes",
+      refillCount: 1,
+      pharmacyId: "55555555-eeee-ffff-aaaa-555555555555",
+      digitalSignature: "abc123signature",
+      status: "Active"
+    },
+    {
+      patientId: 1,
+      doctorId: 1,
+      clinicId: 1,
+      medications: [
+        {
+          medicationId: 1,
+          medicationName: "Ibuprofen",
+          dosage: "200mg",
+          frequency: "Three times a day",
+          duration: 5,
+          instructions: "Take with water"
+        }
+      ],
+      prescriptionDate: new Date("2025-07-02T10:30:00Z"),
+      validUntil: new Date("2025-07-10T10:30:00Z"),
+      refillAllowed: "No",
+      refillCount: 0,
+      pharmacyId: null,
+      digitalSignature: "def456signature",
+      status: "Active"
+    }
+  ];
+  return await Prescription.bulkCreate(dummyPrescriptions);
+};
+
 module.exports = Prescription;
+module.exports.insertDummyPrescriptions = insertDummyPrescriptions;

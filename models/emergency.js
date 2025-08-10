@@ -246,3 +246,95 @@ var Referral = sequelize.define("referral", {
 });
 
 module.exports = Referral;
+
+/**
+ * Insert dummy emergency handlings for testing/demo purposes.
+ */
+EmergencyHandling.insertDummyEmergencyHandlings = async function() {
+  const dummyHandlings = [
+    {
+      patientId: "11111111-aaaa-bbbb-cccc-111111111111",
+      emergencyType: "Severe Pain",
+      reportedBy: "22222222-bbbb-cccc-dddd-222222222222",
+      priorityLevel: "High",
+      responseTime: 15.5,
+      assignedDoctorId: "33333333-cccc-dddd-eeee-333333333333",
+      treatmentStatus: "Completed"
+    },
+    {
+      patientId: "44444444-dddd-eeee-ffff-444444444444",
+      emergencyType: "Infection",
+      reportedBy: "55555555-eeee-ffff-aaaa-555555555555",
+      priorityLevel: "Medium",
+      responseTime: 30.0,
+      assignedDoctorId: "66666666-ffff-aaaa-bbbb-666666666666",
+      treatmentStatus: "In Progress"
+    }
+  ];
+  return await EmergencyHandling.bulkCreate(dummyHandlings);
+};
+
+/**
+ * Insert dummy emergency cases for testing/demo purposes.
+ */
+EmergencyCase.insertDummyEmergencyCases = async function() {
+  const dummyCases = [
+    {
+      patientId: "11111111-aaaa-bbbb-cccc-111111111111",
+      reportedBy: "22222222-bbbb-cccc-dddd-222222222222",
+      severityLevel: "Severe",
+      symptoms: ["Swelling", "Fever", "Pain"],
+      treatmentStatus: "In Progress",
+      assignedDoctorId: "33333333-cccc-dddd-eeee-333333333333",
+      arrivalTime: new Date("2025-07-01T08:00:00Z"),
+      treatmentStartTime: new Date("2025-07-01T08:30:00Z"),
+      treatmentEndTime: null,
+      notes: "Patient arrived with severe swelling and fever."
+    },
+    {
+      patientId: "44444444-dddd-eeee-ffff-444444444444",
+      reportedBy: "55555555-eeee-ffff-aaaa-555555555555",
+      severityLevel: "Critical",
+      symptoms: ["Unconscious", "Bleeding"],
+      treatmentStatus: "Pending",
+      assignedDoctorId: "66666666-ffff-aaaa-bbbb-666666666666",
+      arrivalTime: new Date("2025-07-02T10:15:00Z"),
+      treatmentStartTime: null,
+      treatmentEndTime: null,
+      notes: "Patient brought in unconscious after accident."
+    }
+  ];
+  return await EmergencyCase.bulkCreate(dummyCases);
+};
+
+/**
+ * Insert dummy referrals for testing/demo purposes.
+ */
+Referral.insertDummyReferrals = async function() {
+  const dummyReferrals = [
+    {
+      patientId: "11111111-aaaa-bbbb-cccc-111111111111",
+      referredByDoctorId: "33333333-cccc-dddd-eeee-333333333333",
+      referredToSpecialistId: "77777777-aaaa-bbbb-cccc-777777777777",
+      reasonForReferral: "Suspected oral cancer, needs specialist evaluation.",
+      specialistClinicId: "88888888-bbbb-cccc-dddd-888888888888",
+      status: "Pending",
+      appointmentDate: new Date("2025-07-10T09:00:00Z"),
+      feedbackFromSpecialist: null
+    },
+    {
+      patientId: "44444444-dddd-eeee-ffff-444444444444",
+      referredByDoctorId: "66666666-ffff-aaaa-bbbb-666666666666",
+      referredToSpecialistId: "99999999-cccc-dddd-eeee-999999999999",
+      reasonForReferral: "Complex root canal required.",
+      specialistClinicId: null,
+      status: "Accepted",
+      appointmentDate: new Date("2025-07-15T14:00:00Z"),
+      feedbackFromSpecialist: "Patient accepted for treatment. Will schedule surgery."
+    }
+  ];
+  return await Referral.bulkCreate(dummyReferrals);
+};
+module.exports.insertDummyReferrals = Referral.insertDummyReferrals;
+module.exports.insertDummyEmergencyCases = EmergencyCase.insertDummyEmergencyCases;
+module.exports.insertDummyEmergencyHandlings = EmergencyHandling.insertDummyEmergencyHandlings;

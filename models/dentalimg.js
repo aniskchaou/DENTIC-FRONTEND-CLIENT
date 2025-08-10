@@ -1,18 +1,3 @@
-/* {
-    "DentalImaging": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Doctor)",
-      "imageType": "X-ray | CT Scan | Intraoral Photo",
-      "imageUrl": "string",
-      "diagnosisNotes": "string",
-      "uploadDate": "timestamp",
-      "status": "Reviewed | Pending",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-   */
 
   var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require("sequelize");
@@ -20,23 +5,15 @@ var Sequelize = require("sequelize");
 var DentalImaging = sequelize.define("dental_imaging", {
 
   patientId: {
-    type: Sequelize.UUID,
+    type: Sequelize.INTEGER,
     allowNull: false,
-    // references: {
-    //   model: "patients", // Assuming patients are stored in a table
-    //   key: "id",
-    // },
   },
   doctorId: {
-    type: Sequelize.UUID,
+    type: Sequelize.INTEGER,
     allowNull: false,
-    // references: {
-    //   model: "users", // Assuming doctors are in the User table
-    //   key: "id",
-    // },
   },
   imageType: {
-    type: Sequelize.ENUM("X-ray", "CT Scan", "Intraoral Photo"),
+    type: Sequelize.STRING,
     allowNull: false,
   },
   imageUrl: {
@@ -52,7 +29,7 @@ var DentalImaging = sequelize.define("dental_imaging", {
     defaultValue: Sequelize.NOW,
   },
   status: {
-    type: Sequelize.ENUM("Reviewed", "Pending"),
+    type: Sequelize.STRING,
     allowNull: false,
     defaultValue: "Pending",
   },
@@ -66,4 +43,23 @@ var DentalImaging = sequelize.define("dental_imaging", {
   },
 });
 
+/**
+ * Insert dummy dental imaging records for testing/demo purposes.
+ */
+DentalImaging.insertDummyDentalImaging = async function() {
+  const dummyImages = [
+    {
+      patientId: 1,
+      doctorId: 2,
+      imageType: "X-ray",
+      imageUrl: "https://example.com/xray1.jpg",
+      diagnosisNotes: "Possible caries detected on molar.",
+      uploadDate: new Date("2025-07-01T09:00:00Z"),
+      status: "Reviewed"
+    }
+  ];
+  return await DentalImaging.bulkCreate(dummyImages);
+};
+
 module.exports = DentalImaging;
+module.exports.insertDummyDentalImaging = DentalImaging.insertDummyDentalImaging;

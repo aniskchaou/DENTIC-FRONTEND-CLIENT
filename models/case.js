@@ -79,6 +79,64 @@ CaseStudy.associate = models => {
   CaseStudy.belongsTo(models.Doctor, { foreignKey: "doctorId" });
 }; */
 
+/**
+ * Add a new case study to the database.
+ * @param {Object} data - The case study data.
+ * @returns {Promise<Object>} The created case study instance.
+ */
+CaseStudy.addCaseStudy = async function(data) {
+  try {
+    const caseStudy = await this.create(data);
+    return caseStudy;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Add dummy case studies to the database for testing/demo purposes.
+ * @returns {Promise<Array<Object>>} The created case study instances.
+ */
+CaseStudy.addDummyData = async function() {
+  const dummyData = [
+    {
+      patientId: "11111111-1111-1111-1111-111111111111",
+      doctorId: "22222222-2222-2222-2222-222222222222",
+      title: "Wisdom Tooth Extraction",
+      description: "Extraction of impacted lower wisdom tooth with minimal complications.",
+      proceduresPerformed: ["X-Ray", "Local Anesthesia", "Extraction", "Suturing"],
+      outcome: "Successful extraction, patient recovered well.",
+      researchFiles: ["https://example.com/wisdomtooth.pdf"],
+      status: "Completed"
+    },
+    {
+      patientId: "33333333-3333-3333-3333-333333333333",
+      doctorId: "44444444-4444-4444-4444-444444444444",
+      title: "Orthodontic Braces Case",
+      description: "Correction of severe dental crowding using fixed orthodontic appliances.",
+      proceduresPerformed: ["Braces Placement", "Monthly Adjustments", "Retainer Placement"],
+      outcome: "Treatment ongoing, significant improvement observed.",
+      researchFiles: [],
+      status: "Ongoing"
+    },
+    {
+      patientId: "55555555-5555-5555-5555-555555555555",
+      doctorId: "66666666-6666-6666-6666-666666666666",
+      title: "Dental Implant Placement",
+      description: "Single tooth implant placement in the upper jaw.",
+      proceduresPerformed: ["CBCT Scan", "Implant Placement", "Crown Placement"],
+      outcome: "Implant integrated successfully, patient satisfied.",
+      researchFiles: ["https://example.com/implant-case.jpg"],
+      status: "Published"
+    }
+  ];
+  try {
+    const caseStudies = await this.bulkCreate(dummyData);
+    return caseStudies;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = CaseStudy;
 
-  

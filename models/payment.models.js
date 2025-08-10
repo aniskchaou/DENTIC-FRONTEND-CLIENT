@@ -38,22 +38,22 @@ const { Sequelize, DataTypes } = require("sequelize");
 const Payment = sequelize.define("payment", {
 
   patientId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     comment: "Reference to the patient making the payment",
   },
   appointmentId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: true,
     comment: "Reference to the associated appointment (if applicable)",
   },
   invoiceId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: true,
     comment: "Reference to the associated invoice (if applicable)",
   },
   clinicId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     comment: "Reference to the clinic receiving the payment",
   },
@@ -119,4 +119,30 @@ Payment.associate = models => {
   Payment.belongsTo(models.InsuranceClaim, { foreignKey: "insuranceClaimId" });
 }; */
 
+/**
+ * Insert dummy payment records for testing/demo purposes.
+ */
+insertDummyPayments = async function() {
+  const dummyPayments = [
+    {
+      patientId: 1,
+      appointmentId: 1,
+      invoiceId: 1,
+      clinicId: 1,
+      amount: 150.00,
+      currency: "USD",
+      paymentMethod: "Credit Card",
+      transactionId: "TXN123456789",
+      insuranceClaimId: null,
+      paymentStatus: "Completed",
+      paymentDate: new Date("2025-07-01T10:00:00Z"),
+      notes: "Paid in full at reception"
+    }
+  ];
+  return await Payment.bulkCreate(dummyPayments);
+};
+
+insertDummyPayments()
+    .then(() => console.log("Dummy payments inserted successfully."))
+    .catch(err => console.error("Error inserting dummy payments:", err));
 module.exports = Payment;

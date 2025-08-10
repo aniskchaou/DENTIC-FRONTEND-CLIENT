@@ -1,20 +1,4 @@
-/* {
-    "InventoryItem": {
-      "id": "UUID",
-      "name": "string",
-      "category": "Dental Tools | Medications | Consumables | Equipment",
-      "quantity": "integer",
-      "unit": "string (e.g., box, bottle, pack)",
-      "supplierId": "UUID (Ref to Supplier)",
-      "clinicId": "UUID (Ref to Clinic)",
-      "reorderLevel": "integer (minimum stock threshold)",
-      "expiryDate": "timestamp",
-      "status": "In Stock | Low Stock | Out of Stock",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-   */
+
 
   var sequelize = require("../db/init.sequelize.js");
   var { Sequelize, DataTypes } = require('sequelize');
@@ -40,20 +24,12 @@ const InventoryItem = sequelize.define("inventoryItem", {
     defaultValue: "piece",
   },
   supplierId: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    references: {
-      model: "suppliers",
-      key: "id",
-    },
+    type: DataTypes.INTEGER,
+    allowNull: true
   },
   clinicId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: "clinics",
-      key: "id",
-    },
+    type: DataTypes.INTEGER,
+    allowNull: false
   },
   reorderLevel: {
     type: DataTypes.INTEGER,
@@ -79,4 +55,56 @@ const InventoryItem = sequelize.define("inventoryItem", {
   },
 });
 
+InventoryItem.insertDummyInventory = async function () {
+  const dummyInventory = [
+    {
+      name: "Dental Mirror",
+      category: "Dental Tools",
+      quantity: 50,
+      unit: "piece",
+      supplierId: null,
+      clinicId: 1,
+      reorderLevel: 10,
+      expiryDate: null,
+      status: "In Stock"
+    },
+    {
+      name: "Amoxicillin",
+      category: "Medications",
+      quantity: 100,
+      unit: "box",
+      supplierId: null,
+      clinicId: 1,
+      reorderLevel: 20,
+      expiryDate: new Date("2026-01-01"),
+      status: "In Stock"
+    },
+    {
+      name: "Latex Gloves",
+      category: "Consumables",
+      quantity: 200,
+      unit: "pack",
+      supplierId: null,
+      clinicId: 1,
+      reorderLevel: 30,
+      expiryDate: new Date("2025-12-31"),
+      status: "Low Stock"
+    },
+    {
+      name: "X-Ray Machine",
+      category: "Equipment",
+      quantity: 2,
+      unit: "piece",
+      supplierId: null,
+      clinicId: 1,
+      reorderLevel: 1,
+      expiryDate: null,
+      status: "In Stock"
+    }
+  ];
+  return await InventoryItem.bulkCreate(dummyInventory);
+};
+
 module.exports = InventoryItem;
+module.exports.insertDummyInventory = InventoryItem.insertDummyInventory;
+

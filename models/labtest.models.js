@@ -1,4 +1,3 @@
-
 /* var LabTest = sequelize.define('labtest', {
     datee: Sequelize.STRING,
     patient: Sequelize.STRING,
@@ -41,7 +40,7 @@ var { Sequelize, DataTypes } = require('sequelize');
 const LabTest = sequelize.define("labTest", {
 
   patientId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     /* references: {
       model: "patients",
@@ -49,7 +48,7 @@ const LabTest = sequelize.define("labTest", {
     }, */
   },
   doctorId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     /* references: {
       model: "doctors",
@@ -57,7 +56,7 @@ const LabTest = sequelize.define("labTest", {
     }, */
   },
   clinicId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     /* references: {
       model: "clinics",
@@ -69,7 +68,7 @@ const LabTest = sequelize.define("labTest", {
     allowNull: false,
   },
   testCategory: {
-    type: DataTypes.ENUM("Radiology", "Pathology", "Microbiology", "Hematology"),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   testDescription: {
@@ -77,7 +76,7 @@ const LabTest = sequelize.define("labTest", {
     allowNull: true,
   },
   sampleType: {
-    type: DataTypes.ENUM("Blood", "Saliva", "Tissue", "Other"),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   sampleCollectionDate: {
@@ -85,7 +84,7 @@ const LabTest = sequelize.define("labTest", {
     allowNull: false,
   },
   sampleCollectedBy: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false,
     /* references: {
       model: "lab_technicians",
@@ -102,8 +101,8 @@ const LabTest = sequelize.define("labTest", {
     allowNull: true,
   },
   laboratoryId: {
-    type: DataTypes.UUID,
-    allowNull: false,
+    type: DataTypes.INTEGER,
+    allowNull: true,
     /* references: {
       model: "laboratories",
       key: "id",
@@ -131,5 +130,75 @@ const LabTest = sequelize.define("labTest", {
     defaultValue: Sequelize.NOW,
   },
 });
+
+/**
+ * Insert dummy lab tests for testing/demo purposes.
+ */
+LabTest.insertDummyLabTests = async function() {
+  const dummyLabTests = [
+    {
+      patientId: 1,
+      doctorId: 2,
+      clinicId: 3,
+      testName: "Dental X-Ray",
+      testCategory: "Radiology",
+      testDescription: "Panoramic dental X-ray to check for cavities and bone loss.",
+      sampleType: "Other",
+      sampleCollectionDate: new Date("2025-07-01T09:00:00Z"),
+      sampleCollectedBy: 1,
+      testStatus: "Completed",
+      result: {
+        resultId: "55555555-eeee-ffff-aaaa-555555555555",
+        resultDate: "2025-07-01T12:00:00Z",
+        resultDescription: "No cavities detected. Mild bone loss observed.",
+        attachments: ["https://example.com/reports/xray1.pdf"]
+      },
+      laboratoryId: 1,
+      testCost: 120.00,
+      insuranceCovered: "Yes",
+      paymentStatus: "Paid"
+    },
+    {
+      patientId: 1,
+      doctorId: 2,
+      clinicId: 3,
+      testName: "Blood Test",
+      testCategory: "Hematology",
+      testDescription: "CBC to check for infection.",
+      sampleType: "Blood",
+      sampleCollectionDate: new Date("2025-07-02T10:30:00Z"),
+      sampleCollectedBy: 4,
+      testStatus: "Completed",
+      result: {
+        resultId: "bbbbbbbb-eeee-ffff-aaaa-bbbbbbbbbbbb",
+        resultDate: "2025-07-02T13:00:00Z",
+        resultDescription: "WBC count elevated, indicating infection.",
+        attachments: []
+      },
+      laboratoryId: 1,
+      testCost: 80.00,
+      insuranceCovered: "No",
+      paymentStatus: "Paid"
+    },
+    {
+      patientId: 1,
+      doctorId: 2,
+      clinicId: 3,
+      testName: "Saliva Test",
+      testCategory: "Microbiology",
+      testDescription: "Test for bacterial load in saliva.",
+      sampleType: "Saliva",
+      sampleCollectionDate: new Date("2025-07-03T11:15:00Z"),
+      sampleCollectedBy: 1,
+      testStatus: "Pending",
+      result: null,
+      laboratoryId: 1,
+      testCost: 60.00,
+      insuranceCovered: "Yes",
+      paymentStatus: "Pending"
+    }
+  ];
+  return await LabTest.bulkCreate(dummyLabTests);
+};
 
 module.exports = LabTest;

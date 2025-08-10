@@ -36,17 +36,8 @@ module.exports = Expense; */
 var Expense = sequelize.define("expense", {
  
   expenseCategory: {
-    type: Sequelize.ENUM(
-      "Rent",
-      "Salaries",
-      "Equipment",
-      "Utilities",
-      "Supplies",
-      "Maintenance",
-      "Marketing",
-      "Other"
-    ),
-    allowNull: false,
+    type: Sequelize.STRING,
+    allowNull: true,
   },
   description: {
     type: Sequelize.STRING,
@@ -58,12 +49,12 @@ var Expense = sequelize.define("expense", {
     allowNull: false,
   },
   paymentMethod: {
-    type: Sequelize.ENUM("Cash", "Bank Transfer", "Credit Card", "Online Payment"),
-    allowNull: false,
+    type: Sequelize.STRING,
+    allowNull: true,
   },
   paymentStatus: {
-    type: Sequelize.ENUM("Pending", "Paid", "Partially Paid"),
-    allowNull: false,
+    type: Sequelize.STRING,
+    allowNull: true,
     defaultValue: "Pending",
   },
   vendorId: {
@@ -119,5 +110,56 @@ var Expense = sequelize.define("expense", {
     defaultValue: Sequelize.NOW,
   },
 });
+
+/**
+ * Insert dummy expenses for testing/demo purposes.
+ */
+Expense.insertDummyExpenses = async function() {
+  const dummyExpenses = [
+    {
+      expenseCategory: "Equipment",
+      description: "Purchase of new dental chair",
+      amount: 3500.00,
+      paymentMethod: "Bank Transfer",
+      paymentStatus: "Paid",
+      vendorId: "11111111-aaaa-bbbb-cccc-111111111111",
+      vendorName: "Dental Supplies Inc.",
+      invoiceId: "22222222-bbbb-cccc-dddd-222222222222",
+      clinicId: "33333333-cccc-dddd-eeee-333333333333",
+      transactionDate: new Date("2025-07-01T10:00:00Z"),
+      receiptAttachments: ["https://example.com/receipts/chair-invoice.pdf"],
+      notes: "Chair installed in Room 2."
+    },
+    {
+      expenseCategory: "Salaries",
+      description: "Monthly salary for July",
+      amount: 12000.00,
+      paymentMethod: "Bank Transfer",
+      paymentStatus: "Paid",
+      vendorId: null,
+      vendorName: "",
+      invoiceId: null,
+      clinicId: "33333333-cccc-dddd-eeee-333333333333",
+      transactionDate: new Date("2025-07-05T09:00:00Z"),
+      receiptAttachments: [],
+      notes: "Salary paid to all staff."
+    },
+    {
+      expenseCategory: "Utilities",
+      description: "Electricity bill for June",
+      amount: 450.75,
+      paymentMethod: "Credit Card",
+      paymentStatus: "Paid",
+      vendorId: null,
+      vendorName: "City Power Co.",
+      invoiceId: "44444444-dddd-eeee-ffff-444444444444",
+      clinicId: "33333333-cccc-dddd-eeee-333333333333",
+      transactionDate: new Date("2025-07-03T15:30:00Z"),
+      receiptAttachments: ["https://example.com/receipts/electricity-june.pdf"],
+      notes: ""
+    }
+  ];
+  return await Expense.bulkCreate(dummyExpenses);
+};
 
 module.exports = Expense;

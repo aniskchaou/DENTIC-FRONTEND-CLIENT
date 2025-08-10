@@ -46,21 +46,13 @@ const Staff = sequelize.define("staff", {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true,
-    },
+    unique: false,
     comment: "Email address of the staff member",
   },
   phone: {
     type: DataTypes.STRING,
     allowNull: false,
     comment: "Phone number of the staff member",
-  },
-  clinicId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to the clinic where the staff works",
   },
   shiftSchedule: {
     type: DataTypes.JSONB,
@@ -89,12 +81,39 @@ const Staff = sequelize.define("staff", {
   },
 });
 
-/* // Define relationships with other models
-Staff.associate = models => {
-  // A staff member is associated with a clinic
-  Staff.belongsTo(models.Clinic, { foreignKey: "clinicId" });
-}; */
+
 
 module.exports = Staff;
 
+const { v4: uuidv4 } = require('uuid');
+
+const createDummyStaff = async () => {
+  try {
+    const dummyData = {
+      fullName: "Alice Johnson",
+      role: "Dentist",
+      email: "alice.johnson@example.com",
+      phone: "+1-555-123-4567",
+      shiftSchedule: {
+        Monday: "09:00-17:00",
+        Tuesday: "09:00-17:00",
+        Wednesday: "09:00-17:00",
+        Thursday: "09:00-17:00",
+        Friday: "09:00-17:00",
+        Saturday: null,
+        Sunday: null,
+      },
+      permissions: ["view_patients", "edit_appointments", "perform_operations"],
+      status: "Active",
+    };
+
+    const newStaff = await Staff.create(dummyData);
+    console.log("Dummy Staff created:", newStaff.toJSON());
+    return newStaff;
+  } catch (error) {
+    console.error("Error creating dummy Staff:", error);
+  }
+};
+
+module.exports.createDummyStaff = createDummyStaff;
   

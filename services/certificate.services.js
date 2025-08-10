@@ -1,6 +1,6 @@
 
 const Certificate = require("../models/certificate.models");
-const Patient = require("../models/patient.models");
+const {Patient} = require("../models/patient.models");
 exports.getCount = (req, res) => {
     Certificate.count()
         .then(data => {
@@ -43,7 +43,7 @@ exports.filterCertificate = (patient, template, req, res) => {
 
 
 exports.findAllCertificates = (res) => {
-    /*   Certificate.findAll()
+       Certificate.findAll()
           .then(data => {
               res.send(data);
           })
@@ -52,30 +52,30 @@ exports.findAllCertificates = (res) => {
                   message:
                       err.message || "Some error occurred while retrieving users."
               });
-          }); */
+          }); 
 
-    const certificates = []
-    const p = Patient.findAll()
-    const t = Certificate.findAll()
+    // const certificates = []
+    // const p = Patient.findAll()
+    // const t = Certificate.findAll()
 
-    Promise
-        .all([t, p])
-        .then(responses => {
-            console.log(responses[1])
-            for (const d of responses[0]) {
-                certificates.push({
-                    id: d.id,
-                    date: d.date,
-                    template: d.template,
-                    content: d.content,
-                    patient: responses[1].find(i => i.id == d.patient)?.dataValues?.namepatient,
-                    createdAt: d.createdAt,
-                    updatedAt: d.updatedAt
-                })
+    // Promise
+    //     .all([t, p])
+    //     .then(responses => {
+    //         console.log(responses[1])
+    //         for (const d of responses[0]) {
+    //             certificates.push({
+    //                 id: d.id,
+    //                 date: d.date,
+    //                 template: d.template,
+    //                 content: d.content,
+    //                 patient: responses[1].find(i => i.id == d.patient)?.dataValues?.namepatient,
+    //                 createdAt: d.createdAt,
+    //                 updatedAt: d.updatedAt
+    //             })
 
-            }
-            res.send(certificates);
-        })
+    //         }
+    //         res.send(certificates);
+    //     })
 }
 
 exports.createCertificate = (user, res) => {
@@ -91,7 +91,7 @@ exports.createCertificate = (user, res) => {
         });
 }
 
-exports.findCertificateById = (id) => {
+exports.findCertificateById = (id,res) => {
     Certificate.findByPk(id)
         .then(data => {
             res.send(data);

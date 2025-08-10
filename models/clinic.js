@@ -1,32 +1,4 @@
-/* {
-    "Clinic": {
-      "id": "UUID",
-      "name": "string",
-      "location": {
-        "address": "string",
-        "city": "string",
-        "state": "string",
-        "zipCode": "string",
-        "country": "string"
-      },
-      "contactNumber": "string",
-      "email": "string",
-      "workingHours": {
-        "Monday": {"open": "HH:mm", "close": "HH:mm"},
-        "Tuesday": {"open": "HH:mm", "close": "HH:mm"},
-        "Wednesday": {"open": "HH:mm", "close": "HH:mm"},
-        "Thursday": {"open": "HH:mm", "close": "HH:mm"},
-        "Friday": {"open": "HH:mm", "close": "HH:mm"},
-        "Saturday": {"open": "HH:mm", "close": "HH:mm"},
-        "Sunday": "Closed"
-      },
-      "doctorsAvailable": ["UUID (Ref to Doctor)"],
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-   */
-  var sequelize = require("../db/init.sequelize.js");
+var sequelize = require("../db/init.sequelize.js");
   var Sequelize = require("sequelize");
   
   var Clinic = sequelize.define("clinic", {
@@ -49,7 +21,7 @@
     },
     zipCode: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     country: {
       type: Sequelize.STRING,
@@ -61,8 +33,8 @@
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
+      allowNull: true,
+      unique: false,
       // validate: {
       //   isEmail: true,
       // },
@@ -89,5 +61,59 @@
     },
   });
   
-  module.exports = Clinic;
+  /**
+   * Insert dummy clinics for testing/demo purposes.
+   */
+  Clinic.insertDummyClinics = async function() {
+    const dummyClinics = [
+      {
+        name: "Downtown Dental Care",
+        address: "123 Main St",
+        city: "Metropolis",
+        state: "Metro State",
+        zipCode: "12345",
+        country: "Countryland",
+        contactNumber: "+1234567890",
+        email: "downtown@dentalcare.com",
+        workingHours: {
+          monday: "08:00-17:00",
+          tuesday: "08:00-17:00",
+          wednesday: "08:00-17:00",
+          thursday: "08:00-17:00",
+          friday: "08:00-17:00",
+          saturday: "09:00-13:00",
+          sunday: "Closed"
+        },
+        doctorsAvailable: [
+          "11111111-aaaa-bbbb-cccc-111111111111",
+          "22222222-bbbb-cccc-dddd-222222222222"
+        ]
+      },
+      {
+        name: "Smile Bright Clinic",
+        address: "456 Elm St",
+        city: "Smallville",
+        state: "Metro State",
+        zipCode: "54321",
+        country: "Countryland",
+        contactNumber: "+1987654321",
+        email: "smile@brightclinic.com",
+        workingHours: {
+          monday: "09:00-18:00",
+          tuesday: "09:00-18:00",
+          wednesday: "09:00-18:00",
+          thursday: "09:00-18:00",
+          friday: "09:00-18:00",
+          saturday: "10:00-14:00",
+          sunday: "Closed"
+        },
+        doctorsAvailable: [
+          "33333333-cccc-dddd-eeee-333333333333"
+        ]
+      }
+    ];
+    return await Clinic.bulkCreate(dummyClinics);
+  };
   
+  module.exports = Clinic;
+  module.exports.insertDummyClinics = Clinic.insertDummyClinics;

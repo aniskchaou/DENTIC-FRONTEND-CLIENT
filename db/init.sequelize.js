@@ -1,22 +1,30 @@
-const dbConfig = require("./connection.sequelize.js");
-var Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 
-var sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    port: dbConfig.port,
-    native: dbConfig.native,
-    dialectOptions: {
-        ssl: false
-    },
-    pool: {
-        max: dbConfig.pool.max,
-        min: dbConfig.pool.min,
-        acquire: dbConfig.pool.acquire,
-        idle: dbConfig.pool.idle
+const DEMO_MODE = false;
+
+let sequelize;
+
+if (DEMO_MODE) {
+  // Demo mode: use SQLite (file-based for persistence, ':memory:' for in-memory)
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: ':memory:',
+    logging: false,
+  });
+  console.log("Running in DEMO MODE with in-memory SQLite (cache).");
+} else {
+  // Production mode: use PostgreSQL
+  sequelize = new Sequelize(
+    'dentic',
+    'dentic_user',
+    'd6bltRW0pcaXGWnnp9O0SbFZSF0sBKMf', // This must be a string!
+    {
+      host: 'postgresql://dentic_user:d6bltRW0pcaXGWnnp9O0SbFZSF0sBKMf@dpg-d2cebi1r0fns73dspo50-a.oregon-postgres.render.com/dentic',
+      dialect: 'postgres',
+      logging: true,
     }
-});
-console.log(dbConfig.HOST)
+  );
+  console.log("Running in PRODUCTION MODE with PostgreSQL database.");
+}
 
-//var sequelize = new Sequelize('sqlite::memory:');
 module.exports = sequelize;

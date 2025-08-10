@@ -1,8 +1,15 @@
-
 const MedicamentCategory = require("../models/medicament.category.models");
 
+/**
+ * @swagger
+ * /medicament-categories:
+ *   get:
+ *     summary: Get all medicament categories
+ *     responses:
+ *       200:
+ *         description: List of all medicament categories
+ */
 exports.findAllMedicamentCategorys = (res) => {
-
     MedicamentCategory.findAll()
         .then(data => {
             res.send(data);
@@ -15,6 +22,26 @@ exports.findAllMedicamentCategorys = (res) => {
         });
 }
 
+/**
+ * @swagger
+ * /medicament-categories:
+ *   post:
+ *     summary: Create a new medicament category
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Medicament category created
+ *       400:
+ *         description: Content can not be empty!
+ */
 exports.createMedicamentCategory = (income, res) => {
     MedicamentCategory.create(income)
         .then(data => {
@@ -28,6 +55,23 @@ exports.createMedicamentCategory = (income, res) => {
         });
 }
 
+/**
+ * @swagger
+ * /medicament-categories/{id}:
+ *   get:
+ *     summary: Get a medicament category by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Medicament category data
+ *       404:
+ *         description: Medicament category not found
+ */
 exports.findMedicamentCategoryById = (id, res) => {
     MedicamentCategory.findByPk(id)
         .then(data => {
@@ -40,6 +84,23 @@ exports.findMedicamentCategoryById = (id, res) => {
         });
 }
 
+/**
+ * @swagger
+ * /medicament-categories/{id}:
+ *   delete:
+ *     summary: Delete a medicament category by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Medicament category deleted
+ *       404:
+ *         description: Medicament category not found
+ */
 exports.deleteMedicamentCategoryById = (id, res) => {
     MedicamentCategory.destroy({
         where: { id: id }
@@ -62,6 +123,29 @@ exports.deleteMedicamentCategoryById = (id, res) => {
         });
 }
 
+/**
+ * @swagger
+ * /medicament-categories/{id}:
+ *   put:
+ *     summary: Update a medicament category by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Medicament category updated
+ *       404:
+ *         description: Medicament category not found
+ */
 exports.updateMedicamentCategory = (id, req, res) => {
     MedicamentCategory.update(req.body, {
         where: { id: id }
@@ -84,7 +168,16 @@ exports.updateMedicamentCategory = (id, req, res) => {
         });
 }
 
-exports.deleteAllMedicamentCategorys = () => {
+/**
+ * @swagger
+ * /medicament-categories:
+ *   delete:
+ *     summary: Delete all medicament categories
+ *     responses:
+ *       200:
+ *         description: All medicament categories deleted
+ */
+exports.deleteAllMedicamentCategorys = (res) => {
     MedicamentCategory.destroy({
         where: {},
         truncate: false

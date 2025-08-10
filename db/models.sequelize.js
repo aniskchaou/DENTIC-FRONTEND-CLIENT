@@ -36,7 +36,26 @@ var NotificationSettings = require("../models/settings/notification.settings.mod
 // var HomePage = require("../models/home.page.models.js")
 //var ServicePage = require("../models/service.page.models.js")       
 //var ServiceItem = require('../models/service.models') 
-
+var Case = require("../models/case.js");
+const Clinic = require("../models/clinic.js");
+const Consultation = require("../models/consultation.models.js");
+const DentalImaging = require("../models/dentalimg.js");
+const Diagnosis = require("../models/diagnostic.models.js");
+const Doctor = require("../models/doctor.js");
+const EquipmentMaintenance = require("../models/equipement.js");
+const Referral = require("../models/emergency.js");
+const Insurance = require("../models/insurance.js");
+const { LoyaltyProgram } = require("../models/loyalty.models.js");
+const LegalCompliance = require("../models/legal.js");
+const MarketingCRM = require("../models/marketing.js");
+const TreatmentPlan = require("../models/treatementplan.models.js");
+const DentalMembership = require("../models/membership.js");
+const Operation = require("../models/operation.models.js");
+const Procedure = require("../models/procedure.js");
+const Staff = require("../models/staff.js");
+const InventoryItem = require("../models/inventory.js");
+const { Settings, addSettingsData } = require("../models/settings.mdels.js");
+const { insertDummyTelemedicine } = require("../models/telemedecine.js");
 sequelize.sync().then(async function () {
 
     DashboardSettings.create(seeds.getDashboardSettings())
@@ -46,32 +65,53 @@ sequelize.sync().then(async function () {
     LocalisationSettings.create(seeds.getLocalisationSettings())
     NotificationSettings.create(seeds.getNotificationSettings())
     SystemSettings.create(seeds.getSytemSettings())
-    //Patient.insertPatients()
+    Patient.insertPatients()
+    Case.addDummyData()
+    Certificate.insertDummyCertificates()
+    MedicamentCategory.insertDummyCategories()
+    Clinic.insertDummyClinics()
+    Consultation.insertDummyConsultations()
+    DentalImaging.insertDummyDentalImaging()
+    Diagnosis.insertDummyDiagnoses()
+    Doctor.insertDummyDoctors()
+    EquipmentMaintenance.insertDummyEquipment()
+    //EmergencyContact.insertDummy
+    Referral.insertDummyReferrals()
+    Expense.insertDummyExpenses()
+    Income.insertDummyIncomes()
+    Insurance.insertDummyInsurances()
+    LabTest.insertDummyLabTests()
+    LoyaltyProgram.insertDummyLoyaltyPrograms()
+    LegalCompliance.insertDummyLegalCompliances()
+    MarketingCRM.addDummyMarketingData()
+    TreatmentPlan.insertDummyTreatmentPlans()
+    DentalMembership.insertDummyMemberships()
+    Medicament.createDummyMedicament()
+    MedicamentManufacture.createDummyMedicamentManufacture()
+    Operation.createDummyOperation()
+    Procedure.createDummyProcedure()
+    //Staff.createDummyStaff()
 
-    /* Patient.create(seeds.patientSeed)
-     Expense.create(seeds.expenseSeed)
-     ToDo.create()
-     Income.create()
-     Medicament.create()
-     Payment.create()
-     Preferences.create()
-     Prescription.create()
-     Appointement.create()
-     Message.create()
-     LabTest.create()
-     Invoice.create()
-     MedicamentCategory.create()
-     MedicamentManufacture.create()
-     Note.create()
-     Certificate.create()
-     CertificateTemplate.create()*/
-    //  ServiceItem.bulkCreate(seeds.serviceSeed)
-    // HomePage.create(seeds.homePageSeed)
-    // ServicePage.create(seeds.servicePageSeed)
-    // BlogPage.create(seeds.blogPageSeed)
-    // OpeningHoursPage.create(seeds.schedulePageSeed)
-    // ContactPage.create(seeds.contactPageSeed)
-    // TestimonialsPage.create(seeds.testimonialsSeed)
+
+
+    //EmergencyCase.insertDummyEmergencyCases()
+    //EmergencyHandling.insertDummyEmergencyHandlings()
+   
+    //ServiceItem.bulkCreate(seeds.serviceSeed)
+    HomePage.create(seeds.homePageSeed)
+    ServicePage.create(seeds.servicePageSeed)
+    BlogPage.create(seeds.blogPageSeed)
+    OpeningHoursPage.create(seeds.schedulePageSeed)
+    ContactPage.create(seeds.contactPageSeed)
+    TestimonialsPage.create(seeds.testimonialsSeed)
+    Prescription.insertDummyPrescriptions()
+    InventoryItem.insertDummyInventory()
+    Clinic.insertDummyClinics()
+    await addSettingsData()
+    await Appointement.insertRealAppointment()
+    Invoice.insertDummyInvoice()
+    //const settingsController = require("../models/settings.controllers");
+    insertDummyTelemedicine()
 
 }).then(function (res) {
     console.log(res);

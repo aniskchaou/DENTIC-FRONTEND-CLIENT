@@ -1,7 +1,3 @@
-
-
-
-
 /* var Invoice = sequelize.define('invoice', {
     client: Sequelize.STRING,
     date: Sequelize.STRING,
@@ -58,35 +54,19 @@ const Invoice = sequelize.define("invoice", {
 
   invoiceNumber: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
+    unique: false,
   },
   patientId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false
     // references: {
     //   model: "patients",
     //   key: "id",
     // },
   },
-  appointmentId: {
-    type: DataTypes.UUID,
-    allowNull: true
-    // references: {
-    //   model: "appointments",
-    //   key: "id",
-    // },
-  },
-  doctorId: {
-    type: DataTypes.UUID,
-    allowNull: false
-    // references: {
-    //   model: "doctors",
-    //   key: "id",
-    // },
-  },
   clinicId: {
-    type: DataTypes.UUID,
+    type: DataTypes.INTEGER,
     allowNull: false
     // references: {
     //   model: "clinics",
@@ -115,25 +95,17 @@ const Invoice = sequelize.define("invoice", {
     allowNull: false,
   },
   paymentStatus: {
-    type: DataTypes.ENUM("Pending", "Paid", "Partially Paid", "Refunded"),
+    type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "Pending",
   },
   paymentMethod: {
-    type: DataTypes.ENUM("Cash", "Credit Card", "Debit Card", "Insurance", "Online Payment"),
+    type: DataTypes.STRING,
     allowNull: true,
   },
   transactionId: {
     type: DataTypes.STRING,
     allowNull: true, // Reference from payment gateway, if applicable
-  },
-  insuranceClaimId: {
-    type: DataTypes.UUID,
-    allowNull: true
-    // references: {
-    //   model: "insurance_claims",
-    //   key: "id",
-    // },
   },
   invoiceDate: {
     type: DataTypes.DATE,
@@ -158,4 +130,46 @@ const Invoice = sequelize.define("invoice", {
   },
 });
 
+/**
+ * Insert a dummy invoice record for testing/demo purposes.
+ */
+async function insertDummyInvoice() {
+  const dummyInvoice = {
+    invoiceNumber: "INV-2025001",
+    patientId: 1,
+    clinicId: 1,
+    items: [
+      {
+        itemId: 1,
+        itemType: "Consultation",
+        itemDescription: "Initial dental consultation",
+        quantity: 1,
+        unitPrice: 50.0,
+        totalPrice: 50.0
+      }
+    ],
+    subTotal: 50.0,
+    discount: {
+      amount: 5.0,
+      percentage: 10,
+      discountReason: "Welcome discount"
+    },
+    taxAmount: 2.5,
+    grandTotal: 47.5,
+    paymentStatus: "Pending",
+    paymentMethod: "Cash",
+    transactionId: null,
+    invoiceDate: new Date(),
+    dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+    notes: "First invoice for patient.",
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+
+  return await Invoice.create(dummyInvoice);
+}
+
 module.exports = Invoice;
+module.exports.insertDummyInvoice = insertDummyInvoice;
+
+

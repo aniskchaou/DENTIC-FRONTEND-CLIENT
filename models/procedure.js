@@ -4,16 +4,6 @@ var { Sequelize, DataTypes } = require('sequelize');
 
 const Procedure = sequelize.define("procedure", {
 
-  treatmentPlanId: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    comment: "Reference to the associated treatment plan, if applicable",
-  },
-  appointmentId: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    comment: "Reference to the associated appointment, if applicable",
-  },
   procedureName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -43,15 +33,31 @@ const Procedure = sequelize.define("procedure", {
     type: DataTypes.ENUM("Scheduled", "Completed", "Canceled"),
     defaultValue: "Scheduled",
     comment: "Status of the procedure",
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
-  },
+  }
 });
 
 module.exports = Procedure;
+
+
+const { v4: uuidv4 } = require('uuid');
+
+const createDummyProcedure = async () => {
+  try {
+    const dummyData = {
+      procedureName: "Root Canal",
+      procedureDate: new Date("2025-07-12T10:00:00Z"),
+      duration: 90,
+      anesthesiaType: "Local",
+      notes: "Procedure went smoothly with no complications.",
+      status: "Completed"
+    };
+
+    const newProcedure = await Procedure.create(dummyData);
+    console.log("Dummy Procedure created:", newProcedure.toJSON());
+    return newProcedure;
+  } catch (error) {
+    console.error("Error creating dummy Procedure:", error);
+  }
+};
+
+module.exports.createDummyProcedure = createDummyProcedure;

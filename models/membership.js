@@ -29,11 +29,6 @@
 
 const DentalMembership = sequelize.define("dentalMembership", {
 
-  patientId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    comment: "Reference to Patient"
-  },
   membershipPlan: {
     type: DataTypes.ENUM("Basic", "Premium", "Family", "Corporate"),
     allowNull: false,
@@ -96,5 +91,61 @@ const DentalMembership = sequelize.define("dentalMembership", {
     defaultValue: Sequelize.NOW,
   },
 });
+
+/**
+ * Insert dummy dental membership records for testing/demo purposes.
+ */
+DentalMembership.insertDummyMemberships = async function() {
+  const dummyMemberships = [
+    {
+          membershipPlan: "Premium",
+      benefits: [
+        "Free Cleanings",
+        "Discounted Treatments",
+        "Priority Booking",
+        "Emergency Support"
+      ],
+      validityPeriod: {
+        startDate: "2025-01-01T00:00:00Z",
+        endDate: "2025-12-31T23:59:59Z"
+      },
+      paymentStatus: "Active",
+      renewalDate: "2025-12-01T00:00:00Z",
+      lastPaymentAmount: 299.99,
+      lastPaymentDate: "2025-01-01T10:00:00Z"
+    },
+    {
+      membershipPlan: "Family",
+      benefits: [
+        "Free Cleanings",
+        "Discounted Treatments",
+        "Priority Booking"
+      ],
+      validityPeriod: {
+        startDate: "2024-07-01T00:00:00Z",
+        endDate: "2025-06-30T23:59:59Z"
+      },
+      paymentStatus: "Expired",
+      renewalDate: "2025-06-01T00:00:00Z",
+      lastPaymentAmount: 499.99,
+      lastPaymentDate: "2024-07-01T09:00:00Z"
+    },
+    {
+      membershipPlan: "Basic",
+      benefits: [
+        "Free Cleanings"
+      ],
+      validityPeriod: {
+        startDate: "2025-03-01T00:00:00Z",
+        endDate: "2026-02-28T23:59:59Z"
+      },
+      paymentStatus: "Active",
+      renewalDate: "2026-02-01T00:00:00Z",
+      lastPaymentAmount: 99.99,
+      lastPaymentDate: "2025-03-01T08:30:00Z"
+    }
+  ];
+  return await DentalMembership.bulkCreate(dummyMemberships);
+};
 
 module.exports = DentalMembership;
