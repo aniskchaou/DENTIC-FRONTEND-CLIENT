@@ -24,7 +24,7 @@ if (DEMO_MODE) {
       dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false, // For self-signed or managed certs
+        rejectUnauthorized: true, // For self-signed or managed certs
       }
     },
       logging: true,
