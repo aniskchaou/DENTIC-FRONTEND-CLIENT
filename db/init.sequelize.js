@@ -19,7 +19,7 @@ if (DEMO_MODE) {
     'dentic_user',
     'd6bltRW0pcaXGWnnp9O0SbFZSF0sBKMf', // This must be a string!
     {
-      host: 'postgresql://dentic_user:d6bltRW0pcaXGWnnp9O0SbFZSF0sBKMf@dpg-d2cebi1r0fns73dspo50-a.oregon-postgres.render.com/dentic',
+      host: 'dpg-d2cebi1r0fns73dspo50-a.oregon-postgres.render.com',
       dialect: 'postgres',
       logging: true,
     }
