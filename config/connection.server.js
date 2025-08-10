@@ -1,6 +1,6 @@
 
 var config = {
-    'port': 5000,
+    'port': 80,
     'user': {},
     'url': 'http://localhost:3000'
 }
