@@ -21,6 +21,12 @@ if (DEMO_MODE) {
     {
       host: 'dpg-d2cebi1r0fns73dspo50-a.oregon-postgres.render.com',
       dialect: 'postgres',
+      dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false, // For self-signed or managed certs
+      }
+    },
       logging: true,
     }
   );
