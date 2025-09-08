@@ -26,6 +26,9 @@ const consultationController = require("../controllers/api/consultation.controll
 const diagnosticController = require("../controllers/api/diagnosis.controller");
 const dentalimagingController = require("../controllers/api/dentalimaging.controller");
 
+// Get accessible DICOM file URLs by MRN
+router.get('/dental-imaging/dicom-files/:mrn', dentalimagingController.getDicomFilesByMRN);
+
 // Treatment & Procedures
 const treatmentPlanController = require("../controllers/api/treatementplan.controller");
 const vrTreatmentController = require("../controllers/api/vrtreatement.controller");
@@ -291,16 +294,7 @@ router.get("/certificates/filter/:patient/:template", certificateController.filt
 
 
 const certificateTemplateController = require("../controllers/api/certificate.template.controllers.js");
-// router.post("/certificate-templates", certificateTemplateController.create);
  router.get("/certificate-templates", certificateTemplateController.findAll);
-// router.get("/certificate-templates/:id", certificateTemplateController.findOne);
-// router.put("/certificate-templates/:id", certificateTemplateController.update);
-// router.delete("/certificate-templates/:id", certificateTemplateController.delete);
-// router.delete("/certificate-templates", certificateTemplateController.deleteAll);
-// router.get("/certificate-templates/count", certificateTemplateController.getCount);
-// router.get("/certificate-templates/filter/:patient/:template", certificateTemplateController.filterCertificate);
-
-
 const medicamentCategoryController = require("../controllers/api/medicament.category.controllers");
 
 router.post("/medicament-categories", medicamentCategoryController.create);
@@ -310,7 +304,6 @@ router.put("/medicament-categories/:id", medicamentCategoryController.update);
 router.delete("/medicament-categories/:id", medicamentCategoryController.delete);
 router.delete("/medicament-categories", medicamentCategoryController.deleteAll);
 
-//const consultationController = require("../controllers/api/consultation.controllers");
 router.post("/consultations", consultationController.create);
 router.get("/consultations", consultationController.findAll);
 router.get("/consultations/:id", consultationController.findOne);
@@ -320,6 +313,7 @@ router.delete("/consultations", consultationController.deleteAll);
 
 const dentalImagingController = require("../controllers/api/dentalimaging.controller");
 const multer = require("multer");
+const uploadd = multer();
 const path = require("path");
 
 const storage = multer.diskStorage({
@@ -327,14 +321,13 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    // Extract the original extension
     const ext = path.extname(file.originalname);
-    // Use a unique name + extension
     cb(null, Date.now() + "-" + Math.round(Math.random() * 1E9) + ext);
   }
 });
 
 const upload = multer({ storage: storage });
+const memUpload = multer({ storage: multer.memoryStorage() });
 router.post("/dental-imaging", upload.single("image"), dentalImagingController.create);
 //router.post("/dental-imaging", dentalImagingController.create);
 router.get("/dental-imaging", dentalImagingController.findAll);
@@ -343,6 +336,8 @@ router.put("/dental-imaging/:id", dentalImagingController.update);
 router.delete("/dental-imaging/:id", dentalImagingController.delete);
 router.delete("/dental-imaging", dentalImagingController.deleteAll);
 router.get("/dental-imaging/image/:filename", dentalImagingController.getImage);
+
+router.post('/dental-imaging/upload-dicom', memUpload.single('file'), dentalImagingController.uploadDicom);
 const diagnosisController = require("../controllers/api/diagnosis.controller.js");
 
 router.post("/diagnoses", diagnosisController.create);
@@ -614,20 +609,88 @@ router.post("/ondotogram/teeth", ondotogramController.getTeeth);
 
 const aiController = require("../controllers/api/ai.controllers.js");
 
-// AI Chatbot
-router.post("/ai/chat", aiController.chat);
 
-// AI Treatment Recommendation
-router.post("/ai/treatment-recommendation", aiController.treatmentRecommendation);
+ router.post("/ai/clinic-qa", aiController.clinicQA);
 
-// AI Dental Image Diagnosis
-router.post("/ai/image-diagnosis", aiController.imageDiagnosis);
+const dentalImagingAI = require("../controllers/api/dentalimaging.controller.js");
+ const appointementAI = require("../controllers/api/appointement.controllers.js");
+ router.post("/ai/scheduling-assistant", appointementAI.schedulingAssistant);
+ router.post("/ai/no-show-prediction", appointementAI.noShowPrediction);
+ router.post("/ai/smart-routing", appointementAI.smartRouting);
 
-// AI Ondotogram Suggestion
-router.post("/ai/ondotogram-suggestion", aiController.ondotogramSuggestion);
+ router.post("/ai/xray-analysis", uploadd.single("image"), dentalImagingAI.xrayAnalysis);
+router.post("/ai/lab-test-report-analysis", uploadd.single("image"), dentalImagingAI.labTestReportAnalysis);
+ router.post("/ai/treatment-progress", uploadd.fields([
+  { name: "previousXray", maxCount: 1 },
+  { name: "currentXray", maxCount: 1 }
+]), dentalImagingAI.treatmentProgress);
 
-// AI Clinic Q&A
-router.post("/ai/clinic-qa", aiController.clinicQA);
+ const diagnosisAI = require("../controllers/api/diagnosis.controller.js");
 
+// Diagnosis AI endpoints
+router.post("/ai/symptom-checker", diagnosisAI.symptomChecker);
+router.post("/ai/decision-support", diagnosisAI.decisionSupport);
+router.post("/ai/risk-prediction", diagnosisAI.riskPrediction);
+const treatmentPlanAI = require("../controllers/api/treatementplan.controller.js");
+
+// AI Treatment Plan endpoints
+router.post("/ai/treatment-optimizer", treatmentPlanAI.treatmentOptimizer);
+router.post("/ai/treatment-outcome-prediction", treatmentPlanAI.treatmentOutcomePrediction);
+router.post("/ai/treatment-explainer", treatmentPlanAI.treatmentExplainer);
+
+const procedureAI = require("../controllers/api/procedure.controller.js");
+
+// AI Procedure endpoints
+router.post("/ai/procedure-recommendation", procedureAI.procedureRecommendation);
+router.post("/ai/procedure-estimation", procedureAI.procedureEstimation);
+router.post("/ai/procedure-outcome-prediction", procedureAI.procedureOutcomePrediction);
+
+
+const prescriptionAI = require("../controllers/api/prescription.controllers.js");
+
+// AI Prescription endpoints
+router.post("/ai/prescription-assistant", prescriptionAI.prescriptionAssistant);
+router.post("/ai/prescription-error-detection", prescriptionAI.prescriptionErrorDetection);
+router.post("/ai/prescription-explanation", prescriptionAI.prescriptionExplanation);
+
+
+const patientAI = require("../controllers/api/patient.controllers.js");
+
+// AI Patient endpoints
+router.post("/ai/health-profile-summary", patientAI.healthProfileSummary);
+router.post("/ai/risk-stratification", patientAI.riskStratification);
+router.post("/ai/predictive-recall", patientAI.predictiveRecall);
+
+
+const ondotogramAI = require("../controllers/api/ondotogram.controllers.js");
+
+// AI Ondotogram endpoints
+router.post("/ai/automated-odontogram", ondotogramAI.automatedOdontogram);
+router.post("/ai/condition-prediction", ondotogramAI.conditionPrediction);
+router.post("/ai/treatment-simulation", ondotogramAI.treatmentSimulation);
+
+
+const labtestAI = require("../controllers/api/labtest.controllers.js");
+
+// AI LabTest endpoints
+router.post("/ai/lab-report-analysis", labtestAI.labReportAnalysis);
+router.post("/ai/cross-diagnosis-support", labtestAI.crossDiagnosisSupport);
+router.post("/ai/lab-turnaround-prediction", labtestAI.labTurnaroundPrediction);
+
+
+const doctorAI = require("../controllers/api/doctor.controller.js");
+
+// AI Doctor endpoints
+router.post("/ai/profile-matcher", doctorAI.profileMatcher);
+router.post("/ai/voice-notes", doctorAI.voiceNotes);
+router.post("/ai/performance-insights", doctorAI.performanceInsights);
+// --- End AI Routes
+
+
+const operationAI = require("../controllers/api/operation.controller.js");
+router.post("/ai/surgery-assistant", operationAI.surgeryAssistant);
+
+const emailController = require('../controllers/api/email.controllers');
+router.post('/send-email-with-attachment', upload.single('attachment'), emailController.sendEmailWithAttachment);
 
 module.exports = router;

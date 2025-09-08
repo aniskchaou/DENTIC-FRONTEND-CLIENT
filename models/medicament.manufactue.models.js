@@ -8,12 +8,12 @@ const MedicamentManufacture = sequelize.define("medicamentManufacture", {
 
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: "e.g., Pfizer, Johnson & Johnson, GlaxoSmithKline"
   },
   contactPerson: {
     type: DataTypes.JSONB,
-    allowNull: false,
+    allowNull: true,
     comment: "Contact person details including full name, phone, and email",
     get() {
       const value = this.getDataValue('contactPerson');
@@ -25,7 +25,7 @@ const MedicamentManufacture = sequelize.define("medicamentManufacture", {
   },
   address: {
     type: DataTypes.JSONB,
-    allowNull: false,
+    allowNull: true,
     comment: "Address of the manufacturer including street, city, state, postalCode, and country",
     get() {
       const value = this.getDataValue('address');
@@ -37,12 +37,12 @@ const MedicamentManufacture = sequelize.define("medicamentManufacture", {
   },
   phone: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: "Phone number of the manufacturer"
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: "Email address of the manufacturer"
   },
   website: {
@@ -74,15 +74,15 @@ const MedicamentManufacture = sequelize.define("medicamentManufacture", {
   },
   contractStartDate: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   contractEndDate: {
     type: DataTypes.DATE,
-    allowNull: false,
+    allowNull: true,
   },
   status: {
-    type: DataTypes.ENUM('Active', 'Inactive', 'Suspended'),
-    allowNull: false,
+    type: DataTypes.STRING,
+    allowNull: true,
     comment: "Status of the manufacturer contract"
   },
   createdAt: {

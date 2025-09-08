@@ -130,7 +130,7 @@ exports.findOne = (req, res) => {
  */
 exports.update = (req, res) => {
     const id = req.params.id;
-    updateUser(id, req);
+    updateUser(id, req, res);
 };
 
 /**

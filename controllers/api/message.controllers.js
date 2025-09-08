@@ -167,3 +167,117 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllMessages(req, res);
 };
+
+/**
+ * @swagger
+ * /ai/chatbot:
+ *   post:
+ *     summary: AI Chatbot for patient questions
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Chatbot answer
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 answer:
+ *                   type: string
+ */
+exports.chatbot = async (req, res) => {
+  try {
+    const { message } = req.body;
+    // AI logic (demo)
+    const answer = "Our clinic is open from 9am to 6pm. A cleaning costs $80.";
+    res.send({ answer });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/smart-triage:
+ *   post:
+ *     summary: Smart Triage for message routing
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Routed department/doctor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 routedTo:
+ *                   type: string
+ */
+exports.smartTriage = async (req, res) => {
+  try {
+    const { message } = req.body;
+    // AI logic (demo)
+    const routedTo = "Front Desk";
+    res.send({ routedTo });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/message-sentiment:
+ *   post:
+ *     summary: Sentiment Analysis for messages
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Sentiment and urgency detection
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sentiment:
+ *                   type: string
+ *                 urgency:
+ *                   type: string
+ */
+exports.messageSentiment = async (req, res) => {
+  try {
+    const { message } = req.body;
+    // AI logic (demo)
+    const sentiment = "Dissatisfied";
+    const urgency = "High";
+    res.send({ sentiment, urgency });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

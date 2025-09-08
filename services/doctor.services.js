@@ -1,4 +1,4 @@
-const Doctor = require("../models/doctor.js");
+const Doctor = require("../models/doctor.models.js");
 
 // Find all doctors (optionally with condition)
 exports.findAllDoctors = (condition, res) => {

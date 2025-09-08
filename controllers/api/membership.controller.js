@@ -310,3 +310,129 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllMemberships(res);
 };
+
+/**
+ * @swagger
+ * /ai/churn-prediction:
+ *   post:
+ *     summary: Membership Churn Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               memberId:
+ *                 type: string
+ *               membershipHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Churn likelihood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 likelyToChurn:
+ *                   type: boolean
+ *                 reason:
+ *                   type: string
+ */
+exports.churnPrediction = async (req, res) => {
+  try {
+    const { memberId, membershipHistory } = req.body;
+    // AI logic (demo)
+    const likelyToChurn = true;
+    const reason = "Member has not booked any appointments in the last 6 months.";
+    res.send({ likelyToChurn, reason });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/personalized-offers:
+ *   post:
+ *     summary: Personalized Offers for members
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               memberId:
+ *                 type: string
+ *               patientHistory:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Recommended offers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 offers:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.personalizedOffers = async (req, res) => {
+  try {
+    const { memberId, patientHistory } = req.body;
+    // AI logic (demo)
+    const offers = ["10% off on next cleaning", "Free whitening session with annual renewal"];
+    res.send({ offers });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/engagement-ai:
+ *   post:
+ *     summary: Engagement AI for membership renewals
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               memberId:
+ *                 type: string
+ *               engagementData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Campaign suggestions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 campaigns:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.engagementAI = async (req, res) => {
+  try {
+    const { memberId, engagementData } = req.body;
+    // AI logic (demo)
+    const campaigns = ["Send renewal reminder email", "Offer loyalty points for referrals"];
+    res.send({ campaigns });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

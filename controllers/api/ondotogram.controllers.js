@@ -1,4 +1,6 @@
 const Ondotogram = require("../../models/ondotogram.models.js");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 /**
  * @swagger
@@ -147,5 +149,194 @@ exports.getTeeth = async (req, res) => {
     res.send(teethWithCreatedAt);
   } catch (err) {
     res.status(500).send({ message: "Error retrieving teeth", error: err });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/automated-odontogram:
+ *   post:
+ *     summary: Automated Odontogram Generation
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               imagingData:
+ *                 type: object
+ *               diagnosisData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Generated dental chart
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 odontogram:
+ *                   type: object
+ */
+exports.automatedOdontogram = async (req, res) => {
+  try {
+    const { imagingData, diagnosisData } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Imaging data: ${JSON.stringify(imagingData)}
+      Diagnosis data: ${JSON.stringify(diagnosisData)}
+      Generate a dental odontogram chart by filling in tooth conditions based on the provided imaging and diagnosis data.
+      Respond ONLY with a JSON object: { "odontogram": { "toothNumber": "condition", ... } }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 300,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        odontogram: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/condition-prediction:
+ *   post:
+ *     summary: Tooth Condition Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               odontogram:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Predicted future dental issues
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 predictions:
+ *                   type: object
+ */
+exports.conditionPrediction = async (req, res) => {
+  try {
+    const { odontogram } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Odontogram: ${JSON.stringify(odontogram)}
+      For each tooth, predict future dental issues such as caries risk, gum disease risk, or other concerns.
+      Respond ONLY with a JSON object: { "predictions": { "toothNumber": "prediction", ... } }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        predictions: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/treatment-simulation:
+ *   post:
+ *     summary: Treatment Simulation for dental chart
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               odontogram:
+ *                 type: object
+ *               treatmentPlan:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Simulated odontogram evolution
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 simulatedOdontogram:
+ *                   type: object
+ */
+exports.treatmentSimulation = async (req, res) => {
+  try {
+    const { odontogram, treatmentPlan } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Odontogram: ${JSON.stringify(odontogram)}
+      Treatment plan: ${JSON.stringify(treatmentPlan)}
+      Simulate how this patient's dental chart (odontogram) will evolve after applying the treatment plan. 
+      Respond ONLY with a JSON object: { "simulatedOdontogram": { "toothNumber": "newCondition", ... } }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 300,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        simulatedOdontogram: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
   }
 };

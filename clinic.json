@@ -40,5 +40,26 @@
       "day": "Sunday",
       "hours": "Closed"
     }
+  ],
+  "ia": {
+    "OPEN_API_KEY": "<API_KEY>"
+  },
+  "telemedicine": {
+    "GOOGLE_MEET_KEY": "<GOOGLE_MEET_KEY>"
+  },
+  "email": {
+    "service": "gmail",
+    "from": "no-reply@dentic.fr",
+    "auth": {
+      "user": "<EMAIL_USER>",
+      "pass": "<EMAIL_PASS>"
+    }
+  },
+  "cronJobs": [
+    {
+      "name": "marketingPatientMatcher",
+      "schedule": "* * * * *",
+      "enabled": true
+    }
   ]
 }

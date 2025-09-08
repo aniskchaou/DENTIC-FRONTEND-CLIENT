@@ -133,8 +133,6 @@ const Medicament = sequelize.define("medicament", {
 module.exports = Medicament;
 
 
-const { v4: uuidv4 } = require('uuid'); // For generating UUIDs if needed
-
 const createDummyMedicament = async () => {
   try {
     const dummyData = {

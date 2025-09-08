@@ -1,4 +1,4 @@
-const MarketingCRM = require("../models/marketing.js");
+const MarketingCRM = require("../models/marketing.models.js");
 
 // Find all marketing campaigns (optionally with condition)
 exports.findAllMarketingCampaigns = (condition, res) => {

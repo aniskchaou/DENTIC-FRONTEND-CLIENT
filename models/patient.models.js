@@ -1,55 +1,5 @@
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
-/* 
-var Patient = sequelize.define('patient', {
-    namepatient: Sequelize.STRING,
-    emailpatient: Sequelize.STRING,
-    birth: Sequelize.DATE,
-    telephone: Sequelize.STRING,
-    gender: Sequelize.STRING,
-    address: Sequelize.STRING,
-    bloodGroupe:Sequelize.STRING,
-    Status:Sequelize.STRING,
-    height:Sequelize.STRING,
-    weight:Sequelize.STRING
-});
-{
-    "Patient": {
-      "id": "UUID",
-      "userId": "UUID (Ref to User)",
-      "medicalRecordNumber": "string",
-      "insuranceId": "UUID (Ref to Insurance)",
-      "bloodType": "A+ | A- | B+ | B- | O+ | O- | AB+ | AB-",
-      "allergies": ["string"],
-      "medicalHistory": [
-        {
-          "condition": "string",
-          "diagnosedAt": "date",
-          "notes": "string"
-        }
-      ],
-      "currentMedications": [
-        {
-          "name": "string",
-          "dosage": "string",
-          "frequency": "string",
-          "prescribedBy": "UUID (Ref to Doctor)"
-        }
-      ],
-      "emergencyContact": {
-        "name": "string",
-        "relationship": "string",
-        "phone": "string"
-      },
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Patient; */
-
-// const { Sequelize, DataTypes } = require("sequelize");
-// const sequelize = require("../config/database");
 
 const Patient = sequelize.define("patient", {
   fullName: {
@@ -93,6 +43,14 @@ const Patient = sequelize.define("patient", {
     allowNull: true,
     comment: "Emergency contact details for the patient",
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isEmail: true
+    },
+    comment: 'Patient email address'
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW,
@@ -105,20 +63,6 @@ const Patient = sequelize.define("patient", {
   },
 });
 
-/* // Define the relationships with other models
-Patient.associate = models => {
-  // A patient is associated with one user account and may have one insurance
-  Patient.belongsTo(models.User, { foreignKey: "userId" });
-  Patient.belongsTo(models.Insurance, { foreignKey: "insuranceId" });
-
-  // A patient can have multiple current medications, so we define this as a one-to-many relationship
-  Patient.hasMany(models.Medication, { foreignKey: "patientId" });
-
-  // Medical history and current medications can be stored as JSON objects or arrays
-  // This will be handled via Sequelize's built-in support for JSONB data types.
-}; */
-
-//module.exports = Patient;
 
 
 async function insertPatients() {
@@ -145,6 +89,7 @@ async function insertPatients() {
         relationship: "Sister",
         phone: "+11123456701",
       },
+      email: "kchaoauanis27@gmail.com",
     },
     {
       fullName: "Jane Smith",
@@ -159,6 +104,7 @@ async function insertPatients() {
         relationship: "Father",
         phone: "+11123456702",
       },
+      email: "kchaoauanis27@gmail.com",
     },
     {
       fullName: "Michael Brown",
@@ -175,6 +121,7 @@ async function insertPatients() {
         relationship: "Mother",
         phone: "+11123456703",
       },
+      email: "kchaoauanis27@gmail.com",
     },
     {
       fullName: "Emily Clark",
@@ -196,6 +143,7 @@ async function insertPatients() {
         relationship: "Friend",
         phone: "+11123456704",
       },
+      email: "kchaoauanis27@gmail.com",
     },
     {
       fullName: "Olivia White",
@@ -212,6 +160,7 @@ async function insertPatients() {
         relationship: "Spouse",
         phone: "+11123456705",
       },
+      email: "kchaoauanis27@gmail.com",
     },
   ];
 

@@ -1,7 +1,4 @@
 const { filterService, deleteServiceById, createService, findAllServices, findServiceById, updateService, deleteAllServices } = require("../../services/service.services");
-
-
-
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
@@ -214,4 +211,128 @@ exports.readAboutUsFromFile = (req, res) => {
             res.status(500).send({ message: "File content is not valid JSON", error: parseErr });
         }
     });
+};
+
+/**
+ * @swagger
+ * /ai/service-demand-forecast:
+ *   post:
+ *     summary: Demand Forecasting for dental services
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               historicalData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Predicted service demand
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 forecast:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.serviceDemandForecast = async (req, res) => {
+  try {
+    const { historicalData } = req.body;
+    // AI logic (demo)
+    const forecast = ["Cosmetic Dentistry", "Restorative Dentistry"];
+    res.send({ forecast });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/service-pricing-insights:
+ *   post:
+ *     summary: AI Pricing Insights for services
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               localMarketData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Competitive pricing suggestions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 pricingSuggestions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.servicePricingInsights = async (req, res) => {
+  try {
+    const { localMarketData } = req.body;
+    // AI logic (demo)
+    const pricingSuggestions = [
+      "Set whitening at $120 for competitive edge.",
+      "Bundle check-up + cleaning for $99."
+    ];
+    res.send({ pricingSuggestions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/service-recommendation:
+ *   post:
+ *     summary: Service Recommendation System
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientHistory:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Add-on service recommendations
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 recommendations:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.serviceRecommendation = async (req, res) => {
+  try {
+    const { patientHistory } = req.body;
+    // AI logic (demo)
+    const recommendations = ["Add cleaning to your check-up", "Consider whitening after braces"];
+    res.send({ recommendations });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

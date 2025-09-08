@@ -159,3 +159,114 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllTelemedicine(res);
 };
+
+/**
+ * @swagger
+ * /ai/symptom-prescreening:
+ *   post:
+ *     summary: AI Symptom Pre-Screening for telemedicine
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               symptoms:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Pre-screening notes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 notes:
+ *                   type: string
+ */
+exports.symptomPrescreening = async (req, res) => {
+  try {
+    const { symptoms } = req.body;
+    // AI logic (demo)
+    const notes = "Patient reports swollen gums and mild pain. Possible gingivitis.";
+    res.send({ notes });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/telemedicine-diagnostics:
+ *   post:
+ *     summary: Real-Time Diagnostics Support during telemedicine
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Diagnostic findings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 findings:
+ *                   type: string
+ */
+exports.telemedicineDiagnostics = async (req, res) => {
+  try {
+    // AI logic (demo)
+    const findings = "Image shows mild swelling, no visible lesions.";
+    res.send({ findings });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/telemedicine-transcription:
+ *   post:
+ *     summary: AI Transcription + Summarization for teleconsultation
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               audio:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Structured visit notes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 summary:
+ *                   type: string
+ */
+exports.telemedicineTranscription = async (req, res) => {
+  try {
+    // AI logic (demo)
+    const summary = "Patient described mild pain and swelling. Dentist recommended saltwater rinses and follow-up in 1 week.";
+    res.send({ summary });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

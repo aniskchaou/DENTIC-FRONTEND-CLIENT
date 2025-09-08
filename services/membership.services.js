@@ -1,4 +1,4 @@
-const DentalMembership = require("../models/membership.js");
+const DentalMembership = require("../models/membership.models.js");
 
 // Find all dental memberships (optionally with condition)
 exports.findAllMemberships = (condition, res) => {

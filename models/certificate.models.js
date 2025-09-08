@@ -49,8 +49,8 @@ var Certificate = sequelize.define("certificate", {
     allowNull: true,
   },
   signature: {
-    type: Sequelize.STRING,
-    allowNull: false, // Digital signature of the doctor
+    type: Sequelize.TEXT, // Store image base64 string
+    allowNull: false, // Digital signature image (base64)
   },
   status: {
     type: Sequelize.ENUM("Draft", "Issued", "Revoked"),
@@ -88,7 +88,7 @@ Certificate.insertDummyCertificates = async function() {
       treatmentDetails: "Routine checkup, no issues found.",
       recommendations: "Maintain healthy lifestyle.",
       attachments: ["https://example.com/fitness-report.pdf"],
-      signature: "Dr. John Doe",
+      signature: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...", // Example base64
       status: "Issued",
       notes: "Issued for employment purposes."
     },
@@ -104,7 +104,7 @@ Certificate.insertDummyCertificates = async function() {
       treatmentDetails: "Antibiotics prescribed, rest recommended.",
       recommendations: "Return for follow-up in 1 week.",
       attachments: [],
-      signature: "Dr. Jane Smith",
+      signature: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...", // Example base64
       status: "Issued",
       notes: "Patient advised to avoid strenuous activity."
     }

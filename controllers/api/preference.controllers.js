@@ -1,9 +1,6 @@
 const { findPreferenceById, updatePreference, deletePreferenceById, deleteAllPreferences, findAllPreferences, createPreference } = require("../../services/patient.services");
 
-
-
 exports.create = (req, res) => {
-    // Validate request
     if (!req.body.username) {
         res.status(400).send({
             message: "Content can not be empty!"

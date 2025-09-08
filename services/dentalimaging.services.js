@@ -1,4 +1,4 @@
-const DentalImaging = require("../models/dentalimg.js");
+const DentalImaging = require("../models/dentalimg.models.js");
 
 // Find all dental imaging records (optionally with condition)
 exports.findAllDentalImaging = (condition, res) => {

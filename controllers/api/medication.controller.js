@@ -161,3 +161,129 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllMedications(res);
 };
+
+/**
+ * @swagger
+ * /ai/medication-reminder:
+ *   post:
+ *     summary: AI Medication Reminder
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               medicationSchedule:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Reminder message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 reminderMessage:
+ *                   type: string
+ */
+exports.medicationReminder = async (req, res) => {
+  try {
+    const { patientId, medicationSchedule } = req.body;
+    // AI logic (demo)
+    const reminderMessage = "It's time to take your prescribed antibiotics. Please confirm once taken.";
+    res.send({ reminderMessage });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/interaction-checker:
+ *   post:
+ *     summary: Drug Interaction Checker
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prescriptions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Interaction warnings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 interactions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.interactionChecker = async (req, res) => {
+  try {
+    const { prescriptions } = req.body;
+    // AI logic (demo)
+    const interactions = ["Avoid taking ibuprofen with aspirin."];
+    res.send({ interactions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/adherence-prediction:
+ *   post:
+ *     summary: Medication Adherence Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               medicationHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Adherence prediction and motivational message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 likelyToSkip:
+ *                   type: boolean
+ *                 motivationalNudge:
+ *                   type: string
+ */
+exports.adherencePrediction = async (req, res) => {
+  try {
+    const { patientId, medicationHistory } = req.body;
+    // AI logic (demo)
+    const likelyToSkip = true;
+    const motivationalNudge = "Taking your medication regularly helps you heal faster!";
+    res.send({ likelyToSkip, motivationalNudge });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

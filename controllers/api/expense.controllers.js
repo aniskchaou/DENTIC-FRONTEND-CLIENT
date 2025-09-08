@@ -184,3 +184,84 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllExpenses(req, res)
 };
+
+
+/**
+ * @swagger
+ * /ai/expense-categorization:
+ *   post:
+ *     summary: Smart Expense Categorization
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               expenseDescription:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Categorized expense
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 category:
+ *                   type: string
+ */
+exports.expenseCategorization = async (req, res) => {
+  try {
+    const { expenseDescription, amount } = req.body;
+    // AI logic (demo)
+    const category = "Supplies";
+    res.send({ category });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/expense-anomaly:
+ *   post:
+ *     summary: Fraud/Anomaly Detection for expenses
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               expenseData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Anomaly detection result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 anomalies:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.expenseAnomaly = async (req, res) => {
+  try {
+    const { expenseData } = req.body;
+    // AI logic (demo)
+    const anomalies = ["Unusual high spending on utilities in July"];
+    res.send({ anomalies });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

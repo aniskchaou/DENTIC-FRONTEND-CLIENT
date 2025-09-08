@@ -1,4 +1,4 @@
-const Procedure = require("../models/procedure.js");
+const Procedure = require("../models/procedure.models.js");
 
 // Find all procedures (optionally with condition)
 exports.findAllProcedures = (condition, res) => {

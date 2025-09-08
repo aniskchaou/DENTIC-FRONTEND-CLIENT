@@ -174,3 +174,131 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllInsurances(res);
 };
+
+/**
+ * @swagger
+ * /ai/insurance-eligibility:
+ *   post:
+ *     summary: Insurance Eligibility Checker
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               insuranceInfo:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Eligibility result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 eligible:
+ *                   type: boolean
+ *                 details:
+ *                   type: string
+ */
+exports.insuranceEligibility = async (req, res) => {
+  try {
+    const { patientId, insuranceInfo } = req.body;
+    // AI logic (demo)
+    const eligible = true;
+    const details = "Patient is eligible for coverage on standard procedures.";
+    res.send({ eligible, details });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/smart-claim-filing:
+ *   post:
+ *     summary: Smart Claim Filing
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               treatmentData:
+ *                 type: object
+ *               insuranceInfo:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Auto-filled claim form
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 claimForm:
+ *                   type: object
+ */
+exports.smartClaimFiling = async (req, res) => {
+  try {
+    const { treatmentData, insuranceInfo } = req.body;
+    // AI logic (demo)
+    const claimForm = {
+      patient: treatmentData.patientName,
+      procedure: treatmentData.procedure,
+      insuranceId: insuranceInfo.id,
+      amount: treatmentData.cost,
+      notes: "Auto-filled by AI"
+    };
+    res.send({ claimForm });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/insurance-fraud-detection:
+ *   post:
+ *     summary: Insurance Fraud Detection
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               claimHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Fraud detection result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 suspiciousClaims:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.insuranceFraudDetection = async (req, res) => {
+  try {
+    const { claimHistory } = req.body;
+    // AI logic (demo)
+    const suspiciousClaims = ["Claim #1234: Unusual frequency of high-value procedures"];
+    res.send({ suspiciousClaims });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

@@ -6,6 +6,8 @@ const {
     deleteOperationById,
     deleteAllOperations
 } = require("../../services/operation.services");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 
 /**
@@ -175,4 +177,154 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllOperations(res);
+};
+
+
+/**
+ * @swagger
+ * /ai/surgery-assistant:
+ *   post:
+ *     summary: AI Surgery Assistant (step-by-step checklists)
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               surgeryType:
+ *                 type: string
+ *               patientHistory:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Surgery checklist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 checklist:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.surgeryAssistant = async (req, res) => {
+  try {
+    const { surgeryType, patientHistory } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Surgery type: ${surgeryType}
+      Patient history: ${JSON.stringify(patientHistory)}
+      Provide a step-by-step checklist for this dental surgery, tailored to the patient's history.
+      Respond ONLY with a JSON object: { "checklist": [array of strings] }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        checklist: [raw]
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/surgery-risk-prediction:
+ *   post:
+ *     summary: Surgery Risk Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientHistory:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Predicted complications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 risks:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.surgeryRiskPrediction = async (req, res) => {
+  try {
+    const { patientHistory } = req.body;
+    // AI logic (demo)
+    const risks = ["Bleeding risk", "Delayed healing"];
+    res.send({ risks });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/postop-monitoring:
+ *   post:
+ *     summary: Post-Op Monitoring Chatbot
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               symptoms:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Monitoring result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 flag:
+ *                   type: boolean
+ *                 advice:
+ *                   type: string
+ */
+exports.postopMonitoring = async (req, res) => {
+  try {
+    const { patientId, symptoms } = req.body;
+    // AI logic (demo)
+    const flag = symptoms.includes("swelling") || symptoms.includes("fever");
+    const advice = flag
+      ? "Contact your dentist immediately."
+      : "Continue regular post-op care.";
+    res.send({ flag, advice });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

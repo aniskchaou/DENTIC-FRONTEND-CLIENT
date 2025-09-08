@@ -1,35 +1,6 @@
 var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require('sequelize');
 
-/* var Income = sequelize.define('income', {
-    name_income: Sequelize.STRING,
-    amount: Sequelize.INTEGER,
-    datee: Sequelize.DATE,
-    note: Sequelize.STRING
-});
-
-{
-    "Income": {
-      "id": "UUID",
-      "incomeCategory": "Consultation Fees | Treatment Fees | Surgery | Medication Sales | Lab Tests | Insurance Payments | Other",
-      "description": "string (Details of the income source, e.g., 'Root Canal Procedure Payment')",
-      "amount": "float (Total income amount)",
-      "paymentMethod": "Cash | Credit Card | Debit Card | Insurance | Online Payment",
-      "paymentStatus": "Pending | Received | Partially Received",
-      "patientId": "UUID (Ref to Patient, if applicable)",
-      "doctorId": "UUID (Ref to Doctor, if applicable)",
-      "invoiceId": "UUID (Ref to Invoice, if applicable)",
-      "insuranceClaimId": "UUID (Ref to Insurance Claim, if applicable)",
-      "clinicId": "UUID (Ref to Clinic, if multi-location setup)",
-      "transactionDate": "timestamp",
-      "receiptAttachments": ["string (URLs to payment receipts, invoices, or proof of payment)"],
-      "notes": "string (Additional remarks or justifications)",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Income;  */
 
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');

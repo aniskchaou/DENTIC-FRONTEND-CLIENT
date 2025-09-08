@@ -1,4 +1,4 @@
-const Telemedicine = require("../models/telemedecine.js");
+const Telemedicine = require("../models/telemedecine.models.js");
 
 // Find all telemedicine sessions (optionally with condition)
 exports.findAllTelemedicine = (condition, res) => {

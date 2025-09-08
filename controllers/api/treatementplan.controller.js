@@ -6,6 +6,8 @@ const {
     deleteTreatmentPlanById,
     deleteAllTreatmentPlans
 } = require("../../services/treatementplan.services");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 /**
  * @swagger
@@ -166,5 +168,208 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllTreatmentPlans(res);
+};
+
+/**
+ * @swagger
+ * /ai/treatment-optimizer:
+ *   post:
+ *     summary: AI Treatment Optimizer
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               diagnosis:
+ *                 type: string
+ *               history:
+ *                 type: object
+ *               budget:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Optimized treatment plan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 plan:
+ *                   type: string
+ */
+exports.treatmentOptimizer = async (req, res) => {
+  try {
+    const { diagnosis, history, budget } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Diagnosis: ${diagnosis}
+      Patient history: ${JSON.stringify(history)}
+      Budget: ${budget}
+      Suggest the best dental treatment plan for this patient, considering their diagnosis, history, and budget.
+      Respond ONLY with a JSON object: { "plan": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 300,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        plan: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/treatment-outcome-prediction:
+ *   post:
+ *     summary: Outcome Prediction for treatment plans
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               treatmentPlan:
+ *                 type: string
+ *               patientData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Predicted outcomes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 successRate:
+ *                   type: string
+ *                 recoveryTime:
+ *                   type: string
+ *                 longTermBenefits:
+ *                   type: string
+ */
+exports.treatmentOutcomePrediction = async (req, res) => {
+  try {
+    const { treatmentPlan, patientData } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Treatment plan: ${treatmentPlan}
+      Patient data: ${JSON.stringify(patientData)}
+      Predict the expected success rate, recovery time, and long-term benefits for this treatment plan.
+      Respond ONLY with a JSON object: { "successRate": "string", "recoveryTime": "string", "longTermBenefits": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 300,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        successRate: "",
+        recoveryTime: "",
+        longTermBenefits: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/treatment-explainer:
+ *   post:
+ *     summary: Patient-Friendly Treatment Explainer
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               treatmentPlan:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Simple explanation with visuals
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 explanation:
+ *                   type: string
+ *                 visuals:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.treatmentExplainer = async (req, res) => {
+  try {
+    const { treatmentPlan } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Explain the following dental treatment plan in simple, patient-friendly language. Also suggest two relevant visual aids as image URLs.
+      Treatment plan: ${treatmentPlan}
+      Respond ONLY with a JSON object: { "explanation": "string", "visuals": [array of image URLs as strings] }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 300,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        explanation: raw,
+        visuals: []
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };
 

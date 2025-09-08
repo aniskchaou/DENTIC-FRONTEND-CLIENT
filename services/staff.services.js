@@ -1,4 +1,4 @@
-const Staff = require("../models/staff.js");
+const Staff = require("../models/staff.models.js");
 
 // Find all staff (optionally with condition)
 exports.findAllStaff = (condition, res) => {

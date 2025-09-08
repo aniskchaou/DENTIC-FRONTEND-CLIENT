@@ -170,3 +170,95 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllClinics(res);
 };
+
+
+/**
+ * @swagger
+ * /ai/operational-analytics:
+ *   post:
+ *     summary: Predict patient inflow for staffing
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               dateRange:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: date
+ *     responses:
+ *       200:
+ *         description: Predicted busy days and peak hours
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 busyDays:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 peakHours:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.operationalAnalytics = async (req, res) => {
+  try {
+    const { dateRange } = req.body;
+    // AI prediction logic (demo response below)
+    const busyDays = ["2025-08-29", "2025-09-01"];
+    const peakHours = ["10:00-12:00", "16:00-18:00"];
+    res.send({ busyDays, peakHours });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/feedback-analysis:
+ *   post:
+ *     summary: Patient Feedback Sentiment Analysis
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               feedbacks:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Sentiment and improvement suggestions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sentimentSummary:
+ *                   type: string
+ *                 improvementSuggestions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.feedbackAnalysis = async (req, res) => {
+  try {
+    const { feedbacks } = req.body;
+    // AI sentiment analysis logic (demo response below)
+    const sentimentSummary = "Mostly positive, some concerns about wait times.";
+    const improvementSuggestions = ["Reduce wait times", "Improve front desk communication"];
+    res.send({ sentimentSummary, improvementSuggestions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

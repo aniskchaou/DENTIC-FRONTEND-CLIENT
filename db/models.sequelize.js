@@ -33,29 +33,26 @@ var FooterSettings = require("../models/settings/footer.settings.models.js")
 var HeaderSettings = require("../models/settings/header.settings.models.js")
 var LocalisationSettings = require("../models/settings/localisation.settings.models.js")
 var NotificationSettings = require("../models/settings/notification.settings.models.js")
-// var HomePage = require("../models/home.page.models.js")
-//var ServicePage = require("../models/service.page.models.js")       
-//var ServiceItem = require('../models/service.models') 
-var Case = require("../models/case.js");
-const Clinic = require("../models/clinic.js");
+var Case = require("../models/case.models.js");
+const Clinic = require("../models/clinic.models.js");
 const Consultation = require("../models/consultation.models.js");
-const DentalImaging = require("../models/dentalimg.js");
+const DentalImaging = require("../models/dentalimg.models.js");
 const Diagnosis = require("../models/diagnostic.models.js");
-const Doctor = require("../models/doctor.js");
-const EquipmentMaintenance = require("../models/equipement.js");
-const Referral = require("../models/emergency.js");
-const Insurance = require("../models/insurance.js");
+const Doctor = require("../models/doctor.models.js");
+const EquipmentMaintenance = require("../models/equipement.models.js");
+const Referral = require("../models/emergency.models.js");
+const Insurance = require("../models/insurance.models.js");
 const { LoyaltyProgram } = require("../models/loyalty.models.js");
-const LegalCompliance = require("../models/legal.js");
-const MarketingCRM = require("../models/marketing.js");
+const LegalCompliance = require("../models/legal.models.js");
+const MarketingCRM = require("../models/marketing.models.js");
 const TreatmentPlan = require("../models/treatementplan.models.js");
-const DentalMembership = require("../models/membership.js");
+const DentalMembership = require("../models/membership.models.js");
 const Operation = require("../models/operation.models.js");
-const Procedure = require("../models/procedure.js");
-const Staff = require("../models/staff.js");
-const InventoryItem = require("../models/inventory.js");
-const { Settings, addSettingsData } = require("../models/settings.mdels.js");
-const { insertDummyTelemedicine } = require("../models/telemedecine.js");
+const Procedure = require("../models/procedure.models.js");
+const Staff = require("../models/staff.models.js");
+const InventoryItem = require("../models/inventory.models.js");
+const { Settings, addSettingsData } = require("../models/settings.models.js");
+const { insertDummyTelemedicine } = require("../models/telemedecine.models.js");
 sequelize.sync().then(async function () {
 
     DashboardSettings.create(seeds.getDashboardSettings())
@@ -75,7 +72,6 @@ sequelize.sync().then(async function () {
     Diagnosis.insertDummyDiagnoses()
     Doctor.insertDummyDoctors()
     EquipmentMaintenance.insertDummyEquipment()
-    //EmergencyContact.insertDummy
     Referral.insertDummyReferrals()
     Expense.insertDummyExpenses()
     Income.insertDummyIncomes()
@@ -90,14 +86,6 @@ sequelize.sync().then(async function () {
     MedicamentManufacture.createDummyMedicamentManufacture()
     Operation.createDummyOperation()
     Procedure.createDummyProcedure()
-    //Staff.createDummyStaff()
-
-
-
-    //EmergencyCase.insertDummyEmergencyCases()
-    //EmergencyHandling.insertDummyEmergencyHandlings()
-   
-    //ServiceItem.bulkCreate(seeds.serviceSeed)
     HomePage.create(seeds.homePageSeed)
     ServicePage.create(seeds.servicePageSeed)
     BlogPage.create(seeds.blogPageSeed)
@@ -110,11 +98,10 @@ sequelize.sync().then(async function () {
     await addSettingsData()
     await Appointement.insertRealAppointment()
     Invoice.insertDummyInvoice()
-    //const settingsController = require("../models/settings.controllers");
     insertDummyTelemedicine()
+    User.addSeedUsers(seeds.userSeeds)
 
 }).then(function (res) {
     console.log(res);
-
 });
 

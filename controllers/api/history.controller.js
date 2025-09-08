@@ -12,9 +12,6 @@ const {
  *   description: API for managing history records
  */
 
-
-
-
 /**
  * @swagger
  * /histories/{id}:

@@ -182,3 +182,123 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllInvoices(req, res);
 };
+
+/**
+ * @swagger
+ * /ai/invoice-explainer:
+ *   post:
+ *     summary: AI Billing Assistant for invoices
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               invoiceData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Simple invoice explanation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 explanation:
+ *                   type: string
+ */
+exports.invoiceExplainer = async (req, res) => {
+  try {
+    const { invoiceData } = req.body;
+    // AI logic (demo)
+    const explanation = "This invoice covers your root canal and filling. Insurance paid 80%, you owe $120.";
+    res.send({ explanation });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/payment-reminder:
+ *   post:
+ *     summary: Smart Payment Reminders
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               invoiceId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Payment reminder message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 reminderMessage:
+ *                   type: string
+ */
+exports.paymentReminder = async (req, res) => {
+  try {
+    const { patientId, invoiceId } = req.body;
+    // AI logic (demo)
+    const reminderMessage = "Your payment for invoice #123 is overdue. Please pay by September 5th to avoid late fees.";
+    res.send({ reminderMessage });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/pricing-insights:
+ *   post:
+ *     summary: Dynamic Pricing Insights
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               serviceData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Pricing suggestions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 suggestions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.pricingInsights = async (req, res) => {
+  try {
+    const { serviceData } = req.body;
+    // AI logic (demo)
+    const suggestions = [
+      "Offer 10% discount on whitening packages this month.",
+      "Bundle checkup + cleaning for $99 to attract new patients."
+    ];
+    res.send({ suggestions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

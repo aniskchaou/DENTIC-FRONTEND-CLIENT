@@ -421,3 +421,83 @@ exports.deleteReferral = (req, res) => {
 exports.deleteAllReferrals = (req, res) => {
     deleteAllReferrals(res);
 };
+
+/**
+ * @swagger
+ * /ai/emergency-triage:
+ *   post:
+ *     summary: Emergency Severity Triage
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               symptoms:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Triage result and recommended action
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 severity:
+ *                   type: string
+ *                 action:
+ *                   type: string
+ */
+exports.emergencyTriage = async (req, res) => {
+  try {
+    const { symptoms } = req.body;
+    // AI logic (demo)
+    const severity = "High";
+    const action = "Seek immediate care for swelling infection.";
+    res.send({ severity, action });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/emergency-routing:
+ *   post:
+ *     summary: Real-Time Routing for emergencies
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               location:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Nearest available dentist or hospital
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 nearestProvider:
+ *                   type: string
+ *                 address:
+ *                   type: string
+ */
+exports.emergencyRouting = async (req, res) => {
+  try {
+    const { location } = req.body;
+    // AI logic (demo)
+    const nearestProvider = "City Hospital Dental ER";
+    const address = "123 Main St, YourCity";
+    res.send({ nearestProvider, address });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

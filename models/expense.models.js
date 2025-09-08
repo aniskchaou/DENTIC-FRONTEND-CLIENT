@@ -1,37 +1,6 @@
 var sequelize = require("../db/init.sequelize.js");
 var Sequelize = require('sequelize');
 
-/* var Expense = sequelize.define('expense', {
-    name: Sequelize.STRING,
-    amount: Sequelize.INTEGER,
-    datee: Sequelize.DATE,
-    note: Sequelize.STRING,
-    paymentMode:Sequelize.STRING
-});
-
-{
-    "Expense": {
-      "id": "UUID",
-      "expenseCategory": "Rent | Salaries | Equipment | Utilities | Supplies | Maintenance | Marketing | Other",
-      "description": "string (Details of the expense, e.g., 'New dental chair purchase')",
-      "amount": "float (Total expense amount)",
-      "paymentMethod": "Cash | Bank Transfer | Credit Card | Online Payment",
-      "paymentStatus": "Pending | Paid | Partially Paid",
-      "vendorId": "UUID (Ref to Vendor/Supplier, if applicable)",
-      "vendorName": "string (Name of the supplier or service provider)",
-      "invoiceId": "UUID (Ref to Invoice, if applicable)",
-      "clinicId": "UUID (Ref to Clinic, if multi-location setup)",
-      "transactionDate": "timestamp",
-      "receiptAttachments": ["string (URLs to receipts, invoices, or proof of payment)"],
-      "notes": "string (Additional remarks or justifications)",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Expense; */
-// var sequelize = require("../db/init.sequelize.js");
-// var Sequelize = require("sequelize");
 
 var Expense = sequelize.define("expense", {
  

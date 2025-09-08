@@ -46,10 +46,7 @@ const {
  *         description: Content can not be empty
  */
 exports.create = (req, res) => {
-    if (!req.body.name) {
-        res.status(400).send({ message: "Content can not be empty!" });
-        return;
-    }
+
     createMarketingCampaign(req.body, res);
 };
 

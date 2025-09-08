@@ -1,4 +1,4 @@
-const Insurance = require("../models/insurance.js");
+const Insurance = require("../models/insurance.models.js");
 
 // Find all insurance records (optionally with condition)
 exports.findAllInsurances = (condition, res) => {

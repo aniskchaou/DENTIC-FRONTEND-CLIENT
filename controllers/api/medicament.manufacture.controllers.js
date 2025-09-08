@@ -140,3 +140,91 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllMedicamentManufactures(req, res);
 };
+
+/**
+ * @swagger
+ * /ai/supplier-reliability:
+ *   post:
+ *     summary: Supplier Reliability Scoring
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               supplierId:
+ *                 type: string
+ *               deliveryHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Supplier reliability score
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 reliabilityScore:
+ *                   type: number
+ *                 comments:
+ *                   type: string
+ */
+exports.supplierReliability = async (req, res) => {
+  try {
+    const { supplierId, deliveryHistory } = req.body;
+    // AI logic (demo)
+    const reliabilityScore = 92;
+    const comments = "Consistently on-time, good quality.";
+    res.send({ reliabilityScore, comments });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/price-prediction:
+ *   post:
+ *     summary: Price Prediction for dental medications
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               drugName:
+ *                 type: string
+ *               marketData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Predicted price trend
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 predictedPrice:
+ *                   type: number
+ *                 trend:
+ *                   type: string
+ */
+exports.pricePrediction = async (req, res) => {
+  try {
+    const { drugName, marketData } = req.body;
+    // AI logic (demo)
+    const predictedPrice = 15.5;
+    const trend = "Slight increase expected next quarter.";
+    res.send({ predictedPrice, trend });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

@@ -37,7 +37,21 @@ exports.loginUser = (username, password, res) => {
 exports.createUser = (user,res) => {
     // Save user in the database
     User.create(user)
-        .then(data => {
+        .then(async data => {
+            // Send welcome email after creation
+            try {
+                const { sendMail } = require('../utils/email.services');
+                if (user.email) {
+                    await sendMail({
+                        to: user.email,
+                        subject: 'Welcome to Dentic!',
+                        text: `Hello ${user.username},\n\nYour account has been created.\nUsername: ${user.username}\nPassword: ${user.password}\n\nPlease keep this information safe.`,
+                        html: `<p>Hello ${user.username},</p><p>Your account has been created.</p><ul><li><b>Username:</b> ${user.username}</li><li><b>Password:</b> ${user.password}</li></ul><p>Please keep this information safe.</p>`
+                    });
+                }
+            } catch (e) {
+                console.error('Error sending welcome email:', e);
+            }
             res.send(data);
         })
         .catch(err => {

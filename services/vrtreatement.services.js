@@ -1,4 +1,4 @@
-const VRTreatmentSimulation = require("../models/vr.js");
+const VRTreatmentSimulation = require("../models/vr.models.js");
 
 // Find all VR treatment simulations (optionally with condition)
 exports.findAllVRTreatments = (condition, res) => {

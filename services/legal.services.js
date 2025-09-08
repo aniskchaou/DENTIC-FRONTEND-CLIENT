@@ -1,4 +1,4 @@
-const LegalCompliance = require("../models/legal.js");
+const LegalCompliance = require("../models/legal.models.js");
 
 // Find all legal compliance records (optionally with condition)
 exports.findAllLegalCompliances = (condition, res) => {

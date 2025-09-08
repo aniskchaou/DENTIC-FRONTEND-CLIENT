@@ -11,11 +11,11 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000', // Change to your server URL
+        url: 'http://localhost:5000', 
       },
     ],
   },
-  apis: ['./controllers/api/*.js'], // Adjust path to your route files
+  apis: ['./controllers/api/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

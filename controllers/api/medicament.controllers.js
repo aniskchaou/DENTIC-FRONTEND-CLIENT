@@ -186,3 +186,87 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllMedicaments(req, res);
 };
+
+/**
+ * @swagger
+ * /ai/drug-info-assistant:
+ *   post:
+ *     summary: Drug Information Assistant
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               drugName:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Drug info in plain language
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 indications:
+ *                   type: string
+ *                 sideEffects:
+ *                   type: string
+ *                 interactions:
+ *                   type: string
+ */
+exports.drugInfoAssistant = async (req, res) => {
+  try {
+    const { drugName } = req.body;
+    // AI logic (demo)
+    const indications = "Used to treat bacterial infections.";
+    const sideEffects = "May cause nausea, diarrhea.";
+    const interactions = "Avoid with blood thinners.";
+    res.send({ indications, sideEffects, interactions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/medicament-stock-optimization:
+ *   post:
+ *     summary: Stock Optimization for medications
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               drugName:
+ *                 type: string
+ *               usageHistory:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *     responses:
+ *       200:
+ *         description: Predicted demand
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 predictedDemand:
+ *                   type: string
+ */
+exports.medicamentStockOptimization = async (req, res) => {
+  try {
+    const { drugName, usageHistory } = req.body;
+    // AI logic (demo)
+    const predictedDemand = "High demand expected for antibiotics during flu season.";
+    res.send({ predictedDemand });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

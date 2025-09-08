@@ -1,4 +1,4 @@
-const EquipmentMaintenance = require("../models/equipement.js");
+const EquipmentMaintenance = require("../models/equipement.models.js");
 
 // Find all equipment maintenance records (optionally with condition)
 exports.findAllEquipment = (condition, res) => {

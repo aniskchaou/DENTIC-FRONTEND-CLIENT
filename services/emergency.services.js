@@ -1,6 +1,6 @@
-const EmergencyHandling = require("../models/emergency.js");
-const EmergencyCase = require("../models/emergency.js");
-const Referral = require("../models/emergency.js");
+const EmergencyHandling = require("../models/emergency.models.js");
+const EmergencyCase = require("../models/emergency.models.js");
+const Referral = require("../models/emergency.models.js");
 
 // EmergencyHandling services
 exports.findAllEmergencyHandlings = (condition, res) => {

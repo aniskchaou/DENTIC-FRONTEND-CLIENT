@@ -1,21 +1,4 @@
-/* {
-    "Billing": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Doctor)",
-      "appointmentId": "UUID (Ref to Appointment)",
-      "totalAmount": "decimal",
-      "discount": "decimal",
-      "finalAmount": "decimal",
-      "paymentStatus": "Pending | Paid | Partially Paid | Overdue",
-      "paymentMethod": "Cash | Credit Card | Insurance | Online Payment",
-      "transactionId": "string (if online payment)",
-      "invoiceUrl": "string (PDF link)",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-   */
+
   var sequelize = require("../db/init.sequelize.js");
   var Sequelize = require("sequelize");
   

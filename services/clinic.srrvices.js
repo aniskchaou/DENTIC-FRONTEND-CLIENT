@@ -1,4 +1,4 @@
-const Clinic = require("../models/clinic.js");
+const Clinic = require("../models/clinic.models.js");
 
 // Find all clinics (optionally with condition)
 exports.findAllClinics = (condition, res) => {

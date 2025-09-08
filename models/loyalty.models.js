@@ -1,27 +1,4 @@
-/* {
-    "LoyaltyProgram": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "points": "integer",
-      "earnedFrom": [
-        {
-          "activity": "Appointment | Referral | Review",
-          "pointsEarned": "integer",
-          "date": "timestamp"
-        }
-      ],
-      "redeemedRewards": [
-        {
-          "rewardName": "Discount | Free Checkup | Gift",
-          "pointsUsed": "integer",
-          "redeemedDate": "timestamp"
-        }
-      ],
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-   */
+
 
 
   var sequelize = require("../db/init.sequelize.js");

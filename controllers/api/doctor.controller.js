@@ -6,6 +6,8 @@ const {
     deleteDoctorById,
     deleteAllDoctors
 } = require("../../services/doctor.services");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 /**
  * @swagger
@@ -193,4 +195,151 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllDoctors(res);
+};
+
+/**
+ * @swagger
+ * /ai/profile-matcher:
+ *   post:
+ *     summary: AI Profile Matcher for doctor-patient assignment
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientCase:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Best matched doctor profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 doctorId:
+ *                   type: string
+ *                 doctorName:
+ *                   type: string
+ *                 specialization:
+ *                   type: string
+ */
+exports.profileMatcher = async (req, res) => {
+  try {
+    const { patientCase, doctorList } = req.body; // doctorList optional, if you want to provide available doctors
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Patient case: ${JSON.stringify(patientCase)}
+      ${doctorList ? "Available doctors: " + JSON.stringify(doctorList) : ""}
+      Match this patient with the most suitable doctor based on specialization and case details.
+      Respond ONLY with a JSON object: { "doctorId": "string", "doctorName": "string", "specialization": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        doctorId: "",
+        doctorName: "",
+        specialization: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/voice-notes:
+ *   post:
+ *     summary: Voice-to-Text Notes for doctors
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               audio:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Transcribed and structured notes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 notes:
+ *                   type: string
+ */
+exports.voiceNotes = async (req, res) => {
+  try {
+    // AI logic (demo)
+    const notes = "Patient presents with mild pain in lower molar. Recommend X-ray and possible filling.";
+    res.send({ notes });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/performance-insights:
+ *   post:
+ *     summary: Performance Insights for doctors
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               doctorId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Insights and improvement suggestions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 insights:
+ *                   type: string
+ *                 suggestions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.performanceInsights = async (req, res) => {
+  try {
+    const { doctorId } = req.body;
+    // AI logic (demo)
+    const insights = "High patient satisfaction, successful outcomes in root canal cases.";
+    const suggestions = ["Attend advanced endodontics workshop", "Improve follow-up communication"];
+    res.send({ insights, suggestions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

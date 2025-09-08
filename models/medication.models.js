@@ -1,45 +1,4 @@
 
-/* var sequelize = require("../db/init.sequelize.js");
-var Sequelize = require('sequelize');
- */
-/* var Medication = sequelize.define('medication', {
-   //patient: {  type: Sequelize.INTEGER,references: 'patients',  referencesKey: 'id' },
-    medecineName: Sequelize.STRING,
-    dose: Sequelize.STRING,
-    date: Sequelize.STRING,
-    note: Sequelize.STRING,
-      Sequelize: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'patients',
-                key: 'id'
-            }
-        }
-});
-{
-    "Medication": {
-      "id": "UUID",
-      "name": "string (e.g., Amoxicillin, Ibuprofen, Lidocaine)",
-      "genericName": "string (Optional, generic alternative)",
-      "category": "Antibiotic | Painkiller | Anesthetic | Anti-inflammatory",
-      "description": "string (Usage, precautions, side effects)",
-      "dosageForms": ["Tablet", "Capsule", "Liquid", "Injection", "Gel"],
-      "strength": "string (e.g., 500mg, 2%)",
-      "manufacturerId": "UUID (Ref to Manufacturer)",
-      "requiresPrescription": "Yes | No",
-      "sideEffects": ["Nausea", "Dizziness", "Allergy"],
-      "contraindications": ["Pregnancy", "Kidney Disease", "Allergy to Penicillin"],
-      "stockQuantity": "integer (Available stock in clinic/pharmacy)",
-      "price": "float (Cost per unit)",
-      "expirationDate": "timestamp",
-      "storageConditions": "string (e.g., Store below 25°C)",
-      "status": "Available | Out of Stock | Discontinued",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = Medication; */
 
 
 var sequelize = require("../db/init.sequelize.js");

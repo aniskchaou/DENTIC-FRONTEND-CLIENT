@@ -1,7 +1,7 @@
 const Appointement = require("../../models/appointement.models");
 const { findLabTestById, updateLabTest, deleteLabTestById, deleteAllLabTests, findAllLabTests, createLabTest } = require("../../services/labtest.services");
-
-
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 /**
  * @swagger
@@ -9,10 +9,6 @@ const { findLabTestById, updateLabTest, deleteLabTestById, deleteAllLabTests, fi
  *   name: LabTest
  *   description: API for managing lab test records
  */
-
-
-
-
 
 /**
  * @swagger
@@ -89,15 +85,7 @@ exports.create = (req, res) => {
         return;
     }
 
-    // Create a user
-    const patient = {
-        datee: req.body.datee,
-        patient: req.body.patient,
-        content: req.body.content,
-        name: req.body.name
-    }
-
-    createLabTest(patient, res)
+    createLabTest(req.body, res)
 };
 
 /**
@@ -201,5 +189,197 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllLabTests(req, res)
+};
+
+/**
+ * @swagger
+ * /ai/lab-report-analysis:
+ *   post:
+ *     summary: AI Lab Report Analysis
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               labResults:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Abnormalities flagged
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 flaggedIssues:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.labReportAnalysis = async (req, res) => {
+  try {
+    const { labResults } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Lab results: ${JSON.stringify(labResults)}
+      Read these lab results (blood tests, biopsies, etc.) and flag any abnormalities or issues.
+      Respond ONLY with a JSON object: { "flaggedIssues": [array of strings] }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        flaggedIssues: [raw]
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/cross-diagnosis-support:
+ *   post:
+ *     summary: Cross-Diagnosis Support (lab results + dental issues)
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               labResults:
+ *                 type: object
+ *               dentalHistory:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Linked findings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 linkedFindings:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.crossDiagnosisSupport = async (req, res) => {
+  try {
+    const { labResults, dentalHistory } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Lab results: ${JSON.stringify(labResults)}
+      Dental history: ${JSON.stringify(dentalHistory)}
+      Identify and explain any links between these lab results and dental issues (e.g., diabetes impacting gum health).
+      Respond ONLY with a JSON object: { "linkedFindings": [array of strings] }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        linkedFindings: [raw]
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/lab-turnaround-prediction:
+ *   post:
+ *     summary: Lab Turnaround Time Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               testType:
+ *                 type: string
+ *               currentQueue:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Predicted turnaround time
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 predictedTime:
+ *                   type: string
+ */
+exports.labTurnaroundPrediction = async (req, res) => {
+  try {
+    const { testType, currentQueue } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Test type: ${testType}
+      Current queue length: ${currentQueue}
+      Predict how long this lab test will take to complete. Respond ONLY with a JSON object: { "predictedTime": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 50,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        predictedTime: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };
 

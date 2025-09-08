@@ -209,3 +209,86 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllCertificates(res)
 };
+
+/**
+ * @swagger
+ * /ai/certificate-generator:
+ *   post:
+ *     summary: AI Certificate Generator
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               certificateType:
+ *                 type: string
+ *               patientData:
+ *                 type: object
+ *               treatmentDetails:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Generated certificate text
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 certificateText:
+ *                   type: string
+ */
+exports.certificateGenerator = async (req, res) => {
+  try {
+    const { certificateType, patientData, treatmentDetails } = req.body;
+    // AI logic (demo)
+    const certificateText = `This is to certify that ${patientData.name} received ${treatmentDetails.treatment} on ${treatmentDetails.date}. Fit to work: Yes.`;
+    res.send({ certificateText });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/certificate-verification:
+ *   post:
+ *     summary: Document Verification for certificates
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               certificateData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Verification result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isValid:
+ *                   type: boolean
+ *                 issues:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.certificateVerification = async (req, res) => {
+  try {
+    const { certificateData } = req.body;
+    // AI logic (demo)
+    const isValid = true;
+    const issues = [];
+    res.send({ isValid, issues });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

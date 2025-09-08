@@ -1,4 +1,4 @@
-const Inventory = require("../../models/inventory");
+const Inventory = require("../../models/inventory.models");
 
 /**
  * @swagger
@@ -224,5 +224,134 @@ exports.deleteAll = async (req, res) => {
     res.status(500).send({
       message: err.message || "Some error occurred while removing all inventory items."
     });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/stock-prediction:
+ *   post:
+ *     summary: AI Stock Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               item:
+ *                 type: string
+ *               usageHistory:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *     responses:
+ *       200:
+ *         description: Stock depletion prediction
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 depletionDate:
+ *                   type: string
+ *                   format: date
+ */
+exports.stockPrediction = async (req, res) => {
+  try {
+    const { item, usageHistory } = req.body;
+    // AI logic (demo)
+    const depletionDate = "2025-09-25";
+    res.send({ depletionDate });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/auto-reorder:
+ *   post:
+ *     summary: Auto-Reorder System
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               item:
+ *                 type: string
+ *               currentStock:
+ *                 type: integer
+ *               predictedDepletionDate:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Reorder trigger result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 reorderTriggered:
+ *                   type: boolean
+ *                 reorderDate:
+ *                   type: string
+ *                   format: date
+ */
+exports.autoReorder = async (req, res) => {
+  try {
+    const { item, currentStock, predictedDepletionDate } = req.body;
+    // AI logic (demo)
+    const reorderTriggered = true;
+    const reorderDate = "2025-09-15";
+    res.send({ reorderTriggered, reorderDate });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/waste-reduction:
+ *   post:
+ *     summary: Waste Reduction Suggestions
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               item:
+ *                 type: string
+ *               appointmentForecast:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *     responses:
+ *       200:
+ *         description: Stock adjustment suggestions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 adjustmentSuggestion:
+ *                   type: string
+ */
+exports.wasteReduction = async (req, res) => {
+  try {
+    const { item, appointmentForecast } = req.body;
+    // AI logic (demo)
+    const adjustmentSuggestion = `Reduce order of ${item} by 10% next month based on forecast.`;
+    res.send({ adjustmentSuggestion });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
   }
 };

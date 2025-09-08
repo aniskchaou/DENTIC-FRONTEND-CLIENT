@@ -1,4 +1,6 @@
 const { deletePrescriptionMedicamentById, findAllMedicamentPrescriptions, createMedicamentPrescription, findPrescriptionById, updatePrescription, deletePrescriptionById, deleteAllPrescriptions, findAllPrescriptions, createPrescription } = require("../../services/prescription.services");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 /**
  * @swagger
@@ -281,4 +283,195 @@ exports.deleteMedicament = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllPrescriptions(req, res)
+};
+
+/**
+ * @swagger
+ * /ai/prescription-assistant:
+ *   post:
+ *     summary: AI Prescription Assistant (dosage & duration)
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               medication:
+ *                 type: string
+ *               patientData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Suggested dosage and duration
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 dosage:
+ *                   type: string
+ *                 duration:
+ *                   type: string
+ */
+exports.prescriptionAssistant = async (req, res) => {
+  try {
+    const { medication, patientData } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Medication: ${medication}
+      Patient data: ${JSON.stringify(patientData)}
+      Suggest the correct dosage and duration for this medication for the given patient.
+      Respond ONLY with a JSON object: { "dosage": "string", "duration": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        dosage: "",
+        duration: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/prescription-error-detection:
+ *   post:
+ *     summary: Prescription Error Detection
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prescription:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Error flags
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.prescriptionErrorDetection = async (req, res) => {
+  try {
+    const { prescription } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Prescription details: ${JSON.stringify(prescription)}
+      Check for potential errors such as overdoses, wrong combinations, or missing details in this prescription.
+      Respond ONLY with a JSON object: { "errors": [array of strings] }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        errors: []
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/prescription-explanation:
+ *   post:
+ *     summary: Digital Explanation of prescription
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prescription:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Simple explanation for patients
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 explanation:
+ *                   type: string
+ */
+exports.prescriptionExplanation = async (req, res) => {
+  try {
+    const { prescription } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Prescription details: ${JSON.stringify(prescription)}
+      Explain this prescription in simple, patient-friendly language.
+      Respond ONLY with a JSON object: { "explanation": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        explanation: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

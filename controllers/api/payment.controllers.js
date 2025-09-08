@@ -70,16 +70,9 @@ exports.create = (req, res) => {
     return;
   }
 
-  const patient = {
-    invoiceNumber: req.body.invoiceNumber,
-    paymentDate: req.body.paymentDate,
-    paymenMode: req.body.paymenMode,
-    amountReceived: req.body.amountReceived,
-    invoiceBlanceDue: req.body.invoiceBlanceDue,
-    patient: req.body.patient
-  };
 
-  createPayment(patient, res);
+
+  createPayment(req.body, res);
 };
 
 /**
@@ -200,4 +193,133 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
   deleteAllPayments(req, res);
+};
+
+/**
+ * @swagger
+ * /ai/payment-plan-generator:
+ *   post:
+ *     summary: Smart Payment Plan Generator
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               treatmentCost:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Suggested payment plans
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 plans:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.paymentPlanGenerator = async (req, res) => {
+  try {
+    const { patientId, treatmentCost } = req.body;
+    // AI logic (demo)
+    const plans = [
+      "3 monthly payments of $200",
+      "6 monthly payments of $110"
+    ];
+    res.send({ plans });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/payment-fraud-detection:
+ *   post:
+ *     summary: Payment Fraud Detection
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               paymentHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Fraud detection result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 suspiciousPayments:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.paymentFraudDetection = async (req, res) => {
+  try {
+    const { paymentHistory } = req.body;
+    // AI logic (demo)
+    const suspiciousPayments = ["Payment #456: Unusual amount"];
+    res.send({ suspiciousPayments });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/late-payment-prediction:
+ *   post:
+ *     summary: Late Payment Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               paymentHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Late payment likelihood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 likelyToBeLate:
+ *                   type: boolean
+ *                 advice:
+ *                   type: string
+ */
+exports.latePaymentPrediction = async (req, res) => {
+  try {
+    const { patientId, paymentHistory } = req.body;
+    // AI logic (demo)
+    const likelyToBeLate = true;
+    const advice = "Send reminder 3 days before due date.";
+    res.send({ likelyToBeLate, advice });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

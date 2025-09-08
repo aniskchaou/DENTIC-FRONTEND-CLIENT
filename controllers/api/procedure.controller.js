@@ -6,6 +6,8 @@ const {
     deleteProcedureById,
     deleteAllProcedures
 } = require("../../services/procedure.services");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require("../../config/openai.config");
 
 /**
  * @swagger
@@ -172,4 +174,203 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllProcedures(res);
+};
+
+/**
+ * @swagger
+ * /ai/procedure-recommendation:
+ *   post:
+ *     summary: Procedure Recommendation AI
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               diagnosis:
+ *                 type: string
+ *               history:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Suggested procedures
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 procedures:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.procedureRecommendation = async (req, res) => {
+  try {
+    const { diagnosis, history } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Diagnosis: ${diagnosis}
+      Patient history: ${JSON.stringify(history)}
+      Suggest the most appropriate dental procedures for this patient. Respond ONLY with a JSON object: { "procedures": [array of strings] }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 200,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        procedures: [raw]
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/procedure-estimation:
+ *   post:
+ *     summary: Time/Cost Estimation for procedures
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               procedure:
+ *                 type: string
+ *               patientData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Estimated time and cost
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 estimatedTime:
+ *                   type: string
+ *                 estimatedCost:
+ *                   type: number
+ */
+exports.procedureEstimation = async (req, res) => {
+  try {
+    const { procedure, patientData } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Procedure: ${procedure}
+      Patient data: ${JSON.stringify(patientData)}
+      Estimate the expected time and cost for this dental procedure for the given patient.
+      Respond ONLY with a JSON object: { "estimatedTime": "string", "estimatedCost": number }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        estimatedTime: "",
+        estimatedCost: 0
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/procedure-outcome-prediction:
+ *   post:
+ *     summary: Outcome Prediction for procedures
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               procedure:
+ *                 type: string
+ *               patientData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Predicted outcome and recovery time
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 successLikelihood:
+ *                   type: string
+ *                 expectedRecovery:
+ *                   type: string
+ */
+exports.procedureOutcomePrediction = async (req, res) => {
+  try {
+    const { procedure, patientData } = req.body;
+
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+    const prompt = `
+      Procedure: ${procedure}
+      Patient data: ${JSON.stringify(patientData)}
+      Predict the likelihood of success and expected recovery time for this dental procedure for the given patient.
+      Respond ONLY with a JSON object: { "successLikelihood": "string", "expectedRecovery": "string" }
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    const raw = completion.choices[0].message.content;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      result = {
+        successLikelihood: "",
+        expectedRecovery: raw
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

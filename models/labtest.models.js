@@ -1,39 +1,3 @@
-/* var LabTest = sequelize.define('labtest', {
-    datee: Sequelize.STRING,
-    patient: Sequelize.STRING,
-    content: Sequelize.STRING,
-    status:Sequelize.STRING
-});
-{
-    "LabTest": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Doctor)",
-      "clinicId": "UUID (Ref to Clinic)",
-      "testName": "string (e.g., X-Ray, Blood Test, Saliva Test, Biopsy)",
-      "testCategory": "Radiology | Pathology | Microbiology | Hematology",
-      "testDescription": "string (Purpose and details of the test)",
-      "sampleType": "Blood | Saliva | Tissue | Other",
-      "sampleCollectionDate": "timestamp",
-      "sampleCollectedBy": "UUID (Ref to Lab Technician)",
-      "testStatus": "Pending | In Progress | Completed | Canceled",
-      "result": {
-        "resultId": "UUID",
-        "resultDate": "timestamp",
-        "resultDescription": "string (Findings from the test)",
-        "attachments": ["string (URLs to reports, images, or documents)"]
-      },
-      "laboratoryId": "UUID (Ref to External or Internal Lab)",
-      "testCost": "float (Cost of the test)",
-      "insuranceCovered": "Yes | No",
-      "paymentStatus": "Pending | Paid | Billed to Insurance",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
-  
-module.exports = LabTest;  */
-
 
 var sequelize = require("../db/init.sequelize.js");
 var { Sequelize, DataTypes } = require('sequelize');
@@ -92,12 +56,12 @@ const LabTest = sequelize.define("labTest", {
     }, */
   },
   testStatus: {
-    type: DataTypes.ENUM("Pending", "In Progress", "Completed", "Canceled"),
+    type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "Pending",
   },
   result: {
-    type: DataTypes.JSONB, // Store result details dynamically
+    type: DataTypes.TEXT, // Store result details dynamically
     allowNull: true,
   },
   laboratoryId: {
@@ -113,11 +77,11 @@ const LabTest = sequelize.define("labTest", {
     allowNull: false,
   },
   insuranceCovered: {
-    type: DataTypes.ENUM("Yes", "No"),
+    type: DataTypes.STRING,
     allowNull: false,
   },
   paymentStatus: {
-    type: DataTypes.ENUM("Pending", "Paid", "Billed to Insurance"),
+    type: DataTypes.STRING,
     allowNull: false,
     defaultValue: "Pending",
   },
@@ -147,12 +111,7 @@ LabTest.insertDummyLabTests = async function() {
       sampleCollectionDate: new Date("2025-07-01T09:00:00Z"),
       sampleCollectedBy: 1,
       testStatus: "Completed",
-      result: {
-        resultId: "55555555-eeee-ffff-aaaa-555555555555",
-        resultDate: "2025-07-01T12:00:00Z",
-        resultDescription: "No cavities detected. Mild bone loss observed.",
-        attachments: ["https://example.com/reports/xray1.pdf"]
-      },
+      result: "",
       laboratoryId: 1,
       testCost: 120.00,
       insuranceCovered: "Yes",
@@ -169,12 +128,7 @@ LabTest.insertDummyLabTests = async function() {
       sampleCollectionDate: new Date("2025-07-02T10:30:00Z"),
       sampleCollectedBy: 4,
       testStatus: "Completed",
-      result: {
-        resultId: "bbbbbbbb-eeee-ffff-aaaa-bbbbbbbbbbbb",
-        resultDate: "2025-07-02T13:00:00Z",
-        resultDescription: "WBC count elevated, indicating infection.",
-        attachments: []
-      },
+      result: "",
       laboratoryId: 1,
       testCost: 80.00,
       insuranceCovered: "No",

@@ -7,6 +7,8 @@ const {
     findAllAppointments,
     createAppointment
 } = require("../../services/appointement.services");
+const OpenAI = require("openai");
+const { OPENAI_API_KEY } = require('../../config/openai.config');
 
 
 /**
@@ -254,5 +256,215 @@ exports.completed = async (req, res) => {
     res.send({ message: `Appointment ${id} marked as completed` });
   } catch (err) {
     res.status(500).send({ message: "Error marking appointment as completed", error: err.toString() });
+  }
+};
+
+
+/**
+ * @swagger
+ * /ai/scheduling-assistant:
+ *   post:
+ *     summary: AI Scheduling Assistant for appointments
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               doctorAvailability:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               patientHistory:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Suggested appointment slots
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 slots:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.schedulingAssistant = async (req, res) => {
+  try {
+    const { patientId, doctorAvailability, patientHistory } = req.body;
+
+    const openai = new OpenAI({
+      apiKey: OPENAI_API_KEY,
+    });
+
+    const prompt = `
+      Patient history: ${JSON.stringify(patientHistory)}
+      Doctor availability: ${JSON.stringify(doctorAvailability)}
+      Suggest the best 2 appointment slots for this patient based on their history and the doctor's availability. Return only the slots as a JSON array.
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let slots = [];
+    try {
+      slots = JSON.parse(completion.choices[0].message.content);
+    } catch (e) {
+      slots = doctorAvailability.slice(0, 2);
+    }
+
+    res.send({ slots });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/no-show-prediction:
+ *   post:
+ *     summary: No-show Prediction for appointments
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               appointmentHistory:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: No-show likelihood and reminder message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 likelyToNoShow:
+ *                   type: boolean
+ *                 reminderMessage:
+ *                   type: string
+ */
+exports.noShowPrediction = async (req, res) => {
+  try {
+    const { patientId, appointmentHistory } = req.body;
+
+    const openai = new OpenAI({
+      apiKey: OPENAI_API_KEY,
+    });
+
+    const prompt = `
+      Patient ID: ${patientId}
+      Appointment history: ${JSON.stringify(appointmentHistory)}
+      Predict if this patient is likely to miss their next appointment. Return a JSON object with "likelyToNoShow" (boolean) and "reminderMessage" (string).
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    try {
+      result = JSON.parse(completion.choices[0].message.content);
+    } catch (e) {
+      result = {
+        likelyToNoShow: false,
+        reminderMessage: "Please confirm your appointment."
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/smart-routing:
+ *   post:
+ *     summary: Smart Routing for doctor assignment
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientId:
+ *                 type: string
+ *               specialtyNeeded:
+ *                 type: string
+ *               doctorList:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Assigned doctor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 doctorId:
+ *                   type: string
+ *                 doctorName:
+ *                   type: string
+ */
+exports.smartRouting = async (req, res) => {
+  try {
+    const { patientId, specialtyNeeded, doctorList } = req.body;
+
+    const openai = new OpenAI({
+      apiKey: OPENAI_API_KEY,
+    });
+
+    const prompt = `
+      Patient ID: ${patientId}
+      Specialty needed: ${specialtyNeeded}
+      Doctor list: ${JSON.stringify(doctorList)}
+      Assign the best-suited doctor for this patient based on specialty, workload, and availability. Return a JSON object with "doctorId" and "doctorName".
+    `;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 100,
+      temperature: 0.2,
+    });
+
+    let result = {};
+    try {
+      result = JSON.parse(completion.choices[0].message.content);
+    } catch (e) {
+      result = {
+        doctorId: doctorList[0]?.id || "unknown",
+        doctorName: doctorList[0]?.name || "unknown"
+      };
+    }
+
+    res.send(result);
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
   }
 };

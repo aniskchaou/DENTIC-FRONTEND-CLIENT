@@ -15,11 +15,6 @@ const {
  *   description: API for managing equipment records
  */
 
-
-
-
-
-
 /**
  * @swagger
  * /equipment:
@@ -186,4 +181,94 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllEquipment(res);
+};
+
+/**
+ * @swagger
+ * /ai/predictive-maintenance:
+ *   post:
+ *     summary: Predictive Maintenance for equipment
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               equipmentId:
+ *                 type: string
+ *               usageData:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *     responses:
+ *       200:
+ *         description: Predicted failure date and maintenance suggestion
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 predictedFailureDate:
+ *                   type: string
+ *                   format: date
+ *                 maintenanceSuggestion:
+ *                   type: string
+ */
+exports.predictiveMaintenance = async (req, res) => {
+  try {
+    const { equipmentId, usageData } = req.body;
+    // AI logic (demo)
+    const predictedFailureDate = "2025-10-01";
+    const maintenanceSuggestion = "Schedule maintenance before September 25th.";
+    res.send({ predictedFailureDate, maintenanceSuggestion });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/usage-optimization:
+ *   post:
+ *     summary: Usage Optimization for equipment maintenance
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               equipmentId:
+ *                 type: string
+ *               usageHistory:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *     responses:
+ *       200:
+ *         description: Optimized maintenance schedule
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 nextMaintenanceDate:
+ *                   type: string
+ *                   format: date
+ *                 scheduleDetails:
+ *                   type: string
+ */
+exports.usageOptimization = async (req, res) => {
+  try {
+    const { equipmentId, usageHistory } = req.body;
+    // AI logic (demo)
+    const nextMaintenanceDate = "2025-09-20";
+    const scheduleDetails = "Based on usage, next checkup should be before September 20th.";
+    res.send({ nextMaintenanceDate, scheduleDetails });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

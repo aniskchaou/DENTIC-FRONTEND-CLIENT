@@ -1,18 +1,4 @@
-/* {
-    "Feedback": {
-      "id": "UUID",
-      "patientId": "UUID (Ref to Patient)",
-      "doctorId": "UUID (Ref to Doctor)",
-      "appointmentId": "UUID (Ref to Appointment)",
-      "rating": "1-5",
-      "comment": "string",
-      "reviewDate": "timestamp",
-      "status": "Published | Pending | Hidden",
-      "createdAt": "timestamp",
-      "updatedAt": "timestamp"
-    }
-  }
- */
+
 
   var sequelize = require("../db/init.sequelize.js");
   var { Sequelize, DataTypes } = require('sequelize');

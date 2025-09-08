@@ -138,3 +138,82 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
     deleteAllMedicamentCategorys(req, res)
 };
+
+
+/**
+ * @swagger
+ * /ai/medicament-categorization:
+ *   post:
+ *     summary: Smart Categorization for medications
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               medicationName:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Therapeutic category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 category:
+ *                   type: string
+ */
+exports.medicamentCategorization = async (req, res) => {
+  try {
+    const { medicationName, description } = req.body;
+    // AI logic (demo)
+    const category = "Antibiotic";
+    res.send({ category });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/medicament-trend-insights:
+ *   post:
+ *     summary: Trend Insights for drug categories
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               caseType:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Commonly used drug categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 commonCategories:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.medicamentTrendInsights = async (req, res) => {
+  try {
+    const { caseType } = req.body;
+    // AI logic (demo)
+    const commonCategories = ["Antibiotics", "Analgesics"];
+    res.send({ commonCategories });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};

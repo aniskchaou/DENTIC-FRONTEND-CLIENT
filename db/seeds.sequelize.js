@@ -1,16 +1,69 @@
 
 const fs = require('fs');
 
-exports.userSeed = {
-    name: "admin",
-    birthday: "1/1/1999",
-    password: "admin",
-    email: "admin@gmail.com",
-    telephone: "765876",
-    address: "N/A",
-    role: "Admnistrator",
-    username: "admin"
-}
+exports.userSeeds = [
+    {
+        username: 'admin',
+        password: 'admin',
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        role: 'ADMIN',
+        phone: '1234567890',
+        profilePicture: 'https://example.com/admin.jpg',
+        dateOfBirth: new Date('1980-01-01'),
+        gender: 'Male',
+        status: 'Active',
+    },
+    {
+        username: 'staffuser',
+        password: 'staffpass',
+        fullName: 'Staff User',
+        email: 'staff@example.com',
+        role: 'STAFF',
+        phone: '1234567891',
+        profilePicture: 'https://example.com/staff.jpg',
+        dateOfBirth: new Date('1990-02-02'),
+        gender: 'Female',
+        status: 'Active',
+    },
+    {
+        username: 'doctoruser',
+        password: 'doctorpass',
+        fullName: 'Doctor User',
+        email: 'doctor@example.com',
+        role: 'DOCTOR',
+        phone: '1234567892',
+        profilePicture: 'https://example.com/doctor.jpg',
+        dateOfBirth: new Date('1985-03-03'),
+        gender: 'Male',
+        status: 'Active',
+    },
+    {
+        username: 'accountantuser',
+        password: 'accountantpass',
+        fullName: 'Accountant User',
+        email: 'accountant@example.com',
+        role: 'ACCOUNTANT',
+        phone: '1234567893',
+        profilePicture: 'https://example.com/accountant.jpg',
+        dateOfBirth: new Date('1992-04-04'),
+        gender: 'Female',
+        status: 'Active',
+    }
+        ,
+        {
+            username: 'technicaluser',
+            password: 'technicalpass',
+            fullName: 'Technical User',
+            email: 'technical@example.com',
+            role: 'TECHNICAL',
+            phone: '1234567894',
+            profilePicture: 'https://example.com/technical.jpg',
+            dateOfBirth: new Date('1993-05-05'),
+            gender: 'Male',
+            status: 'Active',
+        }
+];
 
 
 exports.serviceSeed = [{
@@ -41,10 +94,6 @@ exports.serviceSeed = [{
     fileName: 's4.jpg'
 
 }]
-
-
-
-
 
 exports.expenseSeed = {
     nameexpense: '',
@@ -165,10 +214,3 @@ exports.getDashboardSettings = () => {
     console.log(student);
     return student
 }
-
-
-
-
-
-
-

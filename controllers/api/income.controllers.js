@@ -9,7 +9,6 @@ const { findIncomeById, updateIncome, deleteIncomeById, deleteAllIncomes, findAl
  */
 
 
-
 /**
  * @swagger
  * /incomes:
@@ -164,4 +163,90 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllIncomes(req, res)
+};
+
+/**
+ * @swagger
+ * /ai/revenue-forecast:
+ *   post:
+ *     summary: Revenue Forecasting
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               historicalIncome:
+ *                 type: array
+ *                 items:
+ *                   type: number
+ *               appointmentData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Predicted future income
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 forecast:
+ *                   type: array
+ *                   items:
+ *                     type: number
+ */
+exports.revenueForecast = async (req, res) => {
+  try {
+    const { historicalIncome, appointmentData } = req.body;
+    // AI logic (demo)
+    const forecast = [12000, 13000, 12500]; // Example: next 3 months
+    res.send({ forecast });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/profitability-analysis:
+ *   post:
+ *     summary: Profitability Analysis
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               serviceData:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Most profitable services
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 profitableServices:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.profitabilityAnalysis = async (req, res) => {
+  try {
+    const { serviceData } = req.body;
+    // AI logic (demo)
+    const profitableServices = ["Implants", "Whitening"];
+    res.send({ profitableServices });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

@@ -15,11 +15,6 @@ const {
  *   description: API for managing staff records
  */
 
-
-
-
-
-
 /**
  * @swagger
  * /staff:
@@ -180,4 +175,142 @@ exports.delete = (req, res) => {
  */
 exports.deleteAll = (req, res) => {
     deleteAllStaff(res);
+};
+
+/**
+ * @swagger
+ * /ai/shift-scheduler:
+ *   post:
+ *     summary: AI Shift Scheduler for staff
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               patientFlowForecast:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *               doctorAvailability:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Optimized staff schedule
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 schedule:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+exports.shiftScheduler = async (req, res) => {
+  try {
+    const { patientFlowForecast, doctorAvailability } = req.body;
+    // AI logic (demo)
+    const schedule = [
+      { staff: "Alice", shift: "Morning" },
+      { staff: "Bob", shift: "Afternoon" }
+    ];
+    res.send({ schedule });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/staff-performance-insights:
+ *   post:
+ *     summary: Staff Performance Insights
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               staffId:
+ *                 type: string
+ *               productivityData:
+ *                 type: object
+ *               feedbackData:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Productivity and feedback analysis
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 insights:
+ *                   type: string
+ *                 suggestions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+exports.staffPerformanceInsights = async (req, res) => {
+  try {
+    const { staffId, productivityData, feedbackData } = req.body;
+    // AI logic (demo)
+    const insights = "Handled 30 appointments last week, positive patient feedback.";
+    const suggestions = ["Continue current schedule", "Attend communication workshop"];
+    res.send({ insights, suggestions });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
+};
+
+/**
+ * @swagger
+ * /ai/attrition-prediction:
+ *   post:
+ *     summary: Staff Attrition Prediction
+ *     tags: [AI]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               staffId:
+ *                 type: string
+ *               hrData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Attrition likelihood
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 likelyToLeave:
+ *                   type: boolean
+ *                 reason:
+ *                   type: string
+ */
+exports.attritionPrediction = async (req, res) => {
+  try {
+    const { staffId, hrData } = req.body;
+    // AI logic (demo)
+    const likelyToLeave = false;
+    const reason = "No recent complaints, good performance.";
+    res.send({ likelyToLeave, reason });
+  } catch (err) {
+    res.status(500).send({ message: "AI error", error: err.toString() });
+  }
 };

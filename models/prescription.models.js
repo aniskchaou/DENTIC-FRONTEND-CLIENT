@@ -86,7 +86,7 @@ const Prescription = sequelize.define("prescription", {
     comment: "Number of refills allowed (if applicable)",
   },
   digitalSignature: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true,
     comment: "Secure hash for the authentication of the prescription",
   },

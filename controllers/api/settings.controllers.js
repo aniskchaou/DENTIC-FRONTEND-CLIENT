@@ -67,7 +67,7 @@ exports.saveSettings = async (req, res) => {
 
 const fs = require('fs');
 const path = require('path');
-const { addSettingsData } = require("../../models/settings.mdels");
+const { addSettingsData } = require("../../models/settings.models");
 
 /**
  * @swagger
