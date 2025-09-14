@@ -1,3 +1,14 @@
+// Add getSystemSettings function for SystemSettings seeding
+exports.getSystemSettings = () => {
+    return {
+        appName: 'Dentic',
+        version: '1.0.0',
+        maintenance: false,
+        supportEmail: 'support@dentic.fr',
+        createdAt: new Date(),
+        updatedAt: new Date()
+    };
+}
 
 const fs = require('fs');
 
@@ -124,46 +135,53 @@ exports.schedulePageSeed = {
     intro: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 }
 
-exports.contactPageSeed = {
-    title: 'Contact Us',
-    subtitle: 'Latest From Our Blog',
-    intro: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+function hashPasswordSync(password) {
+  return bcrypt.hashSync(password, saltRounds);
 }
 
-exports.blogPageSeed = {
-    title: 'Blog',
-    subtitle: 'Latest From Our Blog',
-    intro: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-}
+exports.userSeeds = [
+    {
+        username: 'admin',
+        password: hashPasswordSync('admin'),
+        fullName: 'Admin User',
+        email: 'admin@example.com',
+        role: 'ADMIN',
+        phone: '1234567890',
+        profilePicture: 'https://example.com/admin.jpg',
+        dateOfBirth: new Date('1980-01-01'),
+        gender: 'Male',
+        status: 'Active',
+    },
+    {
+        username: 'staffuser',
+        password: hashPasswordSync('staffpass'),
+        fullName: 'Staff User',
+        email: 'staff@example.com',
+        role: 'STAFF',
+        phone: '1234567891',
+        profilePicture: 'https://example.com/staff.jpg',
+        dateOfBirth: new Date('1990-02-02'),
+        gender: 'Female',
+        status: 'Active',
+    },
+    {
+        username: 'doctoruser',
+        password: hashPasswordSync('doctorpass'),
+        fullName: 'Doctor User',
+        email: 'doctor@example.com',
+        role: 'DOCTOR',
+        phone: '1234567892',
+        profilePicture: 'https://example.com/doctor.jpg',
+        dateOfBirth: new Date('1985-03-03'),
+        gender: 'Male',
+        status: 'Active',
+    },
+    // ...other users
+];
 
-exports.testimonialsSeed = {
-    title: 'Testimonials',
-    subtitle: 'Feedback from our real clients',
-    intro: 'It won’t be a bigger problem to find one video game lover in your neighbor. Since the introduction of Virtual Game.'
-}
-
-
-exports.homePageSeed = {
-    title1: "DON’T LOOK FURTHER, THIS IS YOUR DENTIST",
-    title2: 'Authentic Dental Service',
-    title3: 'If you are looking at blank cassettes on the web, you may be very confused at the difference in price.You may see some for as low as $.17 each.You may be saying to yourself.'
-}
-
-
-
-exports.getSytemSettings = () => {
-    var rawdata = fs.readFileSync('db/settings/system.json');
-    var student = JSON.parse(rawdata);
-    console.log(student);
-    return student
-}
-
-exports.getEmailSettings = () => {
-    var rawdata = fs.readFileSync('db/settings/system.json');
-    var student = JSON.parse(rawdata);
-    console.log(student);
-    return student
-}
 
 exports.getEmailTemplateSettings = () => {
     var rawdata = fs.readFileSync('db/settings/email_template.json');

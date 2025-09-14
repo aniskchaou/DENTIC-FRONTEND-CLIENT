@@ -61,7 +61,7 @@ sequelize.sync().then(async function () {
     HeaderSettings.create(seeds.getHeaderSettings())
     LocalisationSettings.create(seeds.getLocalisationSettings())
     NotificationSettings.create(seeds.getNotificationSettings())
-    SystemSettings.create(seeds.getSytemSettings())
+    SystemSettings.create(seeds.getSystemSettings())
     Patient.insertPatients()
     Case.addDummyData()
     Certificate.insertDummyCertificates()

@@ -15,51 +15,59 @@ exports.findAllUsers = (condition,res) => {
             });
         });
 }
-exports.loginUser = (username, password, res) => {
-    User.findOne({ where: { username: username, password: password } })
-        .then(data => {
-
-            if (data === null) {
-                res.send({});
-            } else {
-                res.send(data);
-            }
-
-        })
-        .catch(err => {
-            res.send({
-                message:
-                    err.message || "Some error occurred while creating the User."
-            });
+const bcrypt = require('bcrypt');
+exports.loginUser = async (username, password, res) => {
+    try {
+        const data = await User.findOne({ where: { username: username } });
+        if (!data) {
+            return res.send({ message: 'Invalid username or password' });
+        }
+        const match = await bcrypt.compare(password, data.password);
+        if (!match) {
+            return res.send({ message: 'Invalid username or password' });
+        }
+        res.send({
+            id: data.id,
+            username: data.username,
+            role: data.role,
+            email: data.email
         });
+    } catch (err) {
+        res.send({
+            message:
+                err.message || "Some error occurred while creating the User."
+        });
+    }
 }
 
-exports.createUser = (user,res) => {
-    // Save user in the database
-    User.create(user)
-        .then(async data => {
-            // Send welcome email after creation
-            try {
-                const { sendMail } = require('../utils/email.services');
-                if (user.email) {
-                    await sendMail({
-                        to: user.email,
-                        subject: 'Welcome to Dentic!',
-                        text: `Hello ${user.username},\n\nYour account has been created.\nUsername: ${user.username}\nPassword: ${user.password}\n\nPlease keep this information safe.`,
-                        html: `<p>Hello ${user.username},</p><p>Your account has been created.</p><ul><li><b>Username:</b> ${user.username}</li><li><b>Password:</b> ${user.password}</li></ul><p>Please keep this information safe.</p>`
-                    });
-                }
-            } catch (e) {
-                console.error('Error sending welcome email:', e);
+exports.createUser = async (user, res) => {
+    try {
+        // Hash password before saving
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+        user.password = hashedPassword;
+        const data = await User.create(user);
+        // Send welcome email after creation
+        try {
+            const { sendMail } = require('../utils/email.services');
+            if (user.email) {
+                await sendMail({
+                    to: user.email,
+                    subject: 'Welcome to Dentic!',
+                    text: `Hello ${user.username},\n\nYour account has been created.\nUsername: ${user.username}\nPassword: (hidden for security)\n\nPlease keep this information safe.`,
+                    html: `<p>Hello ${user.username},</p><p>Your account has been created.</p><ul><li><b>Username:</b> ${user.username}</li><li><b>Password:</b> (hidden for security)</li></ul><p>Please keep this information safe.</p>`
+                });
             }
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the User."
-            });
+        } catch (e) {
+            console.error('Error sending welcome email:', e);
+        }
+        res.send(data);
+    } catch (err) {
+        res.status(500).send({
+            message:
+                err.message || "Some error occurred while creating the User."
         });
+    }
 }
 
 exports.findUserById = (id, res) => {
