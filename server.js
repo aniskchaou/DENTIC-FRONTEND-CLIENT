@@ -15,7 +15,7 @@ require('./jobs/scheduler');
 var app = express()
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.set('views', path.join(__dirname, '/views/'));
-app.engine('hbs', exphbs({ extname: 'hbs', defaultLayout: 'mainLayout', layoutsDir: __dirname + '/views/layout/' }))
+app.engine('hbs', exphbs.create({ extname: 'hbs', defaultLayout: 'mainLayout', layoutsDir: __dirname + '/views/layout/' }).engine);
 app.set('view engine', 'hbs')
 app.listen(process.env.PORT || config.port, () => {
     console.log("Express server is started at port : " + config.port);

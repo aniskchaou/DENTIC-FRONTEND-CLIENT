@@ -1,5 +1,6 @@
 const sequelize = require("../db/init.sequelize");
 const User = require("../models/user.models");
+const exphbs = require('express-handlebars');
 
 
 exports.findAllUsers = (condition,res) => {
